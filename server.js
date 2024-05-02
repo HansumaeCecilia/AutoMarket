@@ -8,8 +8,20 @@ const express = require('express');
 // Express Handlebars as template engine
 const {engine} = require('express-handlebars');
 const path = require('path');
-
 const app = express();
+
+// pg Pool for PostgreSQL connection
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'test',
+    password: 'Q2werty',
+    port: 5432,
+});
+
+
 
 // Folder paths
 app.use(express.static('public'));
