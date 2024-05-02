@@ -26,7 +26,6 @@ app.set('view engine', 'handlebars');
 app.get('/', (req, res) => {
    res.render('index', {pageTitle: 'Car Listings'});
 });
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log('Server started and is listening to TCP port', PORT);
