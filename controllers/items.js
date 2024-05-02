@@ -30,7 +30,7 @@ const updateItem = (req, res) => {
     const { id } = req.params;
     const { name, toppings, price } = req.body;
 
-    const item = itemData. find((item) => item.id === id);
+    const item = itemData.find((item) => item.id === id);
 
     if (name) item.name = name;
     if (toppings) item.toppings = toppings;

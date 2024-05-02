@@ -59,10 +59,10 @@ router.get("/", getItem);
 
 router.post("/", addItem);
 
-router.get("/", getItemId);
+router.get("/:id", getItemId);
 
-router.delete("/", deleteItem);
+router.delete("/:id", deleteItem);
 
-router.put("/", updateItem);
+router.put("/:id", updateItem);
 
 module.exports = router;
