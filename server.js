@@ -21,8 +21,6 @@ const pool = new Pool({
     port: 5432,
 });
 
-
-
 // Folder paths
 app.use(express.static('public'));
 app.set('views', './views');

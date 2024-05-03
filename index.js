@@ -13,3 +13,5 @@ app.use("/items", itemRoutes);
 app.listen(port, () => {
   console.log(`Server started at port http://localhost:${port}`);
 });
+
+//console.log(itemRoutes.getItem);
