@@ -1,6 +1,10 @@
+// MODULE FOR APP'S ENDPOINTS' RESPONSE TO CLIENT REQUESTS
+// =======================================================
+
 const express = require("express");
 const router = express.Router();
 
+// Imports from 'controllers'
 const {
     getItem,
     addItem,
@@ -9,6 +13,7 @@ const {
     updateItem,
 } = require("../controllers/items");
 
+// USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", (req, res) => {
     console.log('GET request received for all items');
     getItem(req, res);
@@ -16,7 +21,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
-    console.log('Received data:', req.body); // Log received data from Postman
+    console.log('Received data:', req.body);
     addItem(req, res);
 });
 
