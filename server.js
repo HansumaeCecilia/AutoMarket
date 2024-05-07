@@ -1,41 +1,41 @@
-// WEB SERVER FOR CAR LISTINGS
+// // WEB SERVER FOR CAR LISTINGS
 
-// LIBRARIES AND MODULES
-// ---------------------
+// // LIBRARIES AND MODULES
+// // ---------------------
 
-// Setting up Handlebars as view engine
-const express = require('express');
-// Express Handlebars as template engine
-const {engine} = require('express-handlebars');
-const path = require('path');
-const app = express();
+// // Setting up Handlebars as view engine
+// const express = require('express');
+// // Express Handlebars as template engine
+// const {engine} = require('express-handlebars');
+// const path = require('path');
+// const app = express();
 
-// pg Pool for PostgreSQL connection
-const { Pool } = require('pg');
+// // pg Pool for PostgreSQL connection
+// const { Pool } = require('pg');
 
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'test',
-    password: 'Q2werty',
-    port: 5432,
-});
+// const pool = new Pool({
+//     user: 'postgres',
+//     host: 'localhost',
+//     database: 'test',
+//     password: 'Q2werty',
+//     port: 5432,
+// });
 
-// Folder paths
-app.use(express.static('public'));
-app.set('views', './views');
+// // Folder paths
+// app.use(express.static('public'));
+// app.set('views', './views');
 
-// Engine settings
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
+// // Engine settings
+// app.engine('handlebars', engine());
+// app.set('view engine', 'handlebars');
 
-// Route to homepage
-app.get('/', (req, res) => {
-    res.render('index', { pageTitle: 'Car Listings' });
-});
+// // Route to homepage
+// app.get('/', (req, res) => {
+//     res.render('index', { pageTitle: 'Car Listings' });
+// });
 
-// Create server
-const PORT = process.env.PORT || 8081;
-app.listen(PORT, () => {
-    console.log('Server started and is listening to TCP port', PORT);
-});
+// // Create server
+// const PORT = process.env.PORT || 8081;
+// app.listen(PORT, () => {
+//     console.log('Server started and is listening to TCP port', PORT);
+// });
