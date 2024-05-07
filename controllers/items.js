@@ -2,7 +2,8 @@
 // ===================================
 
 // Generate unique ID
-const { v4 } = require("uuid");
+// const { v4 } = require("uuid");
+
 const { pool } = require('../db');
 
 // Function for fetching data
@@ -19,13 +20,13 @@ const getItem = async (req, res) => {
 // Function for adding data
 const addItem = async (req, res) => {
     const { brand, model, price } = req.body;
-    const itemId = v4();
+    //const itemId = v4();
     try {
-        const result = await pool.query('INSERT INTO public.cars (id, brand, model, price) VALUES ($1, $2, $3, $4) RETURNING *', [itemId, brand, model, price]);
+        const result = await pool.query('INSERT INTO public.cars (brand, model, price) VALUES ($1, $2, $3) RETURNING *', [brand, model, price]);
         res.json(result.rows);
     } catch (error) {
         console.error ('Error adding item', error);
-        res.status(500).send('Internal server error');
+        res.status(500).send('Internal server error!');
     }
 };
 
@@ -60,8 +61,9 @@ const deleteItem = async (req, res) => {
   // Function for updating item via ID
 const updateItem = async (req, res) => {
     const { id } = req.params;
+    const { brand, model, price } = req.body;
      try {
-        await pool.query('UPDATE public.cars SET id = $4 brand = $1, model = $2, price = $3', [id, brand, model, price]);
+        await pool.query('UPDATE public.cars SET brand = $1, model = $2, price = $3 WHERE id = $4', [brand, model, price, id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]); // Return the item found in the database
         } else {
