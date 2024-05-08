@@ -58,25 +58,6 @@ const deleteItem = async (req, res) => {
   };
 
 // Function for updating item via ID
-// const updateItem = async (req, res) => {
-//     const { brand, model, price} = req.body; 
-//     const { id } = req.params;
-//     let result;
-//      try {
-//         await pool.query('UPDATE public.cars SET brand = $1, model = $2, price = $3 WHERE id = $4 RETURNING *', [brand, model, price, id]);
-//         if (result.rows.length > 0) {
-//             res.json(result.rows[0]);
-//  // Return the item found in the database
-//         } else {
-//             res.status(404).send('Item not found');
-//         }
-//         res.send(`Item with id ${id} has been updated successfully`);
-//     } catch (error) {
-//         console.error('Error updating item:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
-
 const updateItem = async (req, res) => {
     const { brand, model, price } = req.body;
     const { id } = req.params;
