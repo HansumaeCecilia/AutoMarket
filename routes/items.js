@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
     getItem(req, res);
 });
 
-router.post("/items", (req, res) => {
+router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body); // Log received data from Postman
     addItem(req, res);
