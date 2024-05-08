@@ -2,7 +2,6 @@
 // ===================================
 
 // Generate unique ID
-// const { v4 } = require("uuid");
 
 const { pool } = require('../db');
 
@@ -10,7 +9,7 @@ const { pool } = require('../db');
 const getItem = async (req, res) => {    
     try {
         const result = await pool.query('SELECT * FROM public.cars');
-        res.json(result.rows);
+        return result.rows;
     } catch (error) {
         console.error ('Error fetching data', error);
         res.status(500).send('Internal server error');
@@ -19,8 +18,7 @@ const getItem = async (req, res) => {
 
 // Function for adding data
 const addItem = async (req, res) => {
-    const { brand, model, price } = req.body;
-    //const itemId = v4();
+    const { brand, model, price } = req.body;    
     try {
         const result = await pool.query('INSERT INTO public.cars (brand, model, price) VALUES ($1, $2, $3) RETURNING *', [brand, model, price]);
         res.json(result.rows);
@@ -39,8 +37,7 @@ const getItemId = async (req, res) => {
             res.json(result.rows[0]); // Return the item found in the database
         } else {
             res.status(404).send('Item not found');
-        }
-        res.json(result.rows);
+        }        
     } catch (error) {
         console.error('Error fetching ID:', error);
         res.status(500).send('Internal server error');

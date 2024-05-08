@@ -14,9 +14,15 @@ const {
 } = require("../controllers/items");
 
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
-router.get("/", (req, res) => {
-    console.log('GET request received for all items');
-    getItem(req, res);
+router.get("/", async (req, res) => {
+    try {
+        console.log('GET request received for all items');        
+        const items = await getItem(req, res);
+        res.render('./index', { items });
+    } catch (error) {
+        console.error('Error rendering items:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 router.post("/", (req, res) => {
