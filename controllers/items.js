@@ -40,6 +40,7 @@ const getItemId = async (req, res) => {
         } else {
             res.status(404).send('Item not found');
         }
+        res.json(result.rows);
     } catch (error) {
         console.error('Error fetching ID:', error);
         res.status(500).send('Internal server error');
@@ -59,13 +60,13 @@ const deleteItem = async (req, res) => {
   };
 
   // Function for updating item via ID
-const updateItem = async (req, res) => {
-    const { id } = req.params;
+  const updateItem = async (req, res) => {
     const { brand, model, price } = req.body;
-     try {
-        await pool.query('UPDATE public.cars SET brand = $1, model = $2, price = $3 WHERE id = $4', [brand, model, price, id]);
+    const { id } = req.params;
+    try {
+        const result = await pool.query('UPDATE public.cars SET brand = $1, model = $2, price = $3 WHERE id = $4 RETURNING *', [brand, model, price, id]);        
         if (result.rows.length > 0) {
-            res.json(result.rows[0]); // Return the item found in the database
+            res.json(result.rows[0]);
         } else {
             res.status(404).send('Item not found');
         }
@@ -73,10 +74,6 @@ const updateItem = async (req, res) => {
         console.error('Error updating item:', error);
         res.status(500).send('Internal server error');
     }
-
-    res.send(
-        `Item with id ${id} has been updated successfully`
-    );
 };
 
 module.exports = { getItem, addItem, getItemId, deleteItem, updateItem };
