@@ -9,7 +9,7 @@ const { pool } = require('../db');
 const getItem = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.cars');
-        res.json(result.rows);
+        return result.rows;
     } catch (error) {
         console.error ('Error fetching data', error);
         res.status(500).send('Internal server error');

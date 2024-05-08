@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="fi">
 <head>
     <meta charset="UTF-8">
@@ -11,5 +11,29 @@
 <body>
     <h1>{{pageTitle}}
     <p>Welcome!</p>
+</body>
+</html> --}}
+
+<!-- views/index.handlebars -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car List</title>
+</head>
+<body>
+    <h1>Car List</h1>
+    <ul>
+        {{#each items}}
+        <li>
+            <strong>ID:</strong> {{this.id}} <br>
+            <strong>Brand:</strong> {{this.brand}} <br>
+            <strong>Model:</strong> {{this.model}} <br>
+            <strong>Price:</strong> {{this.price}} <br>
+        </li>
+        {{/each}}
+    </ul>
 </body>
 </html>
