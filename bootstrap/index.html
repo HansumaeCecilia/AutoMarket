@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Käyttövoima_menu</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/käyttövoima.css">
+</head>
+
+<body><div class="form-group col-sm-8">
+    <label for="myMultiselect"></label>
+    <div id="myMultiselect" class="multiselect">
+      <div id="mySelectLabel_myMultiselect" class="selectBox" onclick="toggleCheckboxArea('myMultiselect')" >
+        <select class="form-select">
+          <option>Käyttövoima</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect')" 
+            value="Bensa" />
+            <span class="checkmark"></span>Bensa</label>
+          
+          
+        <label class="checkbox">
+            <input type="checkbox"
+            onchange="checkboxStatusChange('myMultiselect')"
+            value="Diesel" />
+            <span class="checkmark"></span>Diesel</label>
+          
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect')" value="Sähkö" />
+            <span class="checkmark">
+            </span> Sähkö</label>
+          
+          <label class="checkbox">
+             <input type="checkbox" onchange="checkboxStatusChange('myMultiselect')" value="Hybridi" />
+             <span class="checkmark"></span>Hybridi</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" id="Muu" onchange="checkboxStatusChange('myMultiselect')" value="Muu" />
+            <span class="checkmark">
+            </span> Muu</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect1"></label>
+    <div id="myMultiselect1" class="multiselect">
+      <div id="mySelectLabel_myMultiselect1" class="selectBox" onclick="toggleCheckboxArea('myMultiselect1')" >
+        <select class="form-select">
+          <option>Väri</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect1">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Musta" />
+            <span class="checkmark"></span>Musta</label>
+          
+        <label class="checkbox">
+            <input type="checkbox"  onchange="checkboxStatusChange('myMultiselect1')" value="Harmaa" />
+            <span class="checkmark"></span>Harmaa</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Valkoinen" /><span class="checkmark"></span>Valkoinen</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Keltainen" /><span class="checkmark"></span>Keltainen</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Sininen" /><span class="checkmark"></span>Sininen</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Vihreä" /><span class="checkmark"></span>Vihreä</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect1')" value="Punainen" /><span class="checkmark"></span>Punainen</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect2"></label>
+    <div id="myMultiselect2" class="multiselect">
+      <div id="mySelectLabel_myMultiselect2" class="selectBox" onclick="toggleCheckboxArea('myMultiselect2')" >
+        <select class="form-select">
+          <option>Sisätilat ja mukavuudet</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect2">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Ilmastointi" />
+            <span class="checkmark"></span>Ilmastointi</label>
+          
+        <label class="checkbox">
+            <input type="checkbox"  onchange="checkboxStatusChange('myMultiselect2')" value="Lohkonlämmitin" />
+            <span class="checkmark"></span>Lohkonlämmitin</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Lämmitettävä ohjauspyörä" /><span class="checkmark"></span>Lämmitettävä ohjauspyörä</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Ohjaustehostin" /><span class="checkmark"></span>Ohjaustehostin</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Navigointijärjestelmä" /><span class="checkmark"></span>Navigointijärjestelmä</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Peruutuskamera" /><span class="checkmark"></span>Peruutuskamera</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Keskuslukitus" /><span class="checkmark"></span>Keskuslukitus</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect2')" value="Vakionopeudensäädin" /><span class="checkmark"></span>Vakionopeudensäädin</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect3"></label>
+    <div id="myMultiselect3" class="multiselect">
+      <div id="mySelectLabel_myMultiselect3" class="selectBox" onclick="toggleCheckboxArea('myMultiselect3')" >
+        <select class="form-select">
+          <option>Muut</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect3">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect')" value="Invalidivarustus" />
+            <span class="checkmark"></span>Invalidivarustus</label>
+          
+        <label class="checkbox">
+            <input type="checkbox"  onchange="checkboxStatusChange('myMultiselect3')" value="Monitoimiohjauspyörä" />
+            <span class="checkmark"></span>Monitoimiohjauspyörä</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Kahdet renkaat" /><span class="checkmark"></span>Kahdet renkaat</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Sadetunnistin" /><span class="checkmark"></span>Sadetunnistin</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Huoltokirja" /><span class="checkmark"></span>Huoltokirja</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Turbo" /><span class="checkmark"></span>Turbo</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Vetokoukku" /><span class="checkmark"></span>Vetokoukku</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect3')" value="Kattoluukku" /><span class="checkmark"></span>Kattoluukku</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect4"></label>
+    <div id="myMultiselect4" class="multiselect">
+      <div id="mySelectLabel_myMultiselect4" class="selectBox" onclick="toggleCheckboxArea('myMultiselect4')" >
+        <select class="form-select">
+          <option>Turvallisuus</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect4">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Käynnistyksenesto" />
+            <span class="checkmark"></span>Käynnistyksenesto</label>
+          
+        <label class="checkbox">
+            <input type="checkbox"  onchange="checkboxStatusChange('myMultiselect4')" value="Sumuvalot" />
+            <span class="checkmark"></span>Sumuvalot</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Isofix-valmius" /><span class="checkmark"></span>Isofix-valmius</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Luistonesto" /><span class="checkmark"></span>Luistonesto</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Kaarrevalot" /><span class="checkmark"></span>Kaarrevalot</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Ajonvakautusjärjestelmä" /><span class="checkmark"></span>Ajonvakautusjärjestelmä</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Lukkiutumattomat jarrut (ABS)" /><span class="checkmark"></span>Lukkiutumattomat jarrut (ABS)</label>
+          
+          <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect4')" value="Törmäysvaroitin" /><span class="checkmark"></span>Törmäysvaroitin</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect5"></label>
+    <div id="myMultiselect5" class="multiselect">
+      <div id="mySelectLabel_myMultiselect5" class="selectBox" onclick="toggleCheckboxArea('myMultiselect5')" >
+        <select class="form-select">
+          <option>Elektroniikka</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect5">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect5')" value="Audio-liitäntä" />
+            <span class="checkmark"></span>Audio-liitäntä</label>
+          
+        <label class="checkbox">
+            <input type="checkbox"  onchange="checkboxStatusChange('myMultiselect5')" value="Bluetooth" />
+            <span class="checkmark"></span>Bluetooth</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect5')" value="USB" /><span class="checkmark"></span>USB</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8">
+    <label for="myMultiselect6"></label>
+    <div id="myMultiselect6" class="multiselect">
+      <div id="mySelectLabel_myMultiselect6" class="selectBox" onclick="toggleCheckboxArea('myMultiselect6')">
+        <select class="form-select">
+          <option>Ajoneuvon tyyppi</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect6">
+          
+        <label class="checkbox">
+            <input type="checkbox" onchange="checkboxStatusChange('myMultiselect6')" id="Henkilöauto"  value="Henkilöauto" />
+            <span class="checkmark"></span>Henkilöauto</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" id="Pakettiauto" onchange="checkboxStatusChange('myMultiselect6')" value="Pakettiauto" />
+            <span class="checkmark"></span>Pakettiauto</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" id="Kuorma-auto" onchange="checkboxStatusChange('myMultiselect6')" value="Kuorma-auto" /><span class="checkmark"></span> Kuorma-auto</label>
+        
+          <label class="checkbox">
+            <input type="checkbox" id="Muu" onchange="checkboxStatusChange('myMultiselect6')" value="Muu" /><span class="checkmark"></span> Muu</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group col-sm-8"; transform: translate(19px)>
+    <label for="myMultiselect7"></label>
+    <div id="myMultiselect7" class="multiselect">
+      <div id="mySelectLabel_myMultiselect7" class="selectBox" onclick="toggleCheckboxArea('myMultiselect7')">
+        <select class="form-select">
+          <option>Vaihteisto</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect7">
+          
+        <label class="checkbox">
+            <input type="checkbox" id="Manuaali" onchange="checkboxStatusChange('myMultiselect7')" value="Manuaali" />
+            <span class="checkmark"></span>Manuaali</label>
+          
+        <label class="checkbox">
+            <input type="checkbox" id="Automaatti" onchange="checkboxStatusChange('myMultiselect7')" value="Automaatti" />
+            <span class="checkmark"></span>Automaatti</label>
+          
+      </div>
+    </div>
+  </div>
+
+    
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/untitled.js"></script>
+</body>
+
+</html>

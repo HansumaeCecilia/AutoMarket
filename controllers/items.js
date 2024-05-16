@@ -19,7 +19,6 @@ const getItem = async (req, res) => {
 // Function for adding data
 const addItem = async (req, res) => {
     const { brand, model, price} = req.body;
-    //const itemId = v4();
     try {
         const result = await pool.query('INSERT INTO public.cars (brand, model, price) VALUES ($1, $2, $3) RETURNING *', [brand, model, price]);
         res.json(result.rows);
