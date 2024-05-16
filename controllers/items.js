@@ -30,6 +30,7 @@ const addItem = async (req, res) => {
 
 // Function for fetching item via ID
 const getItemId = async (req, res) => {
+    console.log(req.params)
     const { id } = req.params;
     try {
         const result = await pool.query('SELECT * FROM public.cars WHERE id = $1', [id]);

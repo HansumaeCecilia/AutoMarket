@@ -8,7 +8,13 @@
     <title>Car List</title>
 </head>
 <body>
-    <h1>Car List</h1>
+    <h1>Car List</h1>    
+     {{!-- <!-- Search Form -->
+    <form action="/items/search" method="GET">
+        <label for="searchQuery">Search:</label>
+        <input type="text" id="searchQuery" name="query" placeholder="Enter search query">
+        <button type="submit">Search</button>
+    </form> --}}
     <ul>
         {{#each items}}
         <li>

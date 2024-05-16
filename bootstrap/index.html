@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" style="width: 1199px;height: 657px;margin: 12px;padding: 2px;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Search Form</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body style="margin: 1px;margin-left: 0;"><div class="form-group col-sm-8"; transform: translate(19px)>
+    <label for="myMultiselect"></label>
+    <div id="myMultiselect" class="multiselect">
+      <div id="mySelectLabel_myMultiselect" class="selectBox" onclick="toggleCheckboxArea('myMultiselect')">
+        <select class="form-select">
+          <option>Select brand</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect">
+        <label for="Audi"><input type="checkbox" id="Audi" onchange="checkboxStatusChange('myMultiselect')" value="Audi" /> Audi</label>
+        <label for="Bugatti"><input type="checkbox" id="Bugatti" onchange="checkboxStatusChange('myMultiselect')" value="Bugatti" /> Bugatti</label>
+        <label for="Citroen"><input type="checkbox" id="Citroen" onchange="checkboxStatusChange('myMultiselect')" value="Citroen" /> Citroen</label>
+        <label for="Dacia"><input type="checkbox" id="Dacia" onchange="checkboxStatusChange('myMultiselect')" value="Dacia" /> Dacia</label>
+        <label for="Honda"><input type="checkbox" id="Honda" onchange="checkboxStatusChange('myMultiselect')" value="Honda" /> Honda</label>
+        <label for="Mazda"><input type="checkbox" id="Mazda" onchange="checkboxStatusChange('myMultiselect')" value="Mazda" /> Mazda</label>
+        <label for="Nissan"><input type="checkbox" id="Nissan" onchange="checkboxStatusChange('myMultiselect')" value="Nissan" /> Nissan</label>
+        <label for="Opel"><input type="checkbox" id="Opel" onchange="checkboxStatusChange('myMultiselect')" value="Opel" /> Opel</label>
+        <label for="Seat"><input type="checkbox" id="Seat" onchange="checkboxStatusChange('myMultiselect')" value="Seat" /> Seat</label>
+        <label for="Volkswagen"><input type="checkbox" id="Volkswagen" onchange="checkboxStatusChange('myMultiselect')" value="Volkswagen" /> Volkswagen</label>
+      </div>
+    </div>
+  </div><div class="form-group col-sm-8"; transform: translate(19px)>
+    <label for="myMultiselect2"></label>
+    <div id="myMultiselect2" class="multiselect">
+      <div id="mySelectLabel_myMultiselect2" class="selectBox" onclick="toggleCheckboxArea('myMultiselect2')">
+        <select class="form-select">
+          <option>Select model</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div id="mySelectOptions_myMultiselect2">
+        <label for="A8"><input type="checkbox" id="A8" onchange="checkboxStatusChange('myMultiselect2')" value="A8" /> A8</label>
+        <label for="Veyron"><input type="checkbox" id="Veyron" onchange="checkboxStatusChange('myMultiselect2')" value="Veyron" /> Veyron</label>
+        <label for="C3"><input type="checkbox" id="C3" onchange="checkboxStatusChange('myMultiselect2')" value="C3" /> C3</label>
+        <label for="Duster"><input type="checkbox" id="Duster" onchange="checkboxStatusChange('myMultiselect2')" value="Duster" /> Duster</label>
+        <label for="Civic"><input type="checkbox" id="Civic" onchange="checkboxStatusChange('myMultiselect2')" value="Civic" /> Civic</label>
+        <label for="6"><input type="checkbox" id="6" onchange="checkboxStatusChange('myMultiselect2')" value="6" /> 6</label>
+        <label for="Micra"><input type="checkbox" id="Micra" onchange="checkboxStatusChange('myMultiselect2')" value="Micra" /> Micra</label>
+        <label for="Astra"><input type="checkbox" id="Astra" onchange="checkboxStatusChange('myMultiselect2')" value="Astra" /> Astra</label>
+        <label for="Ibiza"><input type="checkbox" id="Ibiza" onchange="checkboxStatusChange('myMultiselect2')" value="Ibiza" /> Ibiza</label>
+        <label for="Golf"><input type="checkbox" id="Golf" onchange="checkboxStatusChange('myMultiselect2')" value="Golf" /> Golf</label>
+      </div>
+    </div>
+  </div><input class="btn btn-primary" type="submit" style="width: 82.0469px;margin: 13px;padding: -30px 12px;height: 47px;transform: translate(0px);margin-right: -2px;margin-bottom: 10px;margin-top: 18px;margin-left: 1px;">
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/checkbox.js"></script>
+</body>
+
+</html>

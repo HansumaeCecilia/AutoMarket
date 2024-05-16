@@ -16,9 +16,6 @@ app.use(bodyParser.json());
 
 app.use("/items", itemRoutes);
 
-// app.use(express.static('public'));
-// app.set('views', './views');
-
 // Engine settings
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');

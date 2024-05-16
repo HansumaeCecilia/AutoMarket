@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     try {
         console.log('GET request received for all items');        
         const items = await getItem(req, res);
-        res.render('./index', { items });
+        res.render('index', { items });
     } catch (error) {
         console.error('Error rendering items:', error);
         res.status(500).send('Internal server error');
