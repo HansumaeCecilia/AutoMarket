@@ -1,0 +1,60 @@
+.multiselect {
+  width: 100%;
+  color: white;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  background-color: #637d60;
+  color: white;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  padding-left: 26px;
+  /*margin-bottom: 18px;*/
+  /*font-size: 22px;*/
+  user-select: none;
+  margin-left: 10px;
+  text-align: left;
+  margin-top: 5px;
+}
+
+.checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  border: 2px solid #c9c9c9;
+  background-color: #dedbdb;
+  border-radius: 20px;
+}
+
+.checkbox input {
+  height: 0;
+  width: 0;
+}
+
+.checkbox input:checked ~ .checkmark {
+  background-color: #637d60;
+}
+
+.multiselect label:hover {
+  background-color: #4c6680;
+  width: 100%;
+}
+
