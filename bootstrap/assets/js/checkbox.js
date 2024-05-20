@@ -1,7 +1,14 @@
 window.onload = (event) => {
-  initMultiselect('myMultiselect');
-    initMultiselect('myMultiselect2');
-    initMultiselect('myMultiselect3');
+  initMultiselect1('multiselectBrand');
+    initMultiselect2('multiselectModel');
+    initMultiselect3('multiselectBody');
+    initMultiselect4('multiselectPower');
+    initMultiselect5('multiselectTransmission');
+    initMultiselect6('multiselectAccessories');
+    initMultiselect7('multiselectElectronics');
+    initMultiselect8('multiselectColor');
+    initMultiselect9('multiselectOther');
+    initMultiselect10('multiselectSafety');
 };
 
 function initMultiselect(id) {
@@ -41,7 +48,7 @@ function checkboxStatusChange(id) {
     values.push(checkboxValue);
   }
 
-  var dropdownValue = "Select";
+  var dropdownValue = fieldTitles[id] || "Select";
   if (values.length > 0) {
     dropdownValue = values.join(', ');
   }
@@ -51,13 +58,23 @@ function checkboxStatusChange(id) {
 
 function toggleCheckboxArea(id, onlyHide = false) {
   var checkboxes = document.getElementById("mySelectOptions_" + id);
-  var displayValue = checkboxes.style.display;
-
-  if (displayValue != "block") {
-    if (onlyHide == false) {
-      checkboxes.style.display = "block";
-    }
+  if (onlyHide) {
+      checkboxes.style.display = "none";
   } else {
-    checkboxes.style.display = "none";
+    checkboxes.style.display = checkboxes.style.display === "none" ? "block" : "none";
   }
 }
+
+// Object containing titles for each field
+var fieldTitles = {
+  'multiselectPower': 'Käyttövoima',
+  'multiselectColor': 'Väri',
+  'multiselectAccessories': 'Varusteet',
+  'multiselectOther': 'Muut',
+  'multiselectSafety': 'Turvallisuus',
+  'multiselectElectronics': 'Elektroniikka',
+  'multiselectBody': 'Korimalli',
+  'multiselectTransmission': 'Vaihteisto',
+  'multiselectBrand': 'Merkki',
+  'multiselectModel': 'Malli',
+};

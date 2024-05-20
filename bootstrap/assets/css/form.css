@@ -58,3 +58,11 @@
   width: 100%;
 }
 
+.navbar-toggler {
+  color: transparent;
+}
+
+.carousel {
+  margin-top: 100px;
+}
+
