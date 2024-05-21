@@ -39,6 +39,11 @@ const createUser = async (req, res) => {
             [name, email, hashedPassword]
         );
         const user = result.rows[0];
+
+        const token = generateToken(user.id);
+
+        console.log('Generated token:', token);
+
         res.status(201).json({
             id: user.id,
             name: user.name,
