@@ -1,6 +1,17 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const pool = require('../db');
+const { pool } = require('../db');
+
+// Get all existing users from database
+const getUsers = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM public.users');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).send('Internal server error');
+    }
+};
 
 // Generate JWT (json web token)
 const generateToken = (id) => {
@@ -24,7 +35,7 @@ const createUser = async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO public.users (name, email, password) VALUES ($1, $2, $3 RETURNING *',
+            'INSERT INTO public.users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
             [name, email, hashedPassword]
         );
         const user = result.rows[0];
@@ -64,17 +75,6 @@ const authUser = async (req, res) => {
         console.error('Error logging in:', error);
         res.status(500).send('Internal server error!');
     } 
-};
-
-// Get all existing users from database
-const getUsers = async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM public.users');
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).send('Internal server error');
-    }
 };
 
 // Get existing user by ID
