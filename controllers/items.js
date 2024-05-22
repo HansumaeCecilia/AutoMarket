@@ -2,7 +2,7 @@
 // ------------------------------
 
 // Generate unique ID
-const { v4 } = require("uuid");
+
 const { pool } = require('../db');
 
 // Function for fetching item via ID

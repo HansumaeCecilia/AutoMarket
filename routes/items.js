@@ -15,13 +15,13 @@ const {
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {
     try {
-    console.log('GET request received for all items');
-    const items = await getItem(req, res);
-    res.render ('./index', {items});
+        console.log('GET request received for all items');
+        const items = await getItem(req, res);
+        res.render ('index', { items });
     } catch (error) {
-    console.error ('Error fetching data', error);
-    res.status(500).send('Internal server error');
-}
+        console.error ('Error rendering items:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 router.post("/", (req, res) => {
