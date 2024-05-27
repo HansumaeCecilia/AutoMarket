@@ -10,7 +10,7 @@ const {
     deleteUser, 
     updateUser } = require('../controllers/userController');
 
-userR.get('/', getUsers);
+userR.get("/", getUsers);
 userR.get('/:email', getUserByEmail);
 userR.post('/register', createUser);
 userR.post('/login', authUser);

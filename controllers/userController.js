@@ -6,6 +6,7 @@ const { pool } = require('../db');
 const getUsers = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.users');
+        console.log("Fetched users:", result.rows);
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -40,8 +41,10 @@ const createUser = async (req, res) => {
         );
         const user = result.rows[0];
 
+        // Generate token
         const token = generateToken(user.id);
-
+        
+        // Test that token was generated
         console.log('Generated token:', token);
 
         res.status(201).json({
