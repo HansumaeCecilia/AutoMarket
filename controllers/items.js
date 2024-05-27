@@ -9,6 +9,7 @@ const { pool } = require('../db');
 const getItem = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.cars');
+        console.log('Fetched items:', result.rows);
         return result.rows;
     } catch (error) {
         console.error ('Error fetching data', error);
