@@ -6,6 +6,7 @@ const { pool } = require('../db');
 const getUsers = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.users');
+        console.log('Fetched all users:', result.rows);
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -23,7 +24,7 @@ const createUser = async (req,res) => {
     const { name, email, password } = req.body;
 
     // Check if user exist
-    const userExists = await pool.guery('SELECT * FROM public.users WHERE email = $1', [email]);
+    const userExists = await pool.query('SELECT * FROM public.users WHERE email = $1', [email]);
     if (userExists.rows.length > 0) {
         res.status(400).send('User already exists');
         return;
@@ -35,7 +36,7 @@ const createUser = async (req,res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO public.users (name, email.password) VALUES ($1, $2, $3) RETURNING *',
+            'INSERT INTO public.users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
             [name, email, hashedPassword]
         );
         const user = result.rows[0];
