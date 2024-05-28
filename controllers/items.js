@@ -5,13 +5,48 @@
 
 const { pool } = require('../db');
 
-// Function for fetching item via ID
+// // Function for fetching item via ID
+// const getItem = async (req, res) => {
+//     try {
+//         const result = await pool.query('SELECT * FROM public.cars');
+//         return result.rows;
+//     } catch (error) {
+//         console.error ('Error fetching data', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
+
 const getItem = async (req, res) => {
+    const { Brand, Model, Price } = req.query;
+    let query = 'SELECT * FROM public.cars WHERE 1=1';
+    const queryParams = [];
+
+    if (Brand) {
+        query += ' AND brand ILIKE $' + (queryParams.length + 1);
+        queryParams.push(`%${Brand}%`);
+    }
+
+    if (Model) {
+        query += ' AND model ILIKE $' + (queryParams.length + 1);
+        queryParams.push(`%${Model}%`);
+    }
+
+    if (Price) {
+        if (isNaN(parseFloat(Price))) {
+            console.error('Invalid price value:', Price);
+            res.status(400).send('Invalid price value');
+            return;
+        }
+
+        query += ' AND price::text ILIKE $' + (queryParams.length + 1);
+        queryParams.push(`%${Price}%`);
+    }
+
     try {
-        const result = await pool.query('SELECT * FROM public.cars');
-        return result.rows;
+        const result = await pool.query(query, queryParams);
+        res.json(result.rows);
     } catch (error) {
-        console.error ('Error fetching data', error);
+        console.error('Error fetching data:', error);
         res.status(500).send('Internal server error');
     }
 };
