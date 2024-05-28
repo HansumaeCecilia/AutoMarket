@@ -8,10 +8,11 @@ const {
     getUserById,
     getUserByEmail,
     deleteUser,
-    updateUser } = require('../controllers/userController');
+    updateUser
+} = require('../controllers/userController');
 
 userR.get('/', getUsers);
-userR.get('/:email', getUserByEmail);
+userR.get('email/:email', getUserByEmail);
 userR.post('/register', createUser);
 userR.post('/login', authUser),
 userR.get('/id/:id', getUserById),

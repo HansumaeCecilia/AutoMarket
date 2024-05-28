@@ -9,7 +9,6 @@ const { pool } = require('../db');
 const getItem = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.cars');
-        console.log('Fetched items:', result.rows);
         return result.rows;
     } catch (error) {
         console.error ('Error fetching data', error);
@@ -31,6 +30,7 @@ const addItem = async (req, res) => {
 
 // Function for fetching item via ID
 const getItemId = async (req, res) => {
+    console.log(req.params)
     const { id } = req.params;
     try {
         const result = await pool.query('SELECT * FROM public.cars WHERE id = $1', [id]);
@@ -74,4 +74,22 @@ const updateItem = async (req, res) => {
     }
 };
 
-module.exports = { getItem, addItem, getItemId, deleteItem, updateItem };
+// Vehicle search function
+const searchItems = async (req, res) => {
+    const query = `%${req.query.q}%`;
+    try {
+        const result = await pool.query(
+            `SELECT * FROM public.cars WHERE
+            brand ILIKE $1 OR
+            model ILIKE $2 OT
+            price::TEXT ILIKE $3`, [query, query, query]
+        );
+        console.log("Search results:", result.rows);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error searching items:", error);
+        res.status(500).send("Internal server error");
+    }
+};
+
+module.exports = { getItem, addItem, getItemId, deleteItem, updateItem, searchItems };

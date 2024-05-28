@@ -10,6 +10,7 @@ const {
     getItemId,
     deleteItem,
     updateItem,
+    searchItems
 } = require("../controllers/items");
 
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
@@ -22,6 +23,11 @@ router.get("/", async (req, res) => {
         console.error ('Error rendering items:', error);
         res.status(500).send('Internal server error');
     }
+});
+
+router.get("/searh", (req, res) => {
+    console.log('GET request received for searching items with query:', req.query.id);
+    searchItems(req, res);
 });
 
 router.post("/", (req, res) => {

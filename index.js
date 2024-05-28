@@ -1,10 +1,10 @@
 // Express web engine
-const express = require("express");
+const express = require('express');
 const exphbs = require('express-handlebars');
 // Middleware for processing incoming HTTP request bodies
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 // Module import for endpoints' response to client request
-const itemRoutes = require("./routes/items");
+const itemRoutes = require('./routes/items');
 // Module import for user routes
 const userRoutes = require('./routes/userRoutes');
 const dotenv = require('dotenv');
@@ -16,6 +16,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+
+app.use(express.static('public'));
 
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
