@@ -55,7 +55,7 @@ const deleteItem = async (req, res) => {
         console.error('Error deleting item:', error);
         res.status(500).send('Internal server error');
     }
-  };
+};
 
   // Function for updating item via ID
   const updateItem = async (req, res) => {
@@ -74,5 +74,23 @@ const deleteItem = async (req, res) => {
     }
 };
 
-module.exports = { getItem, addItem, getItemId, deleteItem, updateItem };
+// Vehicle search function 
+const searchItems = async (req, res) => {
+    const query = `%${req.query.q}%`;
+    try {
+        const result = await pool.query(
+            `SELECT * FROM public.cars WHERE
+            brand ILIKE $1 OR
+            model ILIKE $2 OR
+            price::TEXT ILIKE $3`, [query, query, query]
+        );
+        console.log("Search results:", result.rows);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error searching items:", error);
+        res.status(500).send("Internal server error");
+    }
+};
+
+module.exports = { getItem, addItem, getItemId, deleteItem, updateItem, searchItems };
   
