@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searhForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        const query = document.getElementById('searchQuery').ariaValueMax;
+        const query = document.getElementById('searchQuery').value;
         const selectedValues = $('multiselectSearch').val();
 
         try {
@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         results.forEach(item => {
             const listItem = document.createElement('li');
             listItem.className = 'list-group-item';
-            listItem.textContent = `${item.brand} ${item.model} - $${item.price}`;            
+            listItem.textContent = `${item.brand} ${item.model} - $${item.price}`; 
+            list.appendChild(listItem);           
         });
 
         resultsContainer.appendChild(list);

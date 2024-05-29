@@ -17,6 +17,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+
 app.use(express.static('public'));
 
 app.use('/items', itemRoutes);
@@ -25,6 +26,10 @@ app.use('/users', userRoutes);
 // Engine settings
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + 'public/index.html');
+});
 
 app.listen(port, () => {
   console.log(`Server started at port http://localhost:${port}`);

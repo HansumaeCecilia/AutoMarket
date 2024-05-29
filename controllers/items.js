@@ -44,7 +44,7 @@ const getItem = async (req, res) => {
 
     try {
         const result = await pool.query(query, queryParams);
-        res.json(result.rows);
+        return result.rows;
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).send('Internal server error');
