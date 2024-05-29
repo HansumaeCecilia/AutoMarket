@@ -1,16 +1,17 @@
 // SEARCH FORM HANDLER
+// ===================
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchForm').addEventListener('submit', async function(e) {
         e.preventDefault();    
         const query = document.getElementById('searchQuery').value;
-        const selectedValues = $('#multiselectSearch').val();
+        const selectedValues = $('multiselectSearch').val();
 
         try {
             let queryString = `?q=${encodeURIComponent(query)}`;
 
             if (selectedValues && selectedValues.length > 0) {
-                const brandQueryString = selectedValues.map(value => `brand=${encodeURIComponent(value)}`).join('&');
+                const brandQueryString = selectedValues.map(value => `brand=${encodeURIComponent(value)}`).join(',');
                 queryString += `&${brandQueryString}`;
             }
 

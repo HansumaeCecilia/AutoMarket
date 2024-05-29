@@ -5,13 +5,60 @@
 
 const { pool } = require('../db');
 
-// Function for fetching data
-const getItem = async (req, res) => {    
+// // Function for fetching data
+// const getItem = async (req, res) => {    
+//     try {
+//         const result = await pool.query('SELECT * FROM public.cars');
+//         return result.rows;
+//     } catch (error) {
+//         console.error ('Error fetching data', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
+
+const searchVehicles = async (req, res) => {
+    const { q, brand, model, price } = req.query;
+    let query = 'SELECT * FROM public.cars WHERE 1=1';
+    const queryParams = [];
+
+    if (q) {
+        const searchQuery = `%${q}%`;
+        query += ' AND (brand ILIKE $' + (queryParams.length + 1);
+        queryParams.push(searchQuery);
+        query += ' OR model ILIKE $' + (queryParams.length + 1);
+        queryParams.push(searchQuery);
+        query += ' OR price::TEXT ILIKE $' + (queryParams.length + 1) + ')';
+        queryParams.push(searchQuery);
+    } else {
+        if (brand) {
+            query += ' AND brand ILIKE $' + (queryParams.length + 1);
+            queryParams.push(`%${brand}%`);
+        }
+
+        if (model) {
+            query += ' AND model ILIKE $' + (queryParams.length + 1);
+            queryParams.push(`%${model}%`);
+        }
+
+        if (price) {
+            if (isNaN(parseFloat(price))) {
+                console.error('Invalid price value:', price);
+                res.status(400).send(`Invalid price value:', ${price}`);
+                return;
+            }
+
+            query += ' AND price::TEXT ILIKE $' + (queryParams.length + 1);
+            queryParams.push(`%${price}`);
+        }
+    }
+
     try {
-        const result = await pool.query('SELECT * FROM public.cars');
+        console.log('Executing query:', query, queryParams);
+        const result = await pool.query(query,queryParams);
+        console.log('Search results:', result.rows);
         return result.rows;
     } catch (error) {
-        console.error ('Error fetching data', error);
+        console.error('Error fetching data:', error);
         res.status(500).send('Internal server error');
     }
 };
@@ -74,23 +121,5 @@ const deleteItem = async (req, res) => {
     }
 };
 
-// Vehicle search function 
-const searchItems = async (req, res) => {
-    const query = `%${req.query.q}%`;
-    try {
-        const result = await pool.query(
-            `SELECT * FROM public.cars WHERE
-            brand ILIKE $1 OR
-            model ILIKE $2 OR
-            price::TEXT ILIKE $3`, [query, query, query]
-        );
-        console.log("Search results:", result.rows);
-        res.json(result.rows);
-    } catch (error) {
-        console.error("Error searching items:", error);
-        res.status(500).send("Internal server error");
-    }
-};
-
-module.exports = { getItem, addItem, getItemId, deleteItem, updateItem, searchItems };
+module.exports = { addItem, getItemId, deleteItem, updateItem, searchVehicles };
   

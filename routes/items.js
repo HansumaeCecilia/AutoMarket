@@ -6,19 +6,20 @@ const router = express.Router();
 
 // Imports from 'controllers'
 const {
-    getItem,
+    //getItem,
     addItem,
     getItemId,
     deleteItem,
-    updateItem,
-    searchItems,
+    updateItem,    
+    searchVehicles,
 } = require("../controllers/items");
+
 
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {    
     try {
-        console.log('GET request received for all items');        
-        const items = await getItem(req, res);
+        console.log('GET request received for searched items');  
+        const items = await searchVehicles(req, res);
         res.render('index', { items });
     } catch (error) {
         console.error('Error rendering items:', error);
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
 
 router.get("/search", (req, res) => {
     console.log('GET request received for searching items with query:', req.query.q);
-    searchItems(req, res);
+    searchVehicles(req, res);
 });
 
 router.post("/", (req, res) => {

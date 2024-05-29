@@ -13,8 +13,9 @@
     <!-- Add jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Add Bootstrap Multi-Select Dropdown JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js"></script>
-    <script src="multiselect-dropdown.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js"></script>    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/js/searchHandler.js"></script>
 </head>
 <body>
     <div class="form-group col-sm-8">
@@ -22,7 +23,7 @@
         <select id="multiselectSearch" multiple class="form-control">            
             <option value="brand1">Brand 1</option>
             <option value="brand2">Brand 2</option>
-            <option value="brand2">Brand 3</option>            
+            <option value="brand3">Brand 3</option>            
         </select>
     </div>
 
@@ -46,9 +47,7 @@
             </li>
             {{/each}}
         </ul>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="/js/searchHandler.js"></script>
+        <div id="searchResults"></div>
+    </div>    
 </body>
 </html>
