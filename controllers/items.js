@@ -39,7 +39,7 @@ const getItem = async (req, res) => {
         }
 
         query += ' AND price::text ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${Price}%`);
+        queryParams.push(`%${price}%`);
     }
 
     try {
