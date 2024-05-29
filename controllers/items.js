@@ -17,23 +17,23 @@ const { pool } = require('../db');
 // };
 
 const getItem = async (req, res) => {
-    const { Brand, Model, Price } = req.query;
+    const { brand, model, price } = req.query;
     let query = 'SELECT * FROM public.cars WHERE 1=1';
     const queryParams = [];
 
-    if (Brand) {
+    if (brand) {
         query += ' AND brand ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${Brand}%`);
+        queryParams.push(`%${brand}%`);
     }
 
-    if (Model) {
+    if (model) {
         query += ' AND model ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${Model}%`);
+        queryParams.push(`%${model}%`);
     }
 
-    if (Price) {
-        if (isNaN(parseFloat(Price))) {
-            console.error('Invalid price value:', Price);
+    if (price) {
+        if (isNaN(parseFloat(price))) {
+            console.error('Invalid price value:', price);
             res.status(400).send('Invalid price value');
             return;
         }
