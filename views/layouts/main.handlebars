@@ -36,6 +36,20 @@
                 <strong>Brand:</strong> {{this.brand}} <br>
                 <strong>Model:</strong> {{this.model}} <br>
                 <strong>Price:</strong> {{this.price}} <br>
+                <br>
+            </li>
+            {{/each}}
+        </ul>
+
+        <h2>User List</h2>
+        <ul>
+            {{#each user}}
+            <li>
+                <strong>ID:</strong> {{this.id}} <br>
+                <strong>Name:</strong> {{this.name}} <br>
+                <strong>Email:</strong> {{this.email}} <br>
+                <strong>Password:</strong> {{this.password}} <br>
+                <br>
             </li>
             {{/each}}
         </ul>
