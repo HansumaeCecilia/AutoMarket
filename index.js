@@ -27,6 +27,7 @@ app.use('/users', userRoutes);
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
+// Contact us page route
 app.get('/', (req, res) => {
   res.sendFile(__dirname + 'public/index.html');
 });

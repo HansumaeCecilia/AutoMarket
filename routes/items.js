@@ -10,25 +10,25 @@ const {
     getItemId,
     deleteItem,
     updateItem,
-    searchItems
+    //searchVehicles
 } = require("../controllers/items");
 
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {
     try {
-        console.log('GET request received for all items');
         const items = await getItem(req, res);
         res.render('index', { items });
+        console.log('GET request received for searhed items:', items);
     } catch (error) {
         console.error ('Error rendering items:', error);
         res.status(500).send('Internal server error');
     }
 });
 
-router.get("/searh", (req, res) => {
-    console.log('GET request received for searching items with query:', req.query.id);
-    searchItems(req, res);
-});
+// router.get("/searh", (req, res) => {
+//     console.log('GET request received for searching items with query:', req.query.q);
+//     searchVehicles(req, res);
+// });
 
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
