@@ -5,52 +5,6 @@
 
 const { pool } = require('../db');
 
-// // Function for fetching data
-// const getItem = async (req, res) => {    
-//     try {
-//         const result = await pool.query('SELECT * FROM public.cars');
-//         return result.rows;
-//     } catch (error) {
-//         console.error ('Error fetching data', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
-
-// const searchVehicles = async (req, res) => {
-//     const { q, brand, model, price } = req.query;
-//     let query = 'SELECT * FROM public.cars WHERE 1=1';
-//     const queryParams = [];
-
-//     if (q) {
-//         const searchQuery = `%${q}%`;
-//         query += ' AND (brand ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(searchQuery);
-//         query += ' OR model ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(searchQuery);
-//         query += ' OR price::TEXT ILIKE $' + (queryParams.length + 1) + ')';
-//         queryParams.push(searchQuery);
-//     } else {
-//         if (brand) {
-//             query += ' AND brand ILIKE $' + (queryParams.length + 1);
-//             queryParams.push(`%${brand}%`);
-//         }
-
-//         if (model) {
-//             query += ' AND model ILIKE $' + (queryParams.length + 1);
-//             queryParams.push(`%${model}%`);
-//         }
-
-//         if (price) {
-//             if (isNaN(parseFloat(price))) {
-//                 console.error('Invalid price value:', price);
-//                 res.status(400).send(`Invalid price value:', ${price}`);
-//                 return;
-//             }
-
-//             query += ' AND price::TEXT ILIKE $' + (queryParams.length + 1);
-//             queryParams.push(`%${price}`);
-//         }
-//     }
 
 const searchVehicles = async (req, res) => {
     const { q, brand_name, model_name } = req.query;
@@ -86,43 +40,102 @@ const searchVehicles = async (req, res) => {
     }
 };
 
-// Function for adding data
-// const addItem = async (req, res) => {
-//     const { brand, model, price } = req.body;    
+const addBrand = async (brand_name) => {
+    try {
+        // Check if the brand already exists
+        const brandExists = await pool.query('SELECT brand_id FROM public.car_brand WHERE brand_name = $1', [brand_name]);
+
+        if (brandExists.rows.length > 0) {
+            // Brand already exists, return its ID
+            return brandExists.rows[0].brand_id;
+        }
+
+        // Insert brand into car_brand table
+        const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
+
+        if (brandResult.rows.length === 0) {
+            throw new Error('Failed to insert brand into car_brand');
+        }
+
+        // Return the newly inserted brand's ID
+        return brandResult.rows[0].brand_id;
+    } catch (error) {
+        console.error('Error adding brand:', error);
+        throw error;
+    }
+};
+
+const addModel = async (brand_id, model_name) => {
+    try {
+        // Check if model already exists for the brand
+        const modelExists = await pool.query('SELECT * FROM public.car_model WHERE brand_id = $1 AND model_name = $2', [brand_id, model_name]);
+
+        if (modelExists.rows.length > 0) {
+            throw new Error('Model already exists for this brand');
+        }
+
+        // Insert model into car_model table
+        await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brand_id]);
+
+        // No need to check rowCount, assume successful insertion
+        return 'Vehicle added successfully';
+    } catch (error) {
+        console.error('Error handling vehicle:', error);
+        throw error;
+    }
+};
+const addVehicle = async (req, res) => {
+    const { brand_name, model_name } = req.body;
+
+    console.log('Received parameters:', { brand_name, model_name });
+
+    // Validate that all required parameters are present
+    if (!brand_name || !model_name) {
+        res.status(400).send('Missing required parameters: brand_name or model_name');
+        return;
+    }
+
+    try {
+        // Get or add the brand
+        const brandId = await addBrand(brand_name);
+
+        // Add model for the brand
+        const result = await addModel(brandId, model_name);
+
+        res.status(201).send(result);
+    } catch (error) {
+        console.error('Error adding vehicle:', error);
+        res.status(500).send('Internal server error!');
+    }
+};
+
+
+// const addVehicle = async (req, res) => {
+//     const { brand_name, model_name } = req.body;        
+
 //     try {
-//         const result = await pool.query('INSERT INTO public.cars (brand, model, price) VALUES ($1, $2, $3) RETURNING *', [brand, model, price]);
-//         res.json(result.rows);
+//         // Insert brand into car_brand table
+//         const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
+
+//         if (brandResult.rows.length === 0) {
+//             throw new Error('Failed to insert brand into car_brand');
+//         }
+
+//         const brandId = brandResult.rows[0].brand_id;
+
+//         // Insert model into car_model table via brand_id
+//         const modelResult = await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brandId]);
+
+//         if (modelResult,rowCount === 0) {
+//             throw new Error('Failed to insert model into car_model');
+//         }
+
+//         res.status(201).send('Vehicle added successfully');
 //     } catch (error) {
 //         console.error ('Error adding item', error);
 //         res.status(500).send('Internal server error!');
 //     }
 // };
-
-const addVehicle = async (req, res) => {
-    const { brand_name, model_name } = req.body;        
-
-    try {
-        // Insert brand into car_brand table
-        const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
-        const brandId = brandResult.rows[0].brand_id;
-
-        // Insert model into car_model table via brand_id
-        await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brandId]);
-
-        res.status(201).send('Vehicle added successfully');
-    } catch (error) {
-        console.error ('Error adding item', error);
-        res.status(500).send('Internal server error!');
-    }
-
-    // try {
-    //     const result = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING *', [brand_name]);
-    //     res.json(result.rows);
-    // } catch (error) {
-    //     console.error ('Error adding item', error);
-    //     res.status(500).send('Internal server error!');
-    // }
-};
 
 // Function for fetching item via ID
 const getItemId = async (req, res) => {
@@ -146,7 +159,7 @@ const deleteItem = async (req, res) => {
     const { id } = req.params;
     try {
         await pool.query('DELETE FROM public.cars WHERE id = $1', [id]);
-        res.send(`Item with ID ${id} has been successfully deleted`)
+        res.send(`Item with ID ${id} has been successfully deleted`);
     } catch (error) {
         console.error('Error deleting item:', error);
         res.status(500).send('Internal server error');
@@ -171,4 +184,3 @@ const deleteItem = async (req, res) => {
 };
 
 module.exports = { addVehicle, getItemId, deleteItem, updateItem, searchVehicles };
-  
