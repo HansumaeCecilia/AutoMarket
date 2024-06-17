@@ -5,41 +5,6 @@
 
 const { pool } = require('../db');
 
-// const getItem = async (req, res) => {
-//     const { brand, model, price } = req.query;
-//     let query = 'SELECT * FROM public.cars WHERE 1=1';
-//     const queryParams = [];
-
-//     if (brand) {
-//         query += ' AND brand ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(`%${brand}%`);
-//     }
-
-//     if (model) {
-//         query += ' AND model ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(`%${model}%`);
-//     }
-
-//     if (price) {
-//         if (isNaN(parseFloat(price))) {
-//             console.error('Invalid price value:', price);
-//             res.status(400).send('Invalid price value');
-//             return;
-//         }
-
-//         query += ' AND price::text ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(`%${price}%`);
-//     }
-
-//     try {
-//         const result = await pool.query(query, queryParams);
-//         return result.rows;
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
-
 const searchVehicles = async (req, res) => {
     const { q, brand_name, model_name } = req.query;
     let query = 'SELECT * FROM public.car_brand WHERE 1=1';
@@ -77,11 +42,18 @@ const searchVehicles = async (req, res) => {
 
 
 // Function for adding data
-const addItem = async (req, res) => {
-    const {brand_id,  brand_name } = req.body;
+const addVehicle = async (req, res) => {
+    const { brand_name, model_name } = req.body;
+
     try {
-        const result = await pool.query('INSERT INTO public.car_brand (brand_id, brand_name) VALUE ($1, $2) RETURNING *', [brand_id, brand_name]);
-        res.json(result.rows);
+        // Insert brand into car_brand table
+        const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
+        const brandId = brandResult.rows[0].brand_id;
+
+        // Insert model into car_model table via brand_id
+        await pool.query('INSERT INTO public.car_model(model_name, brand_id) VALUES ($1, $2)', [model_name, brandId]);
+
+        res.status(201).send('Vehincle added successfully');
     } catch (error) {
         console.error ('Error adding item', error);
         res.status(500).send('Internal server error');
@@ -134,4 +106,4 @@ const updateItem = async (req, res) => {
     }
 };
 
-module.exports = { addItem, getItemId, deleteItem, updateItem, searchVehicles };
+module.exports = { addVehicle, getItemId, deleteItem, updateItem, searchVehicles };
