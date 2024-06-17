@@ -7,7 +7,7 @@ const getUsers = async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM public.users');
         console.log("Fetched users:", result.rows);
-        res.json(result.rows);
+        return result.rows;
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).send('Internal server error');

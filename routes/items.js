@@ -7,7 +7,7 @@ const router = express.Router();
 // Imports from 'controllers'
 const {
     //getItem,
-    addItem,
+    addVehicle,
     getItemId,
     deleteItem,
     updateItem,    
@@ -35,7 +35,7 @@ router.get("/search", (req, res) => {
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body);
-    addItem(req, res);
+    addVehicle(req, res);
 });
 
 router.get("/:id", (req, res) => {

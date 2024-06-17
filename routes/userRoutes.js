@@ -8,7 +8,7 @@ const {
     getUserById, 
     getUserByEmail, 
     deleteUser, 
-    updateUser 
+    updateUser, 
 } = require('../controllers/userController');
 
 userR.get('/email/:email', getUserByEmail);
@@ -16,7 +16,16 @@ userR.get('/id/:id', getUserById);
 userR.delete('/:id', deleteUser);
 userR.put('/:id', updateUser);
 
-userR.get("/", getUsers);
+userR.get('/', async (req, res) => {
+    try {
+        const user = await getUsers(req, res);
+        res.render('index', { user });
+        console.log('GET request reseived for searched users:', user);
+    } catch (error) {
+        console.error ('Error rendering users:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 userR.post('/register', createUser);
 userR.post('/login', authUser);
 

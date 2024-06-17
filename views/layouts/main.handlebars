@@ -36,14 +36,26 @@
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
         
-        <h2>Car List</h2>        
+        <h2>Cars</h2>        
         <ul>
             {{#each items}}
             <li>
+                <strong>ID:</strong> {{this.brand_id}} <br>
+                <strong>Brand:</strong> {{this.brand_name}} <br>
+                <strong>Model:</strong> {{this.model_name}} <br>                
+                <br>            
+            </li>
+            {{/each}}
+        </ul>
+
+        <h2>Users</h2>
+        <ul>
+            {{#each user}}
+            <li>
                 <strong>ID:</strong> {{this.id}} <br>
-                <strong>Brand:</strong> {{this.brand}} <br>
-                <strong>Model:</strong> {{this.model}} <br>
-                <strong>Price:</strong> {{this.price}} <br>            
+                <strong>Name:</strong> {{this.name}} <br>
+                <strong>Email:</strong> {{this.email}} <br>                
+                <br>
             </li>
             {{/each}}
         </ul>
