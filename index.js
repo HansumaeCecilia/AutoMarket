@@ -28,8 +28,12 @@ app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
 // Contact us page route
+app.get('/contact', (req, res) => {
+  res.render('contact');
+});
+
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.render('frontpage');
 });
 
 app.listen(port, () => {
