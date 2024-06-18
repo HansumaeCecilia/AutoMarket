@@ -1,6 +1,7 @@
 // Express-web engine
 const express = require('express');
 const exphbs = require('express-handlebars');
+const path = require('path');
 // Middleware for processing incoming HTTP request bodies
 const bodyParser = require('body-parser');
 // Module import for endpoints' response to client requests
@@ -24,10 +25,11 @@ app.use('/users', userRoutes);
 // Engine settings
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
+//app.set('views', path.join(__dirname, 'views'));
 
 // Home page route
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + 'public/index.html');
+  res.render('frontpage');
 });
 
 app.listen(port, () => {
