@@ -7,9 +7,9 @@ const router = express.Router();
 const {
     //getItem,
     addVehicle,
-    getItemId,
-    deleteItem,
-    updateItem,
+    getVehicleById,
+    deleteVehicle,
+    updateVehicle,
     searchVehicles
 } = require("../controllers/items");
 
@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/searh", (req, res) => {
+router.get("/search", (req, res) => {
     console.log('GET request received for searching items with query:', req.query.q);
     searchVehicles(req, res);
 });
@@ -38,17 +38,17 @@ router.post("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
     console.log('GET request received for item with id:', req.params.id);
-    getItemId(req, res);
+    getVehicleById(req, res);
 });
 
 router.delete("/:id", (req, res) => {
     console.log('DELETE request received for item with id:', req.params.id);
-    deleteItem(req, res);
+    deleteVehicle(req, res);
 });
 
 router.put("/:id", (req, res) => {
     console.log('PUT request received for item with id:', req.params.id);
-    updateItem(req, res);
+    updateVehicle(req, res);
 });
 
 module.exports = router;
