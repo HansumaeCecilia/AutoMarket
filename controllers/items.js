@@ -8,7 +8,7 @@ const { pool } = require('../db');
 
 const searchVehicles = async (req, res) => {
     const { q, brand_name, model_name } = req.query;
-    let query = 'SELECT * FROM public.car_brand WHERE 1=1';
+    let query = 'SELECT * FROM public.car_brand INNER JOIN car_model ON public.car_brand.brand_id = public.car_model.brand_id WHERE 1=1';
     const queryParams = [];
 
     if (q) {
@@ -76,8 +76,7 @@ const addModel = async (brand_id, model_name) => {
 
         // Insert model into car_model table
         await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brand_id]);
-
-        // No need to check rowCount, assume successful insertion
+        
         return 'Vehicle added successfully';
     } catch (error) {
         console.error('Error handling vehicle:', error);
@@ -109,40 +108,12 @@ const addVehicle = async (req, res) => {
     }
 };
 
-
-// const addVehicle = async (req, res) => {
-//     const { brand_name, model_name } = req.body;        
-
-//     try {
-//         // Insert brand into car_brand table
-//         const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
-
-//         if (brandResult.rows.length === 0) {
-//             throw new Error('Failed to insert brand into car_brand');
-//         }
-
-//         const brandId = brandResult.rows[0].brand_id;
-
-//         // Insert model into car_model table via brand_id
-//         const modelResult = await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brandId]);
-
-//         if (modelResult,rowCount === 0) {
-//             throw new Error('Failed to insert model into car_model');
-//         }
-
-//         res.status(201).send('Vehicle added successfully');
-//     } catch (error) {
-//         console.error ('Error adding item', error);
-//         res.status(500).send('Internal server error!');
-//     }
-// };
-
 // Function for fetching item via ID
-const getItemId = async (req, res) => {
+const getVehicleById = async (req, res) => {
     console.log(req.params)
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM public.cars WHERE id = $1', [id]);
+        const result = await pool.query('SELECT * FROM public.car_brand WHERE brand_id = $1', [id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]); // Return the item found in the database
         } else {
@@ -155,10 +126,10 @@ const getItemId = async (req, res) => {
 };
 
 // Function for deleting item via ID
-const deleteItem = async (req, res) => {
+const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM public.cars WHERE id = $1', [id]);
+        await pool.query('DELETE FROM public.car_brand WHERE brand_id = $1', [id]);
         res.send(`Item with ID ${id} has been successfully deleted`);
     } catch (error) {
         console.error('Error deleting item:', error);
@@ -167,11 +138,11 @@ const deleteItem = async (req, res) => {
 };
 
   // Function for updating item via ID
-  const updateItem = async (req, res) => {
-    const { brand, model, price } = req.body;
+  const updateVehicle = async (req, res) => {
+    const { brand_name, model_name } = req.body;
     const { id } = req.params;
     try {
-        const result = await pool.query('UPDATE public.cars SET brand = $1, model = $2, price = $3 WHERE id = $4 RETURNING *', [brand, model, price, id]);        
+        const result = await pool.query('UPDATE public.car_brand SET brand_name = $1, model_name = $2 WHERE brand_id = $3 RETURNING *', [brand_name, model_name, id]);        
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
         } else {
@@ -183,4 +154,4 @@ const deleteItem = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getItemId, deleteItem, updateItem, searchVehicles };
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles };
