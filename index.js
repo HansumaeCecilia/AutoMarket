@@ -36,7 +36,7 @@ app.get('/contact', (req, res) => {
 
 app.get('/', async (req, res) => {
   try {
-    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const query = 'SELECT brand_id, brand_name FROM public.car_brand';
     const result = await pool.query(query);
     
     res.render('frontpage', {
