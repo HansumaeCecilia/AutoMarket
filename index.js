@@ -9,6 +9,8 @@ const itemRoutes = require('./routes/items');
 const userRoutes = require('./routes/userRoutes');
 const dotenv = require('dotenv');
 
+const { pool } = require('./db');
+
 dotenv.config();
 
 // Create server
@@ -32,9 +34,21 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-app.get('/', (req, res) => {
-  res.render('frontpage');
+app.get('/', async (req, res) => {
+  try {
+    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const result = await pool.query(query);
+    
+    res.render('frontpage', {
+      title: 'Search cars',
+      car_brand: result.rows
+    });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).send('Error fetching data');
+  }
 });
+
 
 app.listen(port, () => {
   console.log(`Server started at port http://localhost:${port}`);

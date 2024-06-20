@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 
     <title>Car List</title>
 
 </head>
 <body>
-    <div class="form-group col-sm-8">
-        <label for="multiselectSearch">Search</label>
-        <select id="multiselectSearch" multiple class="form-control">
-            <option value="brand1">Brand 1</option>
-            <option value="brand2">Brand 2</option>
-            <option value="brand3">Brand 3</option>
-        </select>
-    </div>
+    <div>
+        <!-- Example search form in your frontend (e.g., search.handlebars) -->
 
-    <div class="container mt-5">
-        <h1>Search Vehicles</h1>
-        <form id="searchForm" class="form-inline mb-4">
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="searchQuery" placeholder="Enter vehicle details">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <form action="/items" method="get">
+            <label for="brand_name">Brand Name:</label>
+            <input type="text" id="brand_name" name="brand_name">
+
+            <label for="model_name">Model Name:</label>
+            <input type="text" id="model_name" name="model_name">
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color">
+
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year">
+
+            <label for="price_min">Min Price:</label>
+            <input type="number" id="price_min" name="price_min">
+
+            <label for="price_max">Max Price:</label>
+            <input type="number" id="price_max" name="price_max">
+
+            <button type="submit">Search</button>
         </form>
+    </div>
     
-        <h2>Car List</h2>
+    <h2>Car List</h2>
         <ul>
             {{#each items}}
             <li>
-                <strong>ID:</strong> {{this.brand_id}} <br>
+                <strong>Brand ID:</strong> {{this.brand_id}} <br>
                 <strong>Brand:</strong> {{this.brand_name}} <br>
                 <strong>Model:</strong> {{this.model_name}} <br>
                 <strong>Model ID:</strong> {{this.model_id}} <br>
@@ -52,7 +60,7 @@
             {{/each}}
         </ul>
 
-        <div id="searchResults"></div>
+        
     </div>
 </body>
 </html> 
