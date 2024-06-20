@@ -5,6 +5,36 @@
 
 const { pool } = require('../db');
 
+//// MULTISELECTION
+// const searchVehicles = async (req, res) => {
+//     const { brand_name, model_name } = req.query;
+//     let query = `
+//         SELECT * FROM  public.car_brand
+//         INNER JOIN car_model
+//         ON public.car_brand.brand_id = public.car_model.brand_id
+//         WHERE 1=1`;
+//     const queryParams = [];
+
+//     if (brand_name && brand_name.length > 0) {
+//         query += ` AND brand_name = ANY($${queryParams.length + 1})` ;
+//         queryParams.push(brand_name);
+//     }
+
+//     if (model_name && model_name.length > 0) {
+//         query += ` AND model_name = ANY($${queryParams.length + 1})` ;
+//         queryParams.push(model_name);
+//     }
+
+//     try {
+//         console.log('Executing query:', query, queryParams);
+//         const result = await pool.query(query, queryParams);
+//         console.log('Search results:', result.rows);
+//         return result.rows;
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
 
 const searchVehicles = async (req, res) => {
     const { q, brand_name, model_name } = req.query;

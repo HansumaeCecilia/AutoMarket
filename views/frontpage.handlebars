@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/Simple-Slider.css">
 </head>
 
-<body style="background: rgb(37,37,37);">
+<body style="background: rgb(173, 166, 166);">
     <header style="background: url(images/porsche-1851246_1280.jpg) center / cover no-repeat;height: 555px;">
         <nav class="navbar navbar-expand-md bg-transparent py-3" data-bs-theme="dark">
             <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
@@ -32,7 +32,7 @@
     </header>
     <div>
       <!-- Example search form in your frontend (e.g., search.handlebars) -->
-      <form action="/items/search" method="get">
+      <form action="/items" method="get">
         <label for="brand_name">Brand Name:</label>
         <input type="text" id="brand_name" name="brand_name">
 
@@ -54,6 +54,32 @@
         <button type="submit">Search</button>
       </form>
     </div>
+    {{!-- <div>
+      <h2>Cars</h2>        
+        <ul>
+            {{#each items}}
+            <li>
+                <strong>ID:</strong> {{this.brand_id}} <br>
+                <strong>Brand:</strong> {{this.brand_name}} <br>
+                <strong>Model:</strong> {{this.model_name}} <br>
+                <strong>ModelID:</strong> {{this.model_id}} <br>                
+                <br>            
+            </li>
+            {{/each}}
+        </ul>
+
+        <h2>Users</h2>
+        <ul>
+            {{#each user}}
+            <li>
+                <strong>ID:</strong> {{this.id}} <br>
+                <strong>Name:</strong> {{this.name}} <br>
+                <strong>Email:</strong> {{this.email}} <br>                
+                <br>
+            </li>
+            {{/each}}
+        </ul>
+    </div> --}}
     <div class="container" style="margin-top: 50px;">
         <div class="row">
             <div class="col-md-6"><div class="form-group col-sm-8" transform: translate(19px)>
