@@ -5,8 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 // Imports from 'controllers'
-const {
-    //getItem,
+const {    
     addVehicle,
     getVehicleById,
     deleteVehicle,
@@ -18,18 +17,22 @@ const {
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {    
     try {
-        console.log('GET request received for searched items');  
-        const items = await searchVehicles(req, res);
-        res.render('index', { items });
+        console.log('GET request received for searched items', req.query.q);  
+        await searchVehicles(req, res);        
     } catch (error) {
         console.error('Error rendering items:', error);
         res.status(500).send('Internal server error');
     }
 });
 
-// router.get("/search", (req, res) => {
+// router.get("/search", async (req, res) => {
+//     try {
 //     console.log('GET request received for searching items with query:', req.query.q);
-//     searchVehicles(req, res);
+//     await searchVehicles(req, res);
+//     } catch (error) {
+//     console.error('Error rendering items:', error);
+//     res.status(500).send('Internal server error!');
+//     }    
 // });
 
 router.post("/", (req, res) => {

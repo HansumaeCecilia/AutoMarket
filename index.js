@@ -9,6 +9,7 @@ const itemRoutes = require('./routes/items');
 // Module import for user routes
 const userRoutes = require('./routes/userRoutes');
 const dotenv = require('dotenv');
+const { pool } = require('./db'); 
 
 dotenv.config();
 
@@ -30,12 +31,31 @@ app.set('view engine', 'handlebars');
 // Home page route
 app.get('/', async (req, res) => {
   try {
-    const brand = await pool.query('SELECT brand_id, brand_name FROM public.car_brand');
-    const model = await pool.query('SELECT model_id, model_name FROM public.car_model');
-    res.render('frontpage', { brand: brand.rows, model: model.rows });
-  }  catch (error) {
-    console.error(error);
-    res.status(500).send('Server error!');
+    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const result = await pool.query(query);
+
+    res.render('frontpage', {
+      title: 'Search cars',
+      car_brand: result.rows
+    });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).send('Error fetching data');
+  }
+});
+
+app.get('/items', async (req, res) => {
+  try {
+    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const result = await pool.query(query);
+
+    res.render('index', {
+      title: 'Search cars',
+      car_brand: result.rows
+    });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).send('Error fetching data');
   }
 });
 

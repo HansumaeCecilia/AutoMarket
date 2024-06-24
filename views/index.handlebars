@@ -1,106 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car List</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">    
-    <!-- Add Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Add Bootstrap Multi-Select Dropdown CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/css/bootstrap-multiselect.css" rel="stylesheet">
-    <!-- Add jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- Add Bootstrap Multi-Select Dropdown JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js"></script>        
-    {{!-- <script src="/js/searchHandler.js"></script> --}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car List</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Add Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Add Bootstrap Multi-Select Dropdown CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/css/bootstrap-multiselect.css"
+    rel="stylesheet">
+  <!-- Add jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <!-- Add Bootstrap Multi-Select Dropdown JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js"></script>    
 </head>
+
 <body>
-    <div>
-      <form action="/items" method="get">
-            <label for="brand_name">Brand Name:</label>
-            <input type="text" id="brand_name" name="brand_name">
-
-            <label for="model_name">Model Name:</label>
-            <input type="text" id="model_name" name="model_name">
-
-            <label for="color">Color:</label>
-            <input type="text" id="color" name="color">
-
-            <label for="year">Year:</label>
-            <input type="number" id="year" name="year">
-
-            <label for="price_min">Min Price:</label>
-            <input type="number" id="price_min" name="price_min">
-
-            <label for="price_max">Max Price:</label>
-            <input type="number" id="price_max" name="price_max">
-
-            <button type="submit">Search</button>
-        </form>
-    </div>  
-    <div class="container mt-5">
-    <h1>Search Vehicles</h1>
+  {{!-- <div>
     <form action="/items" method="get">
-      <div class="form-group">
-        <label for="brand_name">Brand Name:</label>
-        <select id="brand_name" name="brand_name[]" multiple="multiple" class="form-control">
-            {{#each brand}}
-            <option value="{{this.brand_id}}">{{this.brand_name}}</option>
-            {{/each}}
-        </select>    
-      </div>
-      <div class="form-group">
-        <label for="model_name">Model Name:</label>
-        <select id="model_name" name="model_name[]" multiple="multiple" class="form-control">
-            {{#each model}}
-            <option value="{{this.model_id}}">{{this.model_name}}</option>
-            {{/each}}
-        </select>
-      </div>  
-        <button type="submit" class="btn btn-primary">Search</button>
+      <label for="brand_name">Brand Name:</label>
+      <input type="text" id="brand_name" name="brand_name">
+
+      <label for="model_name">Model Name:</label>
+      <input type="text" id="model_name" name="model_name">
+
+      <label for="color">Color:</label>
+      <input type="text" id="color" name="color">
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year">
+
+      <label for="price_min">Min Price:</label>
+      <input type="number" id="price_min" name="price_min">
+
+      <label for="price_max">Max Price:</label>
+      <input type="number" id="price_max" name="price_max">
+
+      <button type="submit">Search</button>
     </form>
-</div>
+  </div> --}}
+  <div class="container mt-5">
+    <h1>Search cars</h1>
+    <form id="searchForm" action="/items" method="get" class="form-inline mb-4">
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="brandSelect">Select Brand:</label>
+        <select id="brandSelect" name="brandSelect" class="form-control">
+          {{#each car_brand}}
+          <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Search</button>
+    </form>
+    <h2>Car List</h2>
+    <ul>
+      {{#each items}}
+      <li>
+        <strong>ID:</strong> {{this.brand_id}} <br>
+        <strong>Brand:</strong> {{this.brand_name}} <br>
+        <strong>Model:</strong> {{this.model_name}} <br>
+        <strong>Model ID:</strong> {{this.model_id}} <br>
+        <br>
+      </li>
+      {{/each}}
+    </ul>
+    <div id="searchResults"></div>
+  </div>
+  </div>
 
-<script>
-        $(document).ready(function() {
-            $('#brand_name').multiselect({
-                includeSelectAllOption: true,
-                nonSelectedText: 'Select Brand'
-            });
-            $('#model_name').multiselect({
-                includeSelectAllOption: true,
-                nonSelectedText: 'Select Model'
-            });
-        });
-</script>
+  {{!-- <div>
+    <h2>Cars</h2>
+    <ul>
+      {{#each items}}
+      <li>
+        <strong>ID:</strong> {{this.brand_id}} <br>
+        <strong>Brand:</strong> {{this.brand_name}} <br>
+        <strong>Model:</strong> {{this.model_name}} <br>
+        <strong>ModelID:</strong> {{this.model_id}} <br>
+        <br>
+      </li>
+      {{/each}}
+    </ul>
 
-       <div> 
-        <h2>Cars</h2>        
-        <ul>
-            {{#each items}}
-            <li>
-                <strong>ID:</strong> {{this.brand_id}} <br>
-                <strong>Brand:</strong> {{this.brand_name}} <br>
-                <strong>Model:</strong> {{this.model_name}} <br>
-                <strong>ModelID:</strong> {{this.model_id}} <br>                
-                <br>            
-            </li>
-            {{/each}}
-        </ul>
+    <h2>Users</h2>
+    <ul>
+      {{#each user}}
+      <li>
+        <strong>ID:</strong> {{this.id}} <br>
+        <strong>Name:</strong> {{this.name}} <br>
+        <strong>Email:</strong> {{this.email}} <br>
+        <br>
+      </li>
+      {{/each}}
+    </ul>
+  </div> --}}
 
-        <h2>Users</h2>
-        <ul>
-            {{#each user}}
-            <li>
-                <strong>ID:</strong> {{this.id}} <br>
-                <strong>Name:</strong> {{this.name}} <br>
-                <strong>Email:</strong> {{this.email}} <br>                
-                <br>
-            </li>
-            {{/each}}
-        </ul>
-        </div>
-          
 </body>
+
 </html>
