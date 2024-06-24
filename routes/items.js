@@ -13,22 +13,45 @@ const {
     searchVehicles
 } = require("../controllers/items");
 
+
+
 //USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {
     try {
-        console.log('GET request received for searhed items');
-        const items = await searchVehicles(req, res);
-        res.render('index', { items });
+        console.log('GET request received for searched items');
+        await searchVehicles(req, res); // Removed the assignment to items, as searchVehicles renders the response
     } catch (error) {
-        console.error ('Error rendering items:', error);
+        console.error('Error rendering items:', error);
         res.status(500).send('Internal server error');
     }
 });
 
-router.get("/search", (req, res) => {
-    console.log('GET request received for searching items with query:', req.query.q);
-    searchVehicles(req, res);
-});
+// router.get("/search", async (req, res) => {
+//     try {
+//         console.log('GET request received for searching items with query:', req.query.q);
+//         await searchVehicles(req, res); // Removed the assignment to items, as searchVehicles renders the response
+//     } catch (error) {
+//         console.error('Error searching items:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// });
+
+//USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
+// router.get("/", async (req, res) => {
+//     try {
+//         console.log('GET request received for searhed items');
+//         const items = await searchVehicles(req, res);
+//         res.render('index', { items });
+//     } catch (error) {
+//         console.error ('Error rendering items:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// });
+
+// router.get("/search", (req, res) => {
+//     console.log('GET request received for searching items with query:', req.query.q);
+//     searchVehicles(req, res);
+// });
 
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
