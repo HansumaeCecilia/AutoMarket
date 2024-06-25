@@ -37,6 +37,18 @@ async function searchVehicles(req, res) {
     }
 }
 
+async function fetchCarBrands() {
+    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const result = await pool.query(query);
+    return result.rows;
+}
+
+async function fetchCarModels() {
+    const query = 'SELECT model_id, model_name FROM car_model';
+    const result = await pool.query(query);
+    return result.rows;
+}
+
 const addBrand = async (brand_name) => {
     try {
         // Check if the brand already exists
@@ -151,4 +163,4 @@ const deleteVehicle = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles };
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, fetchCarBrands, fetchCarModels };

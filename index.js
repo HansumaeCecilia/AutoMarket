@@ -26,7 +26,6 @@ app.use('/users', userRoutes);
 // Engine settings
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
-//app.set('views', path.join(__dirname, 'views'));
 
 // Home page route
 app.get('/', async (req, res) => {
@@ -47,14 +46,14 @@ app.get('/', async (req, res) => {
   }
 });
 
-// app.get('/search', async (req, res) => {
+// app.get('/items', async (req, res) => {
 //   try {
-//     const query = 'SELECT brand_id, brand_name FROM car_brand';
-//     const result = await pool.query(query);
+//     const itemsQuery = 'SELECT brand_id, brand_name FROM car_brand';
+//     const itemsResult = await pool.query(itemsQuery);
 
 //     res.render('index', {
 //       title: 'Search cars',
-//       car_brand: result.rows
+//       car_brand: itemsResult.rows
 //     });
 //   } catch (err) {
 //     console.error('Error executing query', err.stack);

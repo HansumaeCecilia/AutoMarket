@@ -10,7 +10,9 @@ const {
     getVehicleById,
     deleteVehicle,
     updateVehicle,    
-    searchVehicles,
+    searchVehicles,    
+    fetchCarBrands,
+    fetchCarModels
 } = require("../controllers/items");
 
 
@@ -31,15 +33,25 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/search", async (req, res) => {
+router.get('/search', async (req, res) => {
     try {
-    console.log('GET request received for searching items with query:', req.query.q);
-    await searchVehicles(req, res);
+        console.log('GET request received for searching items with query:', req.query.q);
+        await searchVehicles(req, res);
     } catch (error) {
-    console.error('Error rendering items:', error);
-    res.status(500).send('Internal server error!');
-    }    
+        console.error('Error searching vehicles:', error);
+        res.status(500).send('Internal server error');
+    }
 });
+
+// router.get("/items", async (req, res) => {
+//     try {
+//     console.log('GET request received for all items:');
+//     await searchAllVehicles(req, res);
+//     } catch (error) {
+//     console.error('Error rendering items:', error);
+//     res.status(500).send('Internal server error!');
+//     }    
+// });
 
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
