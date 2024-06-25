@@ -1,45 +1,8 @@
 // MODULE FOR POSTGRESQL DATABASE
 // ------------------------------
 
-// Generate unique ID
 
 const { pool } = require('../db');
-
-
-// const searchVehicles = async (req, res) => {
-//     const { q, brand_name, model_name } = req.query;
-//     let query = 'SELECT * FROM public.car_brand INNER JOIN public.car_model ON public.car_brand.brand_id = public.car_model.brand_id WHERE 1=1';
-//     const queryParams = [];
-
-//     if (q) {
-//         const searchQuery = `%${q}%`;
-//         query += ' AND (brand_name ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(searchQuery);
-//         query += ' OR model_name ILIKE $' + (queryParams.length + 1);
-//         queryParams.push(searchQuery);
-
-//     } else {
-//         if (brand_name) {
-//             query += ' AND brand_name ILIKE $' + (queryParams.length + 1);
-//             queryParams.push(`%${brand_name}%`);
-//         }
-
-//         if (model_name) {
-//             query += ' AND model_name ILIKE $' + (queryParams.length + 1);
-//             queryParams.push(`%${model_name}%`);
-//         }
-//     }
-
-//     try {
-//         console.log('Executing query:', query, queryParams);
-//         const result = await pool.query(query,queryParams);
-//         console.log('Search results:', result.rows);
-//         return result.rows;
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
 
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
@@ -76,6 +39,20 @@ async function searchVehicles(req, res) {
         res.status(500).send('Internal server error');
     }
 }
+
+// Function to fetch car brands from the database
+async function fetchCarBrands() {
+    const query = 'SELECT brand_id, brand_name FROM car_brand';
+    const result = await pool.query(query);
+    return result.rows;
+ }
+
+ // Function to fetch car models from the database
+ async function fetchCarModels() {
+    const query = 'SELECT model_id, model_name FROM car_model';
+    const result = await pool.query(query);
+    return result.rows;
+ }
 
 
 // Function to search vehicles based on brandSelect parameter
@@ -233,4 +210,4 @@ const updateVehicle = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles };
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, fetchCarBrands, fetchCarModels };

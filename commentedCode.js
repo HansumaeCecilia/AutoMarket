@@ -1,6 +1,8 @@
 // POSSIBLY USABLE CODE AS COMMENTS, NOT READY FOR DELETION
 // ========================================================
 
+const { searchVehicles } = require("./controllers/items")
+
 
 
 // GET ITEMS FROM CARS TABLE
@@ -360,3 +362,42 @@
 </div>
 </div>
 </div> */}
+
+
+// old searchVehicles
+// ------------------
+
+// const searchVehicles = async (req, res) => {
+//     const { q, brand_name, model_name } = req.query;
+//     let query = 'SELECT * FROM public.car_brand INNER JOIN public.car_model ON public.car_brand.brand_id = public.car_model.brand_id WHERE 1=1';
+//     const queryParams = [];
+
+//     if (q) {
+//         const searchQuery = `%${q}%`;
+//         query += ' AND (brand_name ILIKE $' + (queryParams.length + 1);
+//         queryParams.push(searchQuery);
+//         query += ' OR model_name ILIKE $' + (queryParams.length + 1);
+//         queryParams.push(searchQuery);
+
+//     } else {
+//         if (brand_name) {
+//             query += ' AND brand_name ILIKE $' + (queryParams.length + 1);
+//             queryParams.push(`%${brand_name}%`);
+//         }
+
+//         if (model_name) {
+//             query += ' AND model_name ILIKE $' + (queryParams.length + 1);
+//             queryParams.push(`%${model_name}%`);
+//         }
+//     }
+
+//     try {
+//         console.log('Executing query:', query, queryParams);
+//         const result = await pool.query(query,queryParams);
+//         console.log('Search results:', result.rows);
+//         return result.rows;
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };

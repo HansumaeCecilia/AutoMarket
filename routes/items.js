@@ -10,8 +10,12 @@ const {
     getVehicleById,
     deleteVehicle,
     updateVehicle,
-    searchVehicles
+    searchVehicles,
+    fetchCarBrands,
+    fetchCarModels
 } = require("../controllers/items");
+
+
 
 // GET route for displaying search form
 router.get('/', async (req, res) => {
