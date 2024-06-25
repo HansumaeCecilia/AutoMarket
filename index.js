@@ -34,6 +34,7 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
+
 app.get('/', async (req, res) => {
   try {
     const query = 'SELECT brand_id, brand_name FROM public.car_brand';
@@ -41,7 +42,7 @@ app.get('/', async (req, res) => {
     
     res.render('frontpage', {
       title: 'Search cars',
-      car_brand: result.rows
+      car_brand: result.rows,
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

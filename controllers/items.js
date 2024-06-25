@@ -41,34 +41,35 @@ const { pool } = require('../db');
 //     }
 // };
 
-// Function to search vehicles based on brandSelect parameter
 async function searchVehicles(req, res) {
-    const brand_id = req.query.brandSelect;
-    const model_name = req.query.model_name;
+    const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
+    const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
 
     let query = `
-    SELECT 
-        cb.brand_name, 
-        cm.model_name 
-    FROM public.car_brand cb
-    INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
-    WHERE 1=1
-`;
+        SELECT 
+            cb.brand_name, 
+            cm.model_name
+        FROM public.car_brand cb
+        INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
+        WHERE 1=1
+    `;
     const values = [];
     let index = 1;
 
-    if (brand_id) {
-        query += ` AND cb.brand_id = $${index}`;
-        values.push(brand_id);
-        index++;
+    if (brandIds.length > 0) {
+        query += ` AND cb.brand_id IN (${brandIds.map((id, i) => `$${index + i}`).join(', ')})`;
+        values.push(...brandIds);
+        index += brandIds.length;
     }
 
-    if (model_name) {
-        query += ` AND cm.model_name = $${index}`;
-        values.push(model_name);
-        index++;
+    if (modelIds.length > 0) {
+        query += ` AND cm.model_id IN (${modelIds.map((id, i) => `$${index + i}`).join(', ')})`;
+        values.push(...modelIds);
+        index += modelIds.length;
     }
 
+    console.log(query, values);
+    
     try {
         const result = await pool.query(query, values);
         res.render('index', { items: result.rows });
@@ -77,6 +78,44 @@ async function searchVehicles(req, res) {
         res.status(500).send('Internal server error');
     }
 }
+
+
+// Function to search vehicles based on brandSelect parameter
+// async function searchVehicles(req, res) {
+//     const brand_id = req.query.brandSelect;
+//     const model_name = req.query.model_name;
+
+//     let query = `
+//     SELECT 
+//         cb.brand_name, 
+//         cm.model_name 
+//     FROM public.car_brand cb
+//     INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
+//     WHERE 1=1
+// `;
+//     const values = [];
+//     let index = 1;
+
+//     if (brand_id) {
+//         query += ` AND cb.brand_id = $${index}`;
+//         values.push(brand_id);
+//         index++;
+//     }
+
+//     if (model_name) {
+//         query += ` AND cm.model_name = $${index}`;
+//         values.push(model_name);
+//         index++;
+//     }
+
+//     try {
+//         const result = await pool.query(query, values);
+//         res.render('index', { items: result.rows });
+//     } catch (err) {
+//         console.error('Database query error', err);
+//         res.status(500).send('Internal server error');
+//     }
+// }
 
 const addBrand = async (brand_name) => {
     try {

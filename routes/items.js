@@ -13,18 +13,44 @@ const {
     searchVehicles
 } = require("../controllers/items");
 
-
-
-//USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
-router.get("/", async (req, res) => {
+// GET route for displaying search form
+router.get('/', async (req, res) => {
     try {
-        console.log('GET request received for searched items');
-        await searchVehicles(req, res); // Removed the assignment to items, as searchVehicles renders the response
+        // Fetch brands and models from database to populate the select options
+        const car_brands = await fetchCarBrands(); // Implement fetchCarBrands function
+        const car_models = await fetchCarModels(); // Implement fetchCarModels function
+
+        res.render('frontpage', {
+            title: 'Search Cars',
+            car_brands: car_brands, // Pass fetched car brands to the template
+            car_models: car_models, // Pass fetched car models to the template
+        });
     } catch (error) {
-        console.error('Error rendering items:', error);
+        console.error('Error rendering search form:', error);
         res.status(500).send('Internal server error');
     }
 });
+
+// get route for handling search form submission
+router.get('/search', async (req, res) => {
+    try {
+        await searchVehicles(req, res);
+    } catch (error) {
+        console.error('Error searching vehicles:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+//USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
+// router.get("/", async (req, res) => {
+//     try {
+//         console.log('GET request received for searched items');
+//         await searchVehicles(req, res); // Removed the assignment to items, as searchVehicles renders the response
+//     } catch (error) {
+//         console.error('Error rendering items:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// });
 
 // router.get("/search", async (req, res) => {
 //     try {
