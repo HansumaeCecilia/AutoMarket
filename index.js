@@ -43,6 +43,7 @@ app.get('/', async (req, res) => {
     res.render('frontpage', {
       title: 'Search cars',
       car_brand: result.rows,
+      car_model: result.rows
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

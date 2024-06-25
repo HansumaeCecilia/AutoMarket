@@ -51,6 +51,12 @@
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
+          <label for="modelSelect">Select Model:</label>
+          <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
+            {{#each car_model}}
+            <option value="{{this.model_id}}">{{this.model_name}}</option>
+            {{/each}}
+          </select>
         </div>
 
         <button type="submit" class="btn btn-primary mb-2">Search</button>
@@ -115,7 +121,7 @@
   <script>
     $(document).ready(function() {
       $('#brandSelect').select2();
-     // $('#modelSelect').select2();
+      $('#modelSelect').select2();
     });
   </script>
 </body>

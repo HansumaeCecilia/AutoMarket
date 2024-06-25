@@ -39,10 +39,10 @@
 
     <div class="container mt-5">
         <h1>Search cars</h1>
-        <form id="searchForm" action="/items" method="get" class="form-inline mb-4">
+        <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="brandSelect">Select Brand:</label>
-                <select id="brandSelect" name="brandSelect[]" class="form-control" multiple>
+                <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
                     {{#each car_brand}}
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
