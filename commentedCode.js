@@ -56,3 +56,82 @@
 //     }
 // };
 // ------------------------------------------------
+
+//<h2>Users</h2>
+{/* <ul>
+{{#each user}}
+<li>
+  <strong>ID:</strong> {{this.id}} <br>
+  <strong>Name:</strong> {{this.name}} <br>
+  <strong>Email:</strong> {{this.email}} <br>
+  <br>
+</li>
+{{/each}}
+</ul> */}
+//-------------------------------------------------
+
+// const searchVehicles = async (req, res) => {
+//     const { q, brand_name, model_name } = req.query;
+//     let query = 'SELECT * FROM public.car_brand INNER JOIN car_model ON public.car_brand.brand_id = public.car_model.brand_id WHERE 1=1';
+//     const queryParams = [];
+
+//     if (q) {
+//         const searchQuery = `%${q}%`;
+//         query += ' AND (brand_name ILIKE $' + (queryParams.length + 1);
+//         queryParams.push(searchQuery);
+//         query += ' OR model_name ILIKE $' + (queryParams.length + 1);
+//         queryParams.push(searchQuery);        
+//     } else {
+//         if (brand_name) {
+//             query += ' AND brand_name ILIKE $' + (queryParams.length + 1);
+//             queryParams.push(`%${brand_name}%`);
+//         }
+
+//         if (model_name) {
+//             query += ' AND model_name ILIKE $' + (queryParams.length + 1);
+//             queryParams.push(`%${model_name}%`);
+//         }        
+//     }
+
+//     try {
+//         console.log('Executing query:', query, queryParams);
+//         const result = await pool.query(query, queryParams);
+//         console.log('Search results:', result.rows);
+//         return result.rows;
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
+//--------------------------------------------------
+
+// // MULTISELECTION
+// const searchVehicles = async (req, res) => {
+//     const { brand_name, model_name } = req.query;
+//     let query = `
+//         SELECT * FROM  public.car_brand
+//         INNER JOIN car_model
+//         ON public.car_brand.brand_id = public.car_model.brand_id
+//         WHERE 1=1`;
+//     const queryParams = [];
+
+//     if (brand_name && brand_name.length > 0) {
+//         query += ` AND brand_name = ANY($${queryParams.length + 1})` ;
+//         queryParams.push(brand_name);
+//     }
+
+//     if (model_name && model_name.length > 0) {
+//         query += ` AND model_name = ANY($${queryParams.length + 1})` ;
+//         queryParams.push(model_name);
+//     }
+
+//     try {
+//         console.log('Executing query:', query, queryParams);
+//         const result = await pool.query(query, queryParams);
+//         console.log('Search results:', result.rows);
+//         return result.rows;
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };

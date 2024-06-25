@@ -31,12 +31,15 @@ app.set('view engine', 'handlebars');
 // Home page route
 app.get('/', async (req, res) => {
   try {
-    const query = 'SELECT brand_id, brand_name FROM car_brand';
-    const result = await pool.query(query);
+    const brandQuery = 'SELECT brand_id, brand_name FROM car_brand';
+    const modelQuery = 'SELECT brand_id, model_name FROM car_model';
+    const brandResult = await pool.query(brandQuery);
+    const modelResult = await pool.query(modelQuery);
 
     res.render('frontpage', {
       title: 'Search cars',
-      car_brand: result.rows
+      car_brand: brandResult.rows,
+      car_model: modelResult.rows
     });
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -44,20 +47,20 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/items', async (req, res) => {
-  try {
-    const query = 'SELECT brand_id, brand_name FROM car_brand';
-    const result = await pool.query(query);
+// app.get('/search', async (req, res) => {
+//   try {
+//     const query = 'SELECT brand_id, brand_name FROM car_brand';
+//     const result = await pool.query(query);
 
-    res.render('index', {
-      title: 'Search cars',
-      car_brand: result.rows
-    });
-  } catch (err) {
-    console.error('Error executing query', err.stack);
-    res.status(500).send('Error fetching data');
-  }
-});
+//     res.render('index', {
+//       title: 'Search cars',
+//       car_brand: result.rows
+//     });
+//   } catch (err) {
+//     console.error('Error executing query', err.stack);
+//     res.status(500).send('Error fetching data');
+//   }
+// });
 
 app.get('/contact', (req, res) => {
   res.render('contact');

@@ -17,23 +17,29 @@ const {
 // USE EXPRESS ROUTER TO USE 'CONTROLLERS' FUNCTIONS FOR DATA COMMUNICATION
 router.get("/", async (req, res) => {    
     try {
-        console.log('GET request received for searched items', req.query.q);  
-        await searchVehicles(req, res);        
+        const car_brands = await fetchCarBrands();
+        const car_models = await fetchCarModels();
+
+        res.render('frontpage', {
+            title: 'Search Cars',
+            c_brands: car_brands,
+            c_models: car_models,
+        });
     } catch (error) {
-        console.error('Error rendering items:', error);
-        res.status(500).send('Internal server error');
+        console.error('Error rendering search form:', error);
+        res.status(500).send('Internal server error.');
     }
 });
 
-// router.get("/search", async (req, res) => {
-//     try {
-//     console.log('GET request received for searching items with query:', req.query.q);
-//     await searchVehicles(req, res);
-//     } catch (error) {
-//     console.error('Error rendering items:', error);
-//     res.status(500).send('Internal server error!');
-//     }    
-// });
+router.get("/search", async (req, res) => {
+    try {
+    console.log('GET request received for searching items with query:', req.query.q);
+    await searchVehicles(req, res);
+    } catch (error) {
+    console.error('Error rendering items:', error);
+    res.status(500).send('Internal server error!');
+    }    
+});
 
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
