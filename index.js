@@ -37,13 +37,17 @@ app.get('/contact', (req, res) => {
 
 app.get('/', async (req, res) => {
   try {
-    const query = 'SELECT brand_id, brand_name FROM public.car_brand';
-    const result = await pool.query(query);
+    const brandQuery = 'SELECT brand_id, brand_name FROM public.car_brand';
+    const modelQuery = 'SELECT model_id, model_name FROM public.car_model';
+
+
+    const brandResult = await pool.query(brandQuery);
+    const modelResult = await pool.query(modelQuery);
     
     res.render('frontpage', {
       title: 'Search cars',
-      car_brand: result.rows,
-      car_model: result.rows
+      car_brand: brandResult.rows,
+      car_model: modelResult.rows
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

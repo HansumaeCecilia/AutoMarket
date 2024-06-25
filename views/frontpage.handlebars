@@ -51,6 +51,7 @@
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
+          
           <label for="modelSelect">Select Model:</label>
           <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
             {{#each car_model}}
@@ -60,30 +61,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary mb-2">Search</button>
-      </form>
-    </div>
-    <div>
-      <!-- Example search form in your frontend (e.g., search.handlebars) -->
-      <form action="/items" method="get">
-        <label for="brand_name">Brand Name:</label>
-        <input type="text" id="brand_name" name="brand_name">
-
-        <label for="model_name">Model Name:</label>
-        <input type="text" id="model_name" name="model_name">
-
-        <label for="color">Color:</label>
-        <input type="text" id="color" name="color">
-
-        <label for="year">Year:</label>
-        <input type="number" id="year" name="year">
-
-        <label for="price_min">Min Price:</label>
-        <input type="number" id="price_min" name="price_min">
-
-        <label for="price_max">Max Price:</label>
-        <input type="number" id="price_max" name="price_max">
-
-        <button type="submit">Search</button>
       </form>
     </div>
   </ul>

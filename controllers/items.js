@@ -68,8 +68,6 @@ async function searchVehicles(req, res) {
         index += modelIds.length;
     }
 
-    console.log(query, values);
-    
     try {
         const result = await pool.query(query, values);
         res.render('index', { items: result.rows });

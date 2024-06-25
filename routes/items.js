@@ -22,8 +22,8 @@ router.get('/', async (req, res) => {
 
         res.render('frontpage', {
             title: 'Search Cars',
-            car_brands: car_brands, // Pass fetched car brands to the template
-            car_models: car_models, // Pass fetched car models to the template
+            car_brand: car_brands, // Pass fetched car brands to the template
+            car_model: car_models, // Pass fetched car models to the template
         });
     } catch (error) {
         console.error('Error rendering search form:', error);
