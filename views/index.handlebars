@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car List</title>    
+  <title>Car List</title>
 </head>
 
 <body>
@@ -29,6 +29,14 @@
           <option value="{{this.brand_id}}">{{this.brand_name}}</option>
           {{/each}}
         </select>
+
+        <label for="modelSelect">Select Model:</label>
+        <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
+          {{#each car_model}}
+          <option value="{{this.model_id}}">{{this.model_name}}</option>
+          {{/each}}
+        </select>
+        
       </div>
       <button type="submit" class="btn btn-primary mb-2">Search</button>
     </form>
@@ -42,7 +50,7 @@
       </li>
       {{/each}}
     </ul>
-  </div>       
+  </div>
 </body>
 
 </html>

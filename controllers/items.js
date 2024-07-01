@@ -3,6 +3,40 @@
 
 const { pool } = require('../db');
 
+// async function searchVehicles(req, res) {
+//     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
+//     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
+
+//     let query = `SELECT 
+//                     cb.brand_name,
+//                     cm.model_name
+//     FROM public.car_brand cb
+//     INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
+//     WHERE 1=1`;
+//     const values = [];
+//     let index = 1;
+
+//     if (brandIds.length > 0) {
+//         query += ` AND cb.brand_id IN (${brandIds.map((id, i) => `$${index + i}`).join(', ')})`;
+//         values.push(...brandIds);
+//         index += brandIds.length;
+//     }
+
+//     if (modelIds.length > 0) {
+//         query += ` AND cm.model_id IN (${modelIds.map((id, i) => `$${index + i}`).join(', ')})`;
+//         values.push(...modelIds);
+//         index += modelIds.length;
+//     }
+
+//     try {
+//         const result = await pool.query(query, values);
+//         res.render('index', { items: result.rows });
+//     } catch (err) {
+//         console.error('Database query error', err);
+//         res.status(500).send('Internal server error');
+//     }
+// }
+
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
@@ -29,25 +63,34 @@ async function searchVehicles(req, res) {
     }
 
     try {
+        const brandQuery = 'SELECT brand_id, brand_name FROM car_brand';
+        const modelQuery = 'SELECT model_id, model_name FROM car_model';
+        const brandResult = await pool.query(brandQuery);
+        const modelResult = await pool.query(modelQuery);
+
         const result = await pool.query(query, values);
-        res.render('index', { items: result.rows });
-    } catch (err) {
-        console.error('Database query error', err);
-        res.status(500).send('Internal server error');
+
+        res.render('results', {
+            items: result.rows,
+            car_brand: brandResult.rows,
+            car_model: modelResult.rows
+        });
+    } catch (error) {
+        console.error('Error adding brand:', error);
+        throw error;
     }
 }
+// async function fetchCarBrands() {
+//     const query = 'SELECT brand_id, brand_name FROM car_brand';
+//     const result = await pool.query(query);
+//     return result.rows;
+// }
 
-async function fetchCarBrands() {
-    const query = 'SELECT brand_id, brand_name FROM car_brand';
-    const result = await pool.query(query);
-    return result.rows;
-}
-
-async function fetchCarModels() {
-    const query = 'SELECT model_id, model_name FROM car_model';
-    const result = await pool.query(query);
-    return result.rows;
-}
+// async function fetchCarModels() {
+//     const query = 'SELECT model_id, model_name FROM car_model';
+//     const result = await pool.query(query);
+//     return result.rows;
+// }
 
 const addBrand = async (brand_name) => {
     try {
@@ -163,4 +206,4 @@ const deleteVehicle = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, fetchCarBrands, fetchCarModels };
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles };
