@@ -3,40 +3,7 @@
 
 const { pool } = require('../db');
 
-// async function searchVehicles(req, res) {
-//     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
-//     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
-
-//     let query = `SELECT 
-//                     cb.brand_name,
-//                     cm.model_name
-//     FROM public.car_brand cb
-//     INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
-//     WHERE 1=1`;
-//     const values = [];
-//     let index = 1;
-
-//     if (brandIds.length > 0) {
-//         query += ` AND cb.brand_id IN (${brandIds.map((id, i) => `$${index + i}`).join(', ')})`;
-//         values.push(...brandIds);
-//         index += brandIds.length;
-//     }
-
-//     if (modelIds.length > 0) {
-//         query += ` AND cm.model_id IN (${modelIds.map((id, i) => `$${index + i}`).join(', ')})`;
-//         values.push(...modelIds);
-//         index += modelIds.length;
-//     }
-
-//     try {
-//         const result = await pool.query(query, values);
-//         res.render('index', { items: result.rows });
-//     } catch (err) {
-//         console.error('Database query error', err);
-//         res.status(500).send('Internal server error');
-//     }
-// }
-
+// Search vehicles from database using multiselection dropdown search
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
@@ -50,6 +17,7 @@ async function searchVehicles(req, res) {
     const values = [];
     let index = 1;
 
+    // Show existing data for multi-selection
     if (brandIds.length > 0) {
         query += ` AND cb.brand_id IN (${brandIds.map((id, i) => `$${index + i}`).join(', ')})`;
         values.push(...brandIds);
@@ -62,6 +30,7 @@ async function searchVehicles(req, res) {
         index += modelIds.length;
     }
 
+    // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand';
         const modelQuery = 'SELECT model_id, model_name FROM car_model';
@@ -76,22 +45,12 @@ async function searchVehicles(req, res) {
             car_model: modelResult.rows
         });
     } catch (error) {
-        console.error('Error adding brand:', error);
+        console.error('Error fetching vehicles:', error);
         throw error;
     }
-}
-// async function fetchCarBrands() {
-//     const query = 'SELECT brand_id, brand_name FROM car_brand';
-//     const result = await pool.query(query);
-//     return result.rows;
-// }
+};
 
-// async function fetchCarModels() {
-//     const query = 'SELECT model_id, model_name FROM car_model';
-//     const result = await pool.query(query);
-//     return result.rows;
-// }
-
+// Add new brand to vehicle database
 const addBrand = async (brand_name) => {
     try {
         // Check if the brand already exists
@@ -117,6 +76,7 @@ const addBrand = async (brand_name) => {
     }
 };
 
+// Add new model to vehicle database
 const addModel = async (brand_id, model_name) => {
     try {
         // Check if model already exists for the brand
@@ -135,6 +95,8 @@ const addModel = async (brand_id, model_name) => {
         throw error;
     }
 };
+
+// Add new vehicle to database
 const addVehicle = async (req, res) => {
     const { brand_name, model_name } = req.body;
 

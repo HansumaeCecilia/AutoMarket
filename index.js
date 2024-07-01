@@ -1,25 +1,42 @@
+// MODULE AND LIBRARY IMPORTS
+// ==========================
+
 // Express-web engine
 const express = require('express');
 const exphbs = require('express-handlebars');
-const path = require('path');
+
 // Middleware for processing incoming HTTP request bodies
 const bodyParser = require('body-parser');
+
 // Module import for endpoints' response to client requests
 const itemRoutes = require('./routes/items');
+
 // Module import for user routes
 const userRoutes = require('./routes/userRoutes');
+
+// .env file loader
 const dotenv = require('dotenv');
+
+// Pool import for db connection and queries
 const { pool } = require('./db'); 
 
+// APP SETTINGS
+// -----------------------------------------
+
+// Load environment variables from .env file
 dotenv.config();
 
 // Create server
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Express middleware for parsing incoming requests
 app.use(bodyParser.json());
+
+
 app.use(express.static('public'));
 
+// Routes to use functions
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
 
@@ -45,21 +62,6 @@ app.get('/', async (req, res) => {
     res.status(500).send('Error fetching data');
   }
 });
-
-// app.get('/items', async (req, res) => {
-//   try {
-//     const itemsQuery = 'SELECT brand_id, brand_name FROM car_brand';
-//     const itemsResult = await pool.query(itemsQuery);
-
-//     res.render('index', {
-//       title: 'Search cars',
-//       car_brand: itemsResult.rows
-//     });
-//   } catch (err) {
-//     console.error('Error executing query', err.stack);
-//     res.status(500).send('Error fetching data');
-//   }
-// });
 
 app.get('/contact', (req, res) => {
   res.render('contact');
