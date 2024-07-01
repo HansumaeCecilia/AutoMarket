@@ -1,0 +1,44 @@
+{{!-- result.handlebars --}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <!-- Include your CSS and other head elements here -->
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Search cars</h1>
+        <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="brandSelect">Select Brand:</label>
+                <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
+                    {{#each car_brand}}
+                    <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+                    {{/each}}
+                </select>
+                
+                <label for="modelSelect">Select Model:</label>
+                <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
+                    {{#each car_model}}
+                    <option value="{{this.model_id}}">{{this.model_name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </form>
+        
+        <div>
+            <h2>Car List</h2>
+            <ul>
+                {{#each items}}
+                <li>
+                    <strong>Brand:</strong> {{this.brand_name}} <br>
+                    <strong>Model:</strong> {{this.model_name}} <br>
+                    <br>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

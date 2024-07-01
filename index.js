@@ -7,10 +7,12 @@ const bodyParser = require('body-parser');
 const itemRoutes = require('./routes/items');
 // Module import for user routes
 const userRoutes = require('./routes/userRoutes');
-const dotenv = require('dotenv');
 
+const dotenv = require('dotenv');
+// Pool for database connection
 const { pool } = require('./db');
 
+// Load environment variables from .env file
 dotenv.config();
 
 // Create server
@@ -18,10 +20,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-
-
 app.use(express.static('public'));
 
+// Routes to functions
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
 
@@ -34,15 +35,14 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-
+// Frontpage route
 app.get('/', async (req, res) => {
   try {
-    const brandQuery = 'SELECT brand_id, brand_name FROM public.car_brand';
-    const modelQuery = 'SELECT model_id, model_name FROM public.car_model';
-
+    const brandQuery = 'SELECT brand_id, brand_name FROM car_brand';
+    const modelQuery = 'SELECT brand_id, model_name FROM car_model';
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
-    
+
     res.render('frontpage', {
       title: 'Search cars',
       car_brand: brandResult.rows,
