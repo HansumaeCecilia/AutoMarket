@@ -10,6 +10,7 @@ const {
     deleteVehicle,
     updateVehicle,
     searchVehicles,
+    getCarModels
 } = require("../controllers/items");
 
 // EXPRESS ROUTES TO USE '/controllers' FUNCTIONS
@@ -31,6 +32,17 @@ router.get('items/search', async (req, res) => {
         await searchVehicles(req, res);
     } catch (error) {
         console.error('Error searching vehicles:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// Route for getting car models based on selected brands
+router.post('/items/get-car-models', async (req, res) => {
+    try {
+        console.log('Reseived brandIds:', req.body.brandIds);
+        await getCarModels(req, res);
+    } catch (error) {
+        console.error('Error fetching models:', error);
         res.status(500).send('Internal server error');
     }
 });

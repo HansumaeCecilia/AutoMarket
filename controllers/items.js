@@ -4,6 +4,8 @@
 
 const { pool } = require('../db');
 
+
+
 // Async function for searching vehicles with multiselect dropdown
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
@@ -47,6 +49,34 @@ async function searchVehicles(req, res) {
             car_brand: brandResult.rows,
             car_model: modelResult.rows
         })
+    } catch (err) {
+        console.error('Database query error', err);
+        res.status(500).send('Internal server error');
+    }
+}
+
+// Function to handle fetching car models based on selected brands
+async function getCarModels(req, res) {
+    const brandIds = req.body.brandIds;
+
+    console.log('Reseived brandIds:', brandIds); // Log received brand IDs
+
+    if (!brandIds || brandIds.length === 0) {
+        // If no brand ID are provided, return empty array
+        return res.json([]); // Return an empty array if no brand IDs are provided
+    }
+    // SQL query to fetch models based on brand IDs
+    let query = `
+        SELECT model_id, model_name
+        FROM public.car_model
+        WHERE brand_id = ANY($1::int[])`;
+
+    const values = [brandIds];
+
+    try {
+        const result = await pool.query(query, values);
+        console.log('Fetched models:', result.rows); // log fetched models
+        res.json(result.rows); // Send fetched model as JSON response
     } catch (err) {
         console.error('Database query error', err);
         res.status(500).send('Internal server error');
@@ -173,4 +203,4 @@ const updateVehicle = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, };
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, getCarModels};

@@ -459,3 +459,37 @@
 //     console.log('GET request received for searching items with query:', req.query.q);
 //     searchVehicles(req, res);
 // });
+
+
+
+// <!-- JavaScript to handle dynamic model loading -->
+// <script>
+//   $(document).ready(function(){
+//     // When brand selection changes
+//     $('#brandSelect').change(function(){
+//       // Get selected brans
+//       var selectedBrands = $(this).val();
+//       console.log('Selected brands:' selectedBrands); // log selected brands
+
+//       // Make AJAX request to fetch models based on selected brands
+//       $.ajax({
+//         url: '/get-car-models', // Endpoint to get car models
+//         method: 'POST', // HTTP method
+//         data: JSON.stringify({ brandIds: selectedBrands }), // Data to send
+//         contentType: 'application/json', // Data type
+//         success: function(data) {  // On succes
+//           console.log('Fetched models:' data); //log fetched models
+//           var modelSelect = $('#modelSelect');
+//           modelSelect.empty(); // Clear existing options
+//           data.forEach(function(model) {
+//             // Add new options to the models dropdown
+//             modelSelect.append(new Option(model.model_name, model.model_id));
+//           });
+//         },
+//         error: function(err) {  // On error
+//           console.error('Error fetching models:', err);
+//         }
+//       });
+//     });
+//   });
+// </script>
