@@ -55,34 +55,6 @@ async function searchVehicles(req, res) {
     }
 }
 
-// Function to handle fetching car models based on selected brands
-async function getCarModels(req, res) {
-    const brandIds = req.body.brandIds;
-
-    console.log('Reseived brandIds:', brandIds); // Log received brand IDs
-
-    if (!brandIds || brandIds.length === 0) {
-        // If no brand ID are provided, return empty array
-        return res.json([]); // Return an empty array if no brand IDs are provided
-    }
-    // SQL query to fetch models based on brand IDs
-    let query = `
-        SELECT model_id, model_name
-        FROM public.car_model
-        WHERE brand_id = ANY($1::int[])`;
-
-    const values = [brandIds];
-
-    try {
-        const result = await pool.query(query, values);
-        console.log('Fetched models:', result.rows); // log fetched models
-        res.json(result.rows); // Send fetched model as JSON response
-    } catch (err) {
-        console.error('Database query error', err);
-        res.status(500).send('Internal server error');
-    }
-}
-
 // Add new brand to vehicle database
 const addBrand = async (brand_name) => {
     try {
@@ -203,4 +175,4 @@ const updateVehicle = async (req, res) => {
     }
 };
 
-module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles, getCarModels};
+module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles};

@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>Home page</title>
-  <!-- Include jQuery for AJAX functionality -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -32,41 +31,15 @@
         <button type="submit" class="btn btn-primary mb-2">Search</button>
       </form>
     </div>
-
-
-
-  <script>
-    $(document).ready(function () {
-      // Tässä käsitellään automerkin valinta
-      $('#brandSelect').on('change', function () {
-        var selectedBrandId = $(this).val(); // Hae valitun automerkin brand_id
-        // Lähetä pyyntö backendiin valitun brand_id kanssa
-        $.ajax({
-          method: 'POST',
-          url: '/items/get-car-models',
-          data: { brandIds: selectedBrandId },
-          success: function (response) {
-            // Päivitä mallivalikko vastauksen mukaisesti
-            updateModelSelect(response);
-          },
-          error: function (xhr, status, error) {
-            console.error('Virhe pyynnössä:', error);
-          }
-        });
-      });
-
-      // Päivittää mallivalikon
-      function updateModelSelect(models) {
-        var modelSelect = $('#modelSelect');
-        modelSelect.empty(); // Tyhjennä mallivalikko
-
-        models.forEach(function (model) {
-          var option = $('<option>').attr('value', model.model_id).text(model.model_name);
-          modelSelect.append(option); // Lisää jokainen malli mallivalikkoon
-        });
-      }
-    });
-  </script>
+    <div>
+      <form action="/items/search" method="get">
+        <label for="brand_name">Brand Name:</label>
+        <input type="text" id="brand_name" name="brand_name">
+        <label for="model_name">Model Name:</label>
+        <input type="text" id="model_name" name="model_name">
+        <button type="submit">Search</button>
+      </form>
+    </div>
 
   <div class="container" style="margin-top:100px;margin-bottom:100px;">
     <div class="row">
@@ -92,6 +65,10 @@
       </div>
     </div>
   </div>
+    <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
+    <script src="/js/Simple-Slider.js"></script> 
+      <!-- Include jQuery for AJAX functionality -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
