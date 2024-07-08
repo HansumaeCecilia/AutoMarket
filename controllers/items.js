@@ -76,6 +76,8 @@ const addBrand = async (brand_name) => {
     }
 };
 
+// jQuery to handle dynamic update of model dropdown based on selected brand
+
 // Add new model to vehicle database
 const addModel = async (brand_id, model_name) => {
     try {

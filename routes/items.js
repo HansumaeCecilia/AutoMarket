@@ -39,6 +39,22 @@ router.get('items/search', async (req, res) => {
     }
 });
 
+router.get('/models', async (req, res) => {
+    const brandId = req.query.brandId;
+    if (!brandId) {
+        return res.status(400).send('Brand ID is required');
+    }
+
+    try {
+        const modelQuery = 'SELECT model_id, model_name FROM car_model WHERE brand_id = $1';
+        const modelResult = await pool.query(modelQuery, [brandId]);
+        res.json(modelResult.rows);
+    } catch (error) {
+        console.error('Error fetching models:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
 // Router for adding a new vehicle
 router.post("/", (req, res) => {
     console.log('POST request received for adding an item');
