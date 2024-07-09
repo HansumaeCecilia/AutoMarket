@@ -3,38 +3,40 @@
 
 // Script for matching models with selected brands in vehicle search dropdown
 $(document).ready(function() {
-    $('#brandSelect').select2();
+    $('#brandSelect').select2({
+        multiple: true
+    });
+
     $('#modelSelect').select2();
 
     // Initially disable the modelSelect dropdown
     $('#modelSelect').prop('disabled', true);
 
-    $('#brandSelect').on('change', function() {
-        // Parse ID input syntax into integer
-        const selectedBrandId = parseInt($(this).val(), 10);
+    $('#brandSelect').on('change', function() {        
+        const selectedBrandIds = $(this).val();
         
-        if (!isNaN(selectedBrandId) && selectedBrandId > 0) {
+        if (selectedBrandIds && selectedBrandIds.length > 0) {
             $('#modelSelect').prop('disabled', false);
-            fetchModels(selectedBrandId, $('#sortOrder').val() || 'asc'); // Default sorting order
+            fetchModels(selectedBrandIds, $('#sortOrder').val() || 'asc'); // Default sorting order
         } else {
             $('#modelSelect').prop('disabled', true);
         }
     });
 
     $('#sortOrder').on('change', function() {
-        const selectedBrandId = parseInt($('#brandSelect').val(), 10);
+        const selectedBrandIds = $('#brandSelect').val();
         const sortOrder = $(this).val();
 
-        if (!isNaN(selectedBrandId) && selectedBrandId > 0) {
-            fetchModels(selectedBrandId, sortOrder);
+        if (selectedBrandIds && selectedBrandIds.length > 0) {
+            fetchModels(selectedBrandIds, sortOrder);
         }
     });
 
-    function fetchModels(brandId, sortOrder) {
+    function fetchModels(brandIds, sortOrder) {
         $.ajax({
             url: '/models',
             method: 'GET',
-            data: { brandId: brandId, order: sortOrder },
+            data: { brandIds: brandIds, order: sortOrder },
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();

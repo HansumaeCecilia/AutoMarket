@@ -63,16 +63,18 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Get car models in ascending alphabetical order
 app.get('/models', async (req, res) => {
-  const brandId = req.query.brandId;
+  const brandIds = Array.isArray(req.query.brandIds) ? req.query.brandIds.map(id => parseInt(id, 10)) : [parseInt(req.query.brandIds, 10)];
   const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
-  if(!brandId) {
-    return res.status(400).send('Brand ID is required');
+
+  if(brandIds.length === 0) {
+    return res.status(400).send('At least one brand ID is required');
   }
 
   try {
-      const modelQuery = `SELECT model_id, model_name FROM car_model WHERE brand_id = $1 ORDER BY model_name ${order}`;
-      const modelResult = await pool.query(modelQuery, [brandId]);
+      const modelQuery = `SELECT model_id, model_name FROM car_model WHERE brand_id = ANY($1) ORDER BY model_name ${order}`;
+      const modelResult = await pool.query(modelQuery, [brandIds]);
       res.json(modelResult.rows);
   } catch (error) {
     console.error('Error fetching models:', error);
@@ -80,6 +82,7 @@ app.get('/models', async (req, res) => {
   }
 });
 
+// Contact page
 app.get('/contact', (req, res) => {
   res.render('contact');
 });
