@@ -65,12 +65,13 @@ app.get('/', async (req, res) => {
 
 app.get('/models', async (req, res) => {
   const brandId = req.query.brandId;
+  const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
   if(!brandId) {
     return res.status(400).send('Brand ID is required');
   }
 
   try {
-      const modelQuery = 'SELECT model_id, model_name FROM car_model WHERE brand_id = $1';
+      const modelQuery = `SELECT model_id, model_name FROM car_model WHERE brand_id = $1 ORDER BY model_name ${order}`;
       const modelResult = await pool.query(modelQuery, [brandId]);
       res.json(modelResult.rows);
   } catch (error) {
