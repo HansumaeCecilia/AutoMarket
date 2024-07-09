@@ -38,7 +38,7 @@ app.get('/contact', (req, res) => {
 // Frontpage route
 app.get('/', async (req, res) => {
   try {
-    const brandQuery = 'SELECT brand_id, brand_name FROM car_brand';
+    const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
     const modelQuery = 'SELECT brand_id, model_name FROM car_model';
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
@@ -55,14 +55,16 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/models', async (req, res) => {
-  const brandId = req.query.brandId;
-  if(!brandId) {
+  const brandIds = Array.isArray(req.query.brandIds) ? req.query.brandIds.map(id => parseInt(id, 10)) : [parseInt(req.query.brandIds, 10)];
+  const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
+
+  if(brandIds.length === 0) {
     return res.status(400).send('Brand ID is required');
   }
 
   try {
-      const modelQuery = 'SELECT model_id, model_name FROM car_model WHERE brand_id = $1';
-      const modelResult = await pool.query(modelQuery, [brandId]);
+      const modelQuery = `SELECT model_id, model_name FROM car_model WHERE brand_id = ANY($1) ORDER BY model_name ${order}`;
+      const modelResult = await pool.query(modelQuery, [brandIds]);
       res.json(modelResult.rows);
   } catch (error) {
     console.error('Error fetching models:', error);

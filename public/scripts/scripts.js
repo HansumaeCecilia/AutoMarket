@@ -3,15 +3,40 @@
 
 //Script for matching models with selected brands in vehicle search
 $(document).ready(function() {
-    $('#brandSelect').select2();
+    $('#brandSelect').select2({
+         multiple: true
+    });
+
     $('#modelSelect').select2();
 
+    // Initially disabled the modelSelect dropdown
+    $('#modelSelect').prop('disabled', true);
+
     $('#brandSelect').on('change', function() {
-        const selectedBrandId = parseInt($(this).val(), 10);
+        const selectedBrandIds = $(this).val();
+
+        if (selectedBrandIds && selectedBrandIds.length > 0) {
+            $('#modelSelect').prop('disabled', false);
+            fetchModels(selectedBrandIds, $('#sortOrder').val() || 'asc'); // Default sorting order
+        } else {
+            $('#modelSelect').prop('disabled', true);
+        }
+    });
+
+    $('#sortOrder').on('change', function() {
+        const selectedBrandIds = $('#brandSelect').val();
+        const sortOrder = $(this).val();
+
+        if (selectedBrandIds && selectedBrandIds.length > 0) {
+            fetchModels(selectedBrandIds, sortOrder);
+        }
+    });
+
+    function fetchModels(brandIds, sortOrder) {
         $.ajax({
             url: '/models',
             method: 'GET',
-            data: { brandId: selectedBrandId },
+            data: { brandIds: brandIds, order: sortOrder },
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();
@@ -27,5 +52,5 @@ $(document).ready(function() {
                 console.error('Error fetching models:', error);
             }
         });
-    });
+    };
 });

@@ -37,7 +37,7 @@ async function searchVehicles(req, res) {
 
     // Fetch and render search results
     try {
-        const brandQuery = 'SELECT brand_id, brand_name FROM public.car_brand';
+        const brandQuery = 'SELECT brand_id, brand_name FROM public.car_brand ORDER BY brand_name ASC';
         const modelQuery = 'SELECT model_id, model_name FROM public.car_model';
         const brandResult = await pool.query(brandQuery);
         const modelResult = await pool.query(modelQuery);
