@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Imports from 'controllers'
 const {
-    addVehicle,
+    addVehicle2,
     getVehicleById,
     deleteVehicle,
     updateVehicle,
@@ -52,10 +52,18 @@ router.get('/models', async (req, res) => {
 });
 
 // Router to adding a new vehicle
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body); // Log received data from Postman
-    addVehicle(req, res);
+    
+    const { brand_name, model_name, price, model_year, mileage, power_type, gearbox_type} = req.body;
+
+    try {
+        const result = await addVehicle2(brand_name, model_name, price, model_year, mileage, power_type, gearbox_type);
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({error:error.message});
+    }
 });
 
 // Router to fetching vehicle by ID
