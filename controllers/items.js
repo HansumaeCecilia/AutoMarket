@@ -50,109 +50,42 @@ async function searchVehicles(req, res) {
     }
 };
 
-// // Add new brand to vehicle database
-// const addBrand = async (brand_name) => {
-//     try {
-//         // Check if the brand already exists
-//         const brandExists = await pool.query('SELECT brand_id FROM public.car_brand WHERE brand_name = $1', [brand_name]);
-
-//         if (brandExists.rows.length > 0) {
-//             // Brand already exists, return its ID
-//             return brandExists.rows[0].brand_id;
-//         }
-
-//         // Insert brand into car_brand table
-//         const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
-
-//         if (brandResult.rows.length === 0) {
-//             throw new Error('Failed to insert brand into car_brand');
-//         }
-
-//         // Return the newly inserted brand's ID
-//         return brandResult.rows[0].brand_id;
-//     } catch (error) {
-//         console.error('Error adding brand:', error);
-//         throw error;
-//     }
-// };
-
-// // jQuery to handle dynamic update of model dropdown based on selected brand
-
-// //Add new model to vehicle database
-// const addModel = async (brand_id, model_name) => {
-//     try {
-//         // Check if model already exists for the brand
-//         const modelExists = await pool.query('SELECT * FROM public.car_model WHERE brand_id = $1 AND model_name = $2', [brand_id, model_name]);
-
-//         if (modelExists.rows.length > 0) {
-//             throw new Error('Model already exists for this brand');
-//         }
-
-//         // Insert model into car_model table
-//         await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brand_id]);
-
-//         return 'Model added successfully';
-//     } catch (error) {
-//         console.error('Error handling vehicle:', error);
-//         throw error;
-//     }
-// };
-
-const addVehicle2 = async (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
+const addVehicle2 = async (brand, model, price, model_year, mileage, power_type, gearbox_type) => {
     try {
-        // console.log('Checking if the vehicle exists in the database...');
-        // const carExists = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [brand, model]);
+        // Query to retrieve brand_id
+        const brandQuery = 'SELECT brand_id FROM car_brand WHERE brand_name = $1';
+        const brandResult = await pool.query(brandQuery, [brand]);
+        if (brandResult.rows.length === 0) {
+            throw new Error(`Brand '${brand}' not found`);
+        }
+        const brand_id = brandResult.rows[0].brand_id;
 
-        // if (carExists.rows.length > 0) {
-        //     console.log('Vehicle already exists:', brand, model);
-        //     throw new Error('Vehicle already exists');
-        // }
+        // Query to retrieve model_id
+        const modelQuery = 'SELECT model_id FROM car_model WHERE model_name = $1';
+        const modelResult = await pool.query(modelQuery, [model]);
+        if (modelResult.rows.length === 0) {
+            throw new Error(`Model '${model}' not found`);
+        }
+        const model_id = modelResult.rows[0].model_id;
 
-        console.log('Inserting the new vehicle into the database...');
-        await pool.query(
-            'INSERT INTO public.cars (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-            [brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type]);
-            
-            console.log('Vehicle added successfully:', brand, model);
-            return 'Vehicle added successfully';
+        console.log('Inserting the new vehicle into the database');
+        await pool.query('INSERT INTO public.cars (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        [ brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type]);
+
+        console.log('Vehicle added successfully:', brand, model);
+        return 'Vehicle added successfully';
     } catch (error) {
 
         if (error.code === '23505') {
             console.log('Vehicle already exists:', brand, model);
-            return 'Vehicle already exists';
+            return 'Vehicle already exists'; 
         }
-
-        console.error('Error handling vehicle!', error.message);
+        console.error('Error handling vehicle:', error.message);
         console.error('Error stack:', error.stack);
-        throw error;
+        throw new Error(error.message);
     }
 };
 
-// Add new vehicle to database
-// const addVehicle = async (req, res) => {
-//     const { brand_name, model_name } = req.body;
-
-//     console.log('Received parameters:', { brand_name, model_name });
-
-//     // Validate that all required parameters are present
-//     if (!brand_name || !model_name) {
-//         res.status(400).send('Missing required parameters: brand_name or model_name');
-//         return;
-//     }
-
-//     try {
-//         // Get or add the brand
-//         const brandId = await addBrand(brand_name);
-
-//         // Add model for the brand
-//         const result = await addModel(brandId, model_name);
-
-//         res.status(201).send(result);
-//     } catch (error) {
-//         console.error('Error adding vehicle:', error);
-//         res.status(500).send('Internal server error!');
-//     }
-// };
 
 // Function for fetching item via ID
 const getVehicleById = async (req, res) => {
