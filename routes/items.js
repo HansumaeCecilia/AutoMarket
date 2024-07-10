@@ -5,12 +5,12 @@ const express = require("express");
 const router = express.Router();
 
 // Imports from 'controllers'
-const {    
-    addVehicle,
+const {        
     getVehicleById,
     deleteVehicle,
     updateVehicle,    
-    searchVehicles,        
+    searchVehicles, 
+    addVehicle2       
 } = require("../controllers/items");
 
 
@@ -56,10 +56,18 @@ router.get('/models', async (req, res) => {
 });
 
 // Router for adding a new vehicle
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
-    console.log('Received data:', req.body);
-    addVehicle(req, res);
+    console.log('Received Data:', req.body);
+
+    const { brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type } = req.body;
+
+    try {
+        const result = await addVehicle2(brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type);
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }    
 });
 
 // Router for fetching vehicle by ID

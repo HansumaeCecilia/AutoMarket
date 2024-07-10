@@ -49,7 +49,7 @@ $(document).ready(function() {
                 modelSelect.trigger('change');
             },
             error: function(error) {
-                console.error('Error fetching models: ', error);
+                console.error('Error fetching models:', error);
             }
         });
     }
