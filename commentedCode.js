@@ -493,3 +493,77 @@
 //     });
 //   });
 // </script>
+
+// // Add new brand to vehicle database
+// const addBrand = async (brand_name) => {
+//     try {
+//         // Check if the brand already exists
+//         const brandExists = await pool.query('SELECT brand_id FROM public.car_brand WHERE brand_name = $1', [brand_name]);
+
+//         if (brandExists.rows.length > 0) {
+//             //Brand already exists, return its ID
+//             return brandExists.rows[0].brand_id;
+//         }
+
+//         // Insert brand into car_brand table
+//         const brandResult = await pool.query('INSERT INTO public.car_brand (brand_name) VALUES ($1) RETURNING brand_id', [brand_name]);
+
+//         if (brandResult.rows.length === 0) {
+//             throw new Error('Failed to insert brand into car_brand');
+//         }
+
+//         // Return the newly inserted brand's ID
+//         return brandResult.rows[0].brand_id;
+//     } catch (error) {
+//         console.error('Error adding brand:', error);
+//         throw error;
+//     }
+// };
+
+// // Add new model to vehicledatabase
+// const addModel = async (brand_id, model_name) => {
+//     try {
+//         // Check if model already exists for the brand
+//         const modelExists = await pool.query('SELECT * FROM public.car_model WHERE brand_id = $1 AND model_name = $2', [brand_id, model_name]);
+
+//         if (modelExists.rows.length > 0) {
+//             throw new Error('Model already exists for this brand');
+//         }
+
+//         // Insert model into car_model table
+//         await pool.query('INSERT INTO public.car_model (model_name, brand_id) VALUES ($1, $2)', [model_name, brand_id]);
+
+//         // No need to check rowCount, assume successful insertion
+//         return 'Vehicle added successfully';
+//     } catch (error) {
+//         console.error('Error handling vehicle:', error);
+//         throw error;
+//     }
+// };
+
+
+// // Function for adding data
+// const addVehicle = async (req, res) => {
+//     const { brand_name, model_name } = req.body;
+
+//     console.log('Received parameters:', { brand_name, model_name });
+
+//     // Validate that all required parameters are present
+//     if (!brand_name || !model_name) {
+//         res.status(400).send('Missing required parameters: brand_name or model_name');
+//         return;
+//     }
+
+//     try {
+//         // Get or add the brand
+//         const brandId = await addBrand(brand_name);
+
+//         // Add model for the brand
+//         const result = await addModel(brandId, model_name);
+
+//         res.status(201).send(result);
+//     } catch (error) {
+//         console.error ('Error adding item', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };

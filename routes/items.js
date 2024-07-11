@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Imports from 'controllers'
 const {
-    addVehicle2,
+    addVehicle,
     getVehicleById,
     deleteVehicle,
     updateVehicle,
@@ -26,7 +26,7 @@ router.get('/search', async (req, res) => {
 });
 
 // Fetch vehicles from results-page
-router.get('items/search', async (req, res) => {
+router.get('/items/search', async (req, res) => {
     try {
         await searchVehicles(req, res);
     } catch (error) {
@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
     const { brand_name, model_name, price, model_year, mileage, power_type, gearbox_type} = req.body;
 
     try {
-        const result = await addVehicle2(brand_name, model_name, price, model_year, mileage, power_type, gearbox_type);
+        const result = await addVehicle(brand_name, model_name, price, model_year, mileage, power_type, gearbox_type);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({error:error.message});

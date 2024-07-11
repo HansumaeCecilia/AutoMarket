@@ -32,8 +32,14 @@
             <ul>
                 {{#each items}}
                 <li>
+                    <strong>Car ID:</strong> {{this.car_id}} <br>
                     <strong>Brand:</strong> {{this.brand_name}} <br>
                     <strong>Model:</strong> {{this.model_name}} <br>
+                    <strong>Price:</strong> {{this.price}} <br>
+                    <strong>Model Year:</strong> {{this.model_year}} <br>
+                    <strong>Mileage:</strong> {{this.mileage}} <br>
+                    <strong>Power Type:</strong> {{this.power_type}} <br>
+                    <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>
                     <br>
                 </li>
                 {{/each}}
