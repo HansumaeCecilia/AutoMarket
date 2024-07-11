@@ -54,24 +54,15 @@ app.get('/', async (req, res) => {
   }
 });
 
-// // Resultpage route
-// app.get('/', async (req, res) => {
-//   try {
-//     const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-//     const modelQuery = 'SELECT brand_id, model_name FROM car_model ORDER BY brand_name ASC';
-//     const brandResult = await pool.query(brandQuery);
-//     const modelResult = await pool.query(modelQuery);
+app.get('/listings', async (req, res) => {
+  const listingsQuery = `SELECT * FROM public.cars`;
+  const listingsResult = await pool.query(listingsQuery);
 
-//     res.render('results', {
-//       title: 'Search cars',
-//       car_brand: brandResult.rows,
-//       car_model: modelResult.rows
-//     });
-//   } catch (err) {
-//     console.error('Error executing query', err.stack);
-//     res.status(500).send('Error fetching data');
-//   }
-// });
+  res.render('listings', {
+    title: 'All Listings',
+    all_listings: listingsResult.rows
+  });
+});
 
 app.get('/models', async (req, res) => {
   const brandIds = Array.isArray(req.query.brandIds) ? req.query.brandIds.map(id => parseInt(id, 10)) : [parseInt(req.query.brandIds, 10)];

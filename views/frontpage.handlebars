@@ -4,23 +4,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>Home page</title>
+  <title>Etusivu</title>
 
 </head>
 
 <body>
     <div class="container mt-5">
-      <h1>Search cars</h1>
+      <h1>Esi autoja</h1>
       <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
         <div class="form-group mx-sm-3 mb-2">
-          <label for="brandSelect">Select Brand:</label>
+          <label for="brandSelect">Valitse Merkki:</label>
           <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
             {{#each car_brand}}
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
 
-          <label for="modelSelect">Select Model:</label>
+          <label for="modelSelect">Valitse Malli:</label>
           <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple disabled">
             {{#each car_model}}
             <option value="{{this.model_id}}">{{this.model_name}}</option>
@@ -28,16 +28,20 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <button type="submit" class="btn btn-primary mb-2">Hae</button>
       </form>
     </div>
     <div>
       <form action="/items/search" method="get">
-        <label for="brand_name">Brand Name:</label>
+        <label for="brand_name">Auton merkki:</label>
         <input type="text" id="brand_name" name="brand_name">
-        <label for="model_name">Model Name:</label>
+        <label for="model_name">Auton malli:</label>
         <input type="text" id="model_name" name="model_name">
-        <button type="submit">Search</button>
+        <button type="submit">Hae</button>
+      </form>
+
+      <form action="/items/search" method="get">
+        <button type="submit">Kaikki autot</button>
       </form>
     </div>
 
