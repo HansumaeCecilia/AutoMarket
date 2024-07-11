@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/swiper-icons.css">    
+    <link rel="stylesheet" href="/css/swiper-icons.css">
     <link rel="stylesheet" href="/css/Navbar-Centered-Brand-Dark-icons.css">
     <link rel="stylesheet" href="/css/Simple-Slider-swiper-bundle.min.css">
-    <link rel="stylesheet" href="/css/Simple-Slider.css">        
-    <title>Home page</title>   
+    <link rel="stylesheet" href="/css/Simple-Slider.css">
+    <title>Home page</title>
 </head>
 
-<body style="background: rgb(49, 60, 49);">    
+<body style="background: rgb(49, 60, 49);">
     <div class="container mt-5">
         <h1>Search cars</h1>
         <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
@@ -22,7 +22,7 @@
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
-                
+
                 <label for="modelSelect">Select Model:</label>
                 <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple disabled">
                     {{#each car_model}}
@@ -31,23 +31,10 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
-        </form>
-        <div>
-            <h2>Car List</h2>
-            <ul>
-                {{#each items}}
-                <li>
-                    <strong>ID:</strong> {{this.brand_id}} <br>
-                    <strong>Brand:</strong> {{this.brand_name}} <br>
-                    <strong>Model:</strong> {{this.model_name}} <br>
-                    <strong>Model ID:</strong> {{this.model_id}} <br>
-                    <br>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
+            <button type="submit" class="btn btn-primary mb-2">All listings</button>
+        </form>        
     </div>
-    <div>        
+    <div>
         <form action="/items/search" method="get">
             <label for="brand_name">Brand Name:</label>
             <input type="text" id="brand_name" name="brand_name">
@@ -82,9 +69,9 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
-    <script src="/js/Simple-Slider.js"></script>   
+    <script src="/js/Simple-Slider.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,12 @@
 {{!-- result.handlebars --}}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>{{title}}</title>
     <!-- Include your CSS and other head elements here -->
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Search cars</h1>
@@ -16,7 +18,7 @@
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
-                
+
                 <label for="modelSelect">Select Model:</label>
                 <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
                     {{#each car_model}}
@@ -26,17 +28,20 @@
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
-        
+
         <div>
             <h2>Car List</h2>
             <ul>
                 {{#each items}}
                 <li>
-                    {{!-- <strong>ID:</strong> {{this.brand_id}} <br> --}}
+                    <strong>Car ID:</strong> {{this.car_id}} <br>
                     <strong>Brand:</strong> {{this.brand_name}} <br>
                     <strong>Model:</strong> {{this.model_name}} <br>
-                    <strong>Car ID:</strong> {{this.car_id}}
-                    {{!-- <strong>Model ID:</strong> {{this.model_id}} <br> --}}
+                    <strong>Price:</strong> {{this.price}} <br>
+                    <strong>Model Year:</strong> {{this.model_year}} <br>
+                    <strong>Mileage:</strong> {{this.mileage}} <br>
+                    <strong>Power Type:</strong> {{this.power_type}} <br>
+                    <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>
                     <br>
                 </li>
                 {{/each}}
@@ -44,4 +49,5 @@
         </div>
     </div>
 </body>
+
 </html>

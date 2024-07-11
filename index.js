@@ -82,6 +82,15 @@ app.get('/models', async (req, res) => {
   }
 });
 
+// app.get('/listings', async (req, res) => {
+//   const listingsQuery = `SELECT * FROM public.cars`;
+//   const listingsResult = await pool.query(listingsQuery);
+//   res.render('listings', {
+//     title: 'All listings',
+//     all_listings: listingsResult.rows
+//   });
+// });
+
 // Contact page
 app.get('/contact', (req, res) => {
   res.render('contact');
