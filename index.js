@@ -48,7 +48,7 @@ app.set('view engine', 'handlebars');
 app.get('/', async (req, res) => {
   try {
     const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-    const modelQuery = 'SELECT brand_id, model_name FROM car_model';
+    const modelQuery = 'SELECT brand_id, model_name FROM car_model ORDER BY model_name ASC';
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 

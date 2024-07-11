@@ -9,11 +9,18 @@ async function searchVehicles(req, res) {
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
 
     let query = `SELECT 
-                    cb.brand_name,
-                    cm.model_name
-    FROM public.car_brand cb
-    INNER JOIN public.car_model cm ON cb.brand_id = cm.brand_id
-    WHERE 1=1`;
+            c.car_id,
+            cb.brand_name,
+            cm.model_name,
+            c.price,
+            c.model_year,
+            c.mileage,
+            c.power_type,
+            c.gearbox_type
+        FROM public.cars c
+        INNER JOIN public.car_brand cb ON c.brand_id = cb.brand_id
+        INNER JOIN public.car_model cm ON c.model_id = cm.model_id
+        WHERE 1=1`;
     const values = [];
     let index = 1;
 
@@ -50,26 +57,26 @@ async function searchVehicles(req, res) {
     }
 };
 
-const addVehicle2 = async (brand, model, price, model_year, mileage, power_type, gearbox_type) => {
+const addVehicle = async (brand, model, price, model_year, mileage, power_type, gearbox_type) => {
     try {
         // Query to retrieve brand_id
-        const brandQuery = 'SELECT brand_id FROM car_brand WHERE brand_name = $1';
-        const brandResult = await pool.query(brandQuery, [brand]);
+        const brandResult = await pool.query('SELECT brand_id FROM car_brand WHERE brand_name = $1', [brand])        
         if (brandResult.rows.length === 0) {
             throw new Error(`Brand '${brand}' not found`);
         }
         const brand_id = brandResult.rows[0].brand_id;
 
         // Query to retrieve model_id
-        const modelQuery = 'SELECT model_id FROM car_model WHERE model_name = $1';
-        const modelResult = await pool.query(modelQuery, [model]);
+        const modelResult = await pool.query('SELECT model_id FROM car_model WHERE model_name = $1', [model])       
         if (modelResult.rows.length === 0) {
             throw new Error(`Model '${model}' not found`);
         }
         const model_id = modelResult.rows[0].model_id;
 
         console.log('Inserting the new vehicle into the database');
-        await pool.query('INSERT INTO public.cars (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        await pool.query(`INSERT INTO public.cars 
+            (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
         [ brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type]);
 
         console.log('Vehicle added successfully:', brand, model);
@@ -92,7 +99,7 @@ const getVehicleById = async (req, res) => {
     console.log(req.params)
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM public.car_brand WHERE brand_id = $1', [id]);
+        const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]); // Return the item found in the database
         } else {
@@ -108,7 +115,7 @@ const getVehicleById = async (req, res) => {
 const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM public.car_brand WHERE brand_id = $1', [id]);
+        await pool.query('DELETE FROM public.cars WHERE car_id = $1', [id]);
         res.send(`Item with ID ${id} has been successfully deleted`);
     } catch (error) {
         console.error('Error deleting item:', error);
@@ -118,10 +125,13 @@ const deleteVehicle = async (req, res) => {
 
 // Function for updating item via ID
 const updateVehicle = async (req, res) => {
-    const { brand_name, model_name } = req.body;
+    const { brand, model, price, model_year, mileage, power_type, gearbox_type } = req.body;
     const { id } = req.params;
     try {
-        const result = await pool.query('UPDATE public.car_brand SET brand_name = $1, model_name = $2 WHERE brand_id = $3 RETURNING *', [brand_name, model_name, id]);
+        const result = await pool.query(`UPDATE public.cars SET 
+            brand = $1, model = $2, price = $3, model_year = $4, 
+            mileage = $5, power_type = $6, gearbox_type = $7 WHERE car_id = $8 RETURNING *`, 
+            [brand, model, price, model_year, mileage, power_type, gearbox_type, id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
         } else {
@@ -133,4 +143,4 @@ const updateVehicle = async (req, res) => {
     }
 };
 
-module.exports = { getVehicleById, deleteVehicle, updateVehicle, searchVehicles, addVehicle2 };
+module.exports = { getVehicleById, deleteVehicle, updateVehicle, searchVehicles, addVehicle };

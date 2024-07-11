@@ -10,7 +10,7 @@ const {
     deleteVehicle,
     updateVehicle,    
     searchVehicles, 
-    addVehicle2       
+    addVehicle       
 } = require("../controllers/items");
 
 
@@ -58,12 +58,12 @@ router.get('/models', async (req, res) => {
 // Router for adding a new vehicle
 router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
-    console.log('Received Data:', req.body);
+    console.log('Received data:', req.body);
 
     const { brand, model, price, model_year, mileage, power_type, gearbox_type } = req.body;
 
     try {
-        const result = await addVehicle2(brand, model, price, model_year, mileage, power_type, gearbox_type);
+        const result = await addVehicle(brand, model, price, model_year, mileage, power_type, gearbox_type);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });
