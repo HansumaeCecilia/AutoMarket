@@ -8,16 +8,16 @@ const router = express.Router();
 const {        
     getVehicleById,
     deleteVehicle,
-    updateVehicle,    
-    searchVehicles, 
-    addVehicle       
+    updateVehicle,   
+    searchVehicles,
+    addVehicle
 } = require("../controllers/items");
 
 
 // EXPRESS ROUTERS TO USE '/controllers' FUNCTIONS
 //------------------------------------------------
 
-// Fetch vehicles from front page
+// Fetch vehicles from front page search
 router.get('/search', async (req, res) => {
     try {
         console.log('GET request received for searching items with query:', req.query.q);
@@ -60,6 +60,7 @@ router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body);
 
+    // Required parameters for new vehicle listing
     const { brand, model, price, model_year, mileage, power_type, gearbox_type } = req.body;
 
     try {
