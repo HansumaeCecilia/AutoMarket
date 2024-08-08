@@ -56,6 +56,7 @@ router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body); // Log received data from Postman
     
+    // Required parameters for new vehicle listing
     const { brand_name, model_name, price, model_year, mileage, power_type, gearbox_type} = req.body;
 
     try {

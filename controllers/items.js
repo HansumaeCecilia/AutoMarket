@@ -11,6 +11,7 @@ async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
 
+    // Search query for selected parameters
     let query = `SELECT
             c.car_id,
             cb.brand_name,
@@ -63,13 +64,14 @@ async function searchVehicles(req, res) {
 
 const addVehicle = async (brand_name, model_name, price, model_year, mileage, power_type, gearbox_type) => {
     try {
-
+        // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_id FROM car_brand WHERE brand_name = $1', [brand_name]);
         if (brandResult.rows.length === 0) {
             throw new Error(`Brand '${brand_name}' not found`);
         }
         const brand_id = brandResult.rows[0].brand_id;
 
+        // Query to retrieve model_id from vehicle database
         const modelResult = await pool.query('SELECT model_id FROM car_model WHERE model_name = $1', [model_name]);
         if (modelResult.rows.length === 0) {
             throw new Error(`Model '${model_name}' not found`);
@@ -77,6 +79,8 @@ const addVehicle = async (brand_name, model_name, price, model_year, mileage, po
         const model_id = modelResult.rows[0].model_id;
 
         console.log('Inserting the new vehicle into the database');
+
+        // Add new vehicle to database with required parameters
         await pool.query('INSERT INTO public.cars (brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
         [  brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type]);
 
@@ -84,6 +88,7 @@ const addVehicle = async (brand_name, model_name, price, model_year, mileage, po
         return 'Vehicle added successfully';
     } catch (error) {
 
+        // PostgreSQL error (23505) for breaking constraints
         if (error.code === '23505') {
             console.log('Vehicle already exists:', brand_name, model_name);
             return 'Vehicle already exists'; 
