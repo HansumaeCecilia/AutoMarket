@@ -7,6 +7,7 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
+    const { minPrice, maxPrice } = req.query;   
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -22,6 +23,7 @@ async function searchVehicles(req, res) {
         INNER JOIN public.car_brand cb ON c.brand_id = cb.brand_id
         INNER JOIN public.car_model cm ON c.model_id = cm.model_id
         WHERE 1=1`;
+
     const values = [];
     let index = 1;
 
@@ -38,23 +40,35 @@ async function searchVehicles(req, res) {
         index += modelIds.length;
     }
 
+    if (minPrice) {
+        query += ` AND c.price >= $${index}`;
+        values.push(parseFloat(minPrice));
+        index += 1;
+    }
+
+    if (maxPrice) {
+        query += ` AND c.price <= $${index}`;
+        values.push(parseFloat(maxPrice));
+        index += 1;
+    }
+
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
         const modelQuery = 'SELECT model_id, model_name FROM car_model';
-        const brandResult = await pool.query(brandQuery);
-        const modelResult = await pool.query(modelQuery);
 
+        const brandResult = await pool.query(brandQuery);
+        const modelResult = await pool.query(modelQuery);        
         const result = await pool.query(query, values);
 
         res.render('results', {
             items: result.rows,
             car_brand: brandResult.rows,
-            car_model: modelResult.rows
+            car_model: modelResult.rows,            
         });
     } catch (error) {
         console.error('Error fetching vehicles:', error);
-        throw error;
+        res.status(500).send("Server error");
     }
 };
 
