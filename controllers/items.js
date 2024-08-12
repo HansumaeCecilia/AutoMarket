@@ -10,6 +10,8 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
+    const minPrice = req.query.min_price ? parseInt(req.query.min_price) : null;
+    const maxPrice = req.query.max_price ? parseInt(req.query.max_price) : null;
 
     // Search query for selected parameters
     let query = `SELECT
@@ -40,6 +42,18 @@ async function searchVehicles(req, res) {
         query += ` AND cm.model_id IN (${modelIds.map((id, i) => `$${index + i}`).join(', ')})`;
         values.push(...modelIds);
         index += modelIds.length;
+    }
+
+    if (minPrice !== null) {
+        query += ` AND c.price >= $${index}`;
+        values.push(minPrice);
+        index++;
+    }
+
+    if (maxPrice !== null) {
+        query += ` AND c.price <= $${index}`;
+        values.push(maxPrice);
+        index++;
     }
 
     // Fetch and render search results
