@@ -10,8 +10,12 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
-    const minPrice = req.query.min_price ? parseInt(req.query.min_price) : null;
-    const maxPrice = req.query.max_price ? parseInt(req.query.max_price) : null;
+    const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null;
+    const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : null;
+    const minYear = req.query.minYear ? parseInt(req.query.minYear) : null;
+    const maxYear = req.query.maxYear ? parseInt(req.query.maxYear) : null;
+    const minMileage = req.query.minMileage ? parseInt(req.query.minMileage) : null;
+    const maxMileage = req.query.maxMileage ? parseInt(req.query.maxMileage) : null;
 
     // Search query for selected parameters
     let query = `SELECT
@@ -53,6 +57,30 @@ async function searchVehicles(req, res) {
     if (maxPrice !== null) {
         query += ` AND c.price <= $${index}`;
         values.push(maxPrice);
+        index++;
+    }
+
+    if (minYear !== null) {
+        query += ` AND c.model_year >= $${index}`;
+        values.push(minYear);
+        index++;
+    }
+
+    if (maxYear !== null) {
+        query += ` AND c.model_year <= $${index}`;
+        values.push(maxYear);
+        index++;
+    }
+
+    if (minMileage !== null) {
+        query += ` AND c.mileage >= $${index}`;
+        values.push(minMileage);
+        index++;
+    }
+
+    if (maxMileage !== null) {
+        query += ` AND c.mileage <= $${index}`;
+        values.push(maxMileage);
         index++;
     }
 
