@@ -31,10 +31,30 @@
                 </select>
 
                 <label for="minPrice">Min Price:</label>
-                <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Type price" min="0">  
+                <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Type min price" min="0">  
 
                 <label for="maxPrice">Max Price:</label>
-                <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Type price" min="0">                                  
+                <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Type max price" min="0">
+
+                <label for="oldestYear">Oldest Year:</label>
+                <input type="number" id="oldestYear" name="oldestYear" class="form-control" placeholder="Type year" min="0">
+
+                <label for="newestYear">Newest Year:</label>
+                <input type="number" id="newestYear" name="newestYear" class="form-control" placeholder="Type year" min="0">
+
+                <label for="minMileage">Min Mileage:</label>
+                <input type="number" id="minMileage" name="minMileage" class="form-control" placeholder="Type min mileage" min="0">
+
+                <label for="maxMileage">Max Mileage:</label>
+                <input type="number" id="maxMileage" name="maxMileage" class="form-control" placeholder="Type max mileage" min="0">  
+
+                <label for="powerType">Select Power Type:</label>
+                <select id="powerType" name="powerType" class="form-control" multiple="multiple">                    
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>                    
+                    <option value="electric">Electric</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>                                                
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
             <button type="submit" class="btn btn-primary mb-2">All listings</button>

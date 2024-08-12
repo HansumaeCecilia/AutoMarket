@@ -9,6 +9,8 @@ $(document).ready(function() {
 
     $('#modelSelect').select2();
 
+    $('powertypeSelect').select2();
+
     // Initially disable the modelSelect dropdown
     $('#modelSelect').prop('disabled', true);
 
