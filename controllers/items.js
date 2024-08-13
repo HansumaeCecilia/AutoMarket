@@ -7,9 +7,9 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
-    const { minPrice, maxPrice } = req.query;   
-    const { oldestYear, newestYear } = req.query;
-    const { minMileage, maxMileage } = req.query;
+    const powerType = req.query.powerType ? (Array.isArray(req.query.powerType) ? req.query.powerType : [req.query.powerType]) : [];
+    const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
+    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage } = req.query;    
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -79,6 +79,18 @@ async function searchVehicles(req, res) {
         index += 1;
     }
 
+    if (powerType.length > 0) {
+        query += ` AND c.power_type IN (${powerType.map((type, i) => `$${index + i}`).join(', ')})`;
+        values.push(...powerType);
+        index += powerType.length;
+    }
+
+    if (gearboxType.length > 0) {
+        query += ` AND c.gearbox_type IN (${gearboxType.map((type, i) => `$${index + i}`).join(', ')})`;
+        values.push(...gearboxType);
+        index += gearboxType.length;
+    }
+
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
@@ -113,9 +125,7 @@ const addVehicle = async (brand, model, price, model_year, mileage, power_type, 
         if (modelResult.rows.length === 0) {
             throw new Error(`Model '${model}' not found`);
         }
-        const model_id = modelResult.rows[0].model_id;
-
-        console.log('Inserting the new vehicle into the database');
+        const model_id = modelResult.rows[0].model_id;        
         
         // Add new vehicle to database with required parameters
         await pool.query(`INSERT INTO public.cars 

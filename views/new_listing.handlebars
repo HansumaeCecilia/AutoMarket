@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>    
+    <title>{{title}}</title>    
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Add new vehicle</h1>
+        <form id="addVehicleForm" action="/items" method="post" class="form-inline mb-4">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="brandSelect">Select Brand:</label>
+                <select id="brandSelect" name="brand" class="form-control" multiple="multiple" required>
+                    {{#each car_brand}}
+                    <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+                    {{/each}}
+                </select>
+
+                <label for="modelSelect">Select Model:</label>
+                <select id="modelSelect" name="model" class="form-control" multiple="multiple" required>
+                    {{#each car_model}}
+                    <option value="{{this.model_id}}">{{this.model_name}}</option>
+                    {{/each}}
+                </select>
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" class="form-control" placeholder="Type Price" min="0" required>                  
+
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="model_year" class="form-control" placeholder="Type year" min="0" required>                
+
+                <label for="mileage">Mileage:</label>
+                <input type="number" id="mileage" name="mileage" class="form-control" placeholder="Type Mileage" min="0" required>                  
+
+                <label for="powerType">Select Power Type:</label>
+                <select id="powerType" name="power_type" class="form-control" multiple="multiple" required>                    
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>                    
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select> 
+
+                <label for="gearboxType">Select Gearbox Type:</label>
+                <select id="gearboxType" name="gearbox_type" class="form-control" multiple="multiple" required>                    
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>                    
+                </select>                                                
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>            
+        </form>        
+    </div>   
+</body>
+
+</html>

@@ -24,7 +24,7 @@
                 </select>
 
                 <label for="modelSelect">Select Model:</label>
-                <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple disabled">
+                <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
                     {{#each car_model}}
                     <option value="{{this.model_id}}">{{this.model_name}}</option>
                     {{/each}}
@@ -50,25 +50,22 @@
 
                 <label for="powerType">Select Power Type:</label>
                 <select id="powerType" name="powerType" class="form-control" multiple="multiple">                    
-                    <option value="petrol">Petrol</option>
-                    <option value="diesel">Diesel</option>                    
-                    <option value="electric">Electric</option>
-                    <option value="hybrid">Hybrid</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>                    
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select> 
+
+                <label for="gearboxType">Select Gearbox Type:</label>
+                <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">                    
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>                    
                 </select>                                                
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
             <button type="submit" class="btn btn-primary mb-2">All listings</button>
         </form>        
-    </div>
-    <div>
-        <form action="/items/search" method="get">
-            <label for="brand_name">Brand Name:</label>
-            <input type="text" id="brand_name" name="brand_name">
-            <label for="model_name">Model Name:</label>
-            <input type="text" id="model_name" name="model_name">
-            <button type="submit">Search</button>
-        </form>
-    </div>
+    </div>   
     <div class="container" style="margin-top:100px;margin-bottom:100px;">
         <div class="row">
             <div class="col-md-12">
