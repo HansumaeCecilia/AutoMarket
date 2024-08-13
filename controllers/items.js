@@ -16,6 +16,8 @@ async function searchVehicles(req, res) {
     const maxYear = req.query.maxYear ? parseInt(req.query.maxYear) : null;
     const minMileage = req.query.minMileage ? parseInt(req.query.minMileage) : null;
     const maxMileage = req.query.maxMileage ? parseInt(req.query.maxMileage) : null;
+    const powerType = req.query.powerType ? (Array.isArray(req.query.powerType) ? req.query.powerType : [req.query.powerType]) : [];
+    const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
 
     // Search query for selected parameters
     let query = `SELECT
@@ -83,6 +85,19 @@ async function searchVehicles(req, res) {
         values.push(maxMileage);
         index++;
     }
+
+    if (powerType.length > 0) {
+        query += ` AND c.power_type IN (${powerType.map((type, i) => `$${index + i}`).join(', ')})`;
+        values.push(...powerType);
+        index += powerType.length;
+    }
+
+    if (gearboxType.length > 0) {
+        query += ` AND c.gearbox_type IN (${gearboxType.map((type, i) => `$${index + i}`).join(', ')})`;
+        values.push(...gearboxType);
+        index += gearboxType.length;
+    }
+
 
     // Fetch and render search results
     try {

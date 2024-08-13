@@ -4,10 +4,20 @@
 //Script for matching models with selected brands in vehicle search
 $(document).ready(function() {
     $('#brandSelect').select2({
-         multiple: true
+        multiple: true
     });
 
-    $('#modelSelect').select2();
+    $('#modelSelect').select2({
+        multiple: true
+    });
+
+    $('#powerType').select2({
+        multiple: true
+    });
+
+    $('#gearboxType').select2({
+        multiple: true
+    });
 
     // Initially disabled the modelSelect dropdown
     $('#modelSelect').prop('disabled', true);

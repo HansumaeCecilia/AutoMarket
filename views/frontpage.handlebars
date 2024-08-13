@@ -48,10 +48,16 @@
 
           <label for="powerType">Käyttövoima:</label>
             <select id="powerType" name="powerType" class="form-control" multiple="multiple">
-                <option value="diesel">Diesel</option>
-                <option value="petrol">Bensiini</option>
-                <option value="electric">Sähkö</option>
-                <option value="hybrid">Hybridi</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Bensiini">Bensiini</option>
+                <option value="Sähkö">Sähkö</option>
+                <option value="Hybridi">Hybridi</option>
+            </select>
+
+          <label for="gearboxType">Vaihteisto:</label>
+            <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
+                <option value="Automaatti">Automaatti</option>
+                <option value="Manuaali">Manuaali</option>
             </select>
 
         </div>
@@ -59,44 +65,30 @@
         <button type="submit" class="btn btn-primary mb-2">Hae</button>
       </form>
     </div>
-    <div>
-      <form action="/items/search" method="get">
-        <label for="brand_name">Auton merkki:</label>
-        <input type="text" id="brand_name" name="brand_name">
-        <label for="model_name">Auton malli:</label>
-        <input type="text" id="model_name" name="model_name">
-        <button type="submit">Hae</button>
-      </form>
-
-      <form action="/items/search" method="get">
-        <button type="submit">Kaikki autot</button>
-      </form>
-    </div>
-
-  <div class="container" style="margin-top:100px;margin-bottom:100px;">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="simple-slider">
-          <div class="swiper-container">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide"
-                style="background: url(img/car-1376190_1280.jpg) center center / cover no-repeat;"></div>
-              <div class="swiper-slide"
-                style="background: url(img/car-2678274_1280.jpg) center center / cover no-repeat;"></div>
-              <div class="swiper-slide"
-                style="background: url(img/ferrari-f430-2930661_1280.jpg) center center / cover no-repeat;"></div>
-              <div class="swiper-slide"
-                style="background: url(&quot;https://www.kbb.com/wp-content/uploads/2022/08/2022-mercedes-amg-eqs-front-left-3qtr.jpg?w=918&quot;) center center / cover no-repeat;">
+    <div class="container" style="margin-top:100px;margin-bottom:100px;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="simple-slider">
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"
+                  style="background: url(img/car-1376190_1280.jpg) center center / cover no-repeat;"></div>
+                <div class="swiper-slide"
+                  style="background: url(img/car-2678274_1280.jpg) center center / cover no-repeat;"></div>
+                <div class="swiper-slide"
+                  style="background: url(img/ferrari-f430-2930661_1280.jpg) center center / cover no-repeat;"></div>
+                <div class="swiper-slide"
+                  style="background: url(&quot;https://www.kbb.com/wp-content/uploads/2022/08/2022-mercedes-amg-eqs-front-left-3qtr.jpg?w=918&quot;) center center / cover no-repeat;">
+                </div>
               </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
     <script src="/js/Simple-Slider.js"></script> 
       <!-- Include jQuery for AJAX functionality -->

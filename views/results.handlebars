@@ -10,14 +10,14 @@
         <h1>Search cars</h1>
         <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
             <div class="form-group mx-sm-3 mb-2">
-                <label for="brandSelect">Select Brand:</label>
+                <label for="brandSelect">Valitse Merkki:</label>
                 <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
                     {{#each car_brand}}
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
                 
-                <label for="modelSelect">Select Model:</label>
+                <label for="modelSelect">Valitse Malli:</label>
                 <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
                     {{#each car_model}}
                     <option value="{{this.model_id}}">{{this.model_name}}</option>
@@ -43,12 +43,18 @@
                 <input type="number" id="maxMileage" name="maxMileage" class="form-control" min="0">
 
                 <label for="powerType">Käyttövoima:</label>
-                <select id="powerType" name="powerType" class="form-control" multiple="multiple">
-                    <option value="diesel">Diesel</option>
-                    <option value="petrol">Petrol</option>
-                    <option value="electric">Electric</option>
-                    <option value="hybrid">Hybrid</option>
-                </select>
+                    <select id="powerType" name="powerType" class="form-control" multiple="multiple">
+                        <option value="Diesel">Diesel</option>
+                        <option value="Bensiini">Bensiini</option>
+                        <option value="Sähkö">Sähkö</option>
+                        <option value="Hybridi">Hybridi</option>
+                    </select>
+
+                <label for="gearboxType">Vaihteisto:</label>
+                    <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
+                        <option value="Automaatti">Automaatti</option>
+                        <option value="Manuaali">Manuaali</option>
+                    </select>
             
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
@@ -59,14 +65,14 @@
             <ul>
                 {{#each items}}
                 <li>
-                    <strong>Car ID:</strong> {{this.car_id}} <br>
-                    <strong>Brand:</strong> {{this.brand_name}} <br>
-                    <strong>Model:</strong> {{this.model_name}} <br>
-                    <strong>Price:</strong> {{this.price}} <br>
-                    <strong>Model Year:</strong> {{this.model_year}} <br>
-                    <strong>Mileage:</strong> {{this.mileage}} <br>
-                    <strong>Power Type:</strong> {{this.power_type}} <br>
-                    <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>
+                    <strong>Auton ID:</strong> {{this.car_id}} <br>
+                    <strong>Merkki:</strong> {{this.brand_name}} <br>
+                    <strong>Malli:</strong> {{this.model_name}} <br>
+                    <strong>Hinta:</strong> {{this.price}} <br>
+                    <strong>Vuosimalli:</strong> {{this.model_year}} <br>
+                    <strong>Kilometrit:</strong> {{this.mileage}} <br>
+                    <strong>Käyttövoima:</strong> {{this.power_type}} <br>
+                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>
                     <br>
                 </li>
                 {{/each}}

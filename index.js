@@ -26,6 +26,9 @@ const port = process.env.PORT || 3000;
 
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
+ // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
@@ -63,6 +66,30 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/new_listing', async (req, res) => {
+  try {
+    const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
+    const modelQuery = 'SELECT brand_id, model_name FROM car_model ORDER BY model_name ASC';
+    const brandResult = await pool.query(brandQuery);
+    const modelResult = await pool.query(modelQuery);
+
+    // Render search form dropdown options on frontpage
+    res.render('new_listing', {
+      title: 'Search cars',
+      car_brand: brandResult.rows,
+      car_model: modelResult.rows
+    });
+  } catch (err) {
+    console.error('Error executing query', err.stack);
+    res.status(500).send('Error fetching data');
+  }
+});
+
+// app.get('/new_listing', (req, res) => {
+//     res.render('new_listing', {
+//       title: 'Add new vehicle',
+//     });
+//   });
 
 app.get('/listings', async (req, res) => {
   const listingsQuery = `SELECT * FROM public.cars`;
