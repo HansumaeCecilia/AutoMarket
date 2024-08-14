@@ -18,6 +18,7 @@ const {
 // Fetch vehicles from front page
 router.get('/search', async (req, res) => {
     try {
+        console.log('GET request received for searching items with query:', req.query);
         await searchVehicles(req, res);
     } catch (error) {
         console.error('Error searching vehicles:', error);

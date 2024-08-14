@@ -46,6 +46,10 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
+app.get('/listing', (req, res) => {
+  res.render('listing');
+});
+
 // Frontpage route and brand&model search options in dropdown menu (alphabetical order)
 app.get('/', async (req, res) => {
   try {
@@ -56,7 +60,7 @@ app.get('/', async (req, res) => {
 
     // Render search form dropdown options on frontpage
     res.render('frontpage', {
-      title: 'Search cars',
+      title: 'Etusivu',
       car_brand: brandResult.rows,
       car_model: modelResult.rows
     });
@@ -75,7 +79,7 @@ app.get('/new_listing', async (req, res) => {
 
     // Render search form dropdown options on frontpage
     res.render('new_listing', {
-      title: 'Search cars',
+      title: 'Uusi ilmoitus',
       car_brand: brandResult.rows,
       car_model: modelResult.rows
     });
@@ -85,18 +89,13 @@ app.get('/new_listing', async (req, res) => {
   }
 });
 
-// app.get('/new_listing', (req, res) => {
-//     res.render('new_listing', {
-//       title: 'Add new vehicle',
-//     });
-//   });
 
 app.get('/listings', async (req, res) => {
   const listingsQuery = `SELECT * FROM public.cars`;
   const listingsResult = await pool.query(listingsQuery);
 
   res.render('listings', {
-    title: 'All Listings',
+    title: 'Kaikki autot',
     all_listings: listingsResult.rows
   });
 });

@@ -10,7 +10,7 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
-    const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null;
+    const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null; 
     const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : null;
     const minYear = req.query.minYear ? parseInt(req.query.minYear) : null;
     const maxYear = req.query.maxYear ? parseInt(req.query.maxYear) : null;
@@ -102,7 +102,7 @@ async function searchVehicles(req, res) {
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-        const modelQuery = 'SELECT model_id, model_name FROM car_model';
+        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY model_name ASC';
         const brandResult = await pool.query(brandQuery);
         const modelResult = await pool.query(modelQuery);
 
@@ -118,27 +118,6 @@ async function searchVehicles(req, res) {
         res.status(500).send('Internal server error');
     }
 };
-
-// const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
-//     try {
-//         console.log('Inserting the new vehicle into the database');
-
-//         // Add new vehicle to database with required parameters
-//         await pool.query('INSERT INTO public.cars (brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-//         [brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type]);
-
-//         console.log('Vehicle added successfully:', brand_id, model_id);
-//         return 'Vehicle added successfully';
-//     } catch (error) {
-//         if (error.code === '23505') {
-//             console.log('Vehicle already exists:', brand_id, model_id);
-//             return 'Vehicle already exists';
-//         }
-//         console.error('Error handling vehicle:', error.message);
-//         console.error('Error stack:', error.stack);
-//         throw new Error(error.message);
-//     }
-// };
 
 const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
     try {
