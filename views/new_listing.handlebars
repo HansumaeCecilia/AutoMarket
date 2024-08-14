@@ -40,17 +40,17 @@
         <label for="model_name">Merkki:</label>
         <input type="text" id="model_name" name="model_name" class="form-control" required> --}}
 
-        <label for="brand_name">Valitse Merkki:</label>
-          <select id="brand_name" name="brand_name" class="form-control" multiple="multiple">
+        <label for="brandSelect">Valitse Merkki:</label>
+          <select id="brandSelect" name="brand_id" class="form-control" multiple="multiple">
             {{#each car_brand}}
-            <option value="{{this.brand_name}}">{{this.brand_name}}</option>
+            <option value="{{this.brand_id}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
 
-        <label for="model_name">Valitse Malli:</label>
-          <select id="model_name" name="model_name" class="form-control" multiple="multiple disabled">
+        <label for="modelSelect">Valitse Malli:</label>
+          <select id="modelSelect" name="model_id" class="form-control" multiple="multiple disabled">
             {{#each car_model}}
-            <option value="{{this.model_name}}">{{this.model_name}}</option>
+            <option value="{{this.model_id}}">{{this.model_name}}</option>
             {{/each}}
           </select>
 
@@ -82,7 +82,7 @@
 
     {{!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-
+    <script src="/scripts/scripts.js"></script> 
 </body>
 </html>
 

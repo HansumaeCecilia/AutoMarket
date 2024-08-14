@@ -119,21 +119,42 @@ async function searchVehicles(req, res) {
     }
 };
 
-const addVehicle = async (brand_name, model_name, price, model_year, mileage, power_type, gearbox_type) => {
+// const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
+//     try {
+//         console.log('Inserting the new vehicle into the database');
+
+//         // Add new vehicle to database with required parameters
+//         await pool.query('INSERT INTO public.cars (brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+//         [brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type]);
+
+//         console.log('Vehicle added successfully:', brand_id, model_id);
+//         return 'Vehicle added successfully';
+//     } catch (error) {
+//         if (error.code === '23505') {
+//             console.log('Vehicle already exists:', brand_id, model_id);
+//             return 'Vehicle already exists';
+//         }
+//         console.error('Error handling vehicle:', error.message);
+//         console.error('Error stack:', error.stack);
+//         throw new Error(error.message);
+//     }
+// };
+
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
     try {
         // Query to retrieve brand_id from vehicle database
-        const brandResult = await pool.query('SELECT brand_id FROM car_brand WHERE brand_name = $1', [brand_name]);
+        const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id]);
         if (brandResult.rows.length === 0) {
-            throw new Error(`Brand '${brand_name}' not found`);
+            throw new Error(`Brand '${brand_id}' not found`);
         }
-        const brand_id = brandResult.rows[0].brand_id;
+        const brand_name = brandResult.rows[0].brand_name;
 
         // Query to retrieve model_id from vehicle database
-        const modelResult = await pool.query('SELECT model_id FROM car_model WHERE model_name = $1', [model_name]);
+        const modelResult = await pool.query('SELECT model_name FROM car_model WHERE model_id = $1', [model_id]);
         if (modelResult.rows.length === 0) {
-            throw new Error(`Model '${model_name}' not found`);
+            throw new Error(`Model '${model_id}' not found`);
         }
-        const model_id = modelResult.rows[0].model_id;
+        const model_name = modelResult.rows[0].model_name;
 
         console.log('Inserting the new vehicle into the database');
 
