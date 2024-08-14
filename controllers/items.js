@@ -94,7 +94,7 @@ async function searchVehicles(req, res) {
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-        const modelQuery = 'SELECT model_id, model_name FROM car_model';
+        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY brand_name ASC';
 
         const brandResult = await pool.query(brandQuery);
         const modelResult = await pool.query(modelQuery);        
@@ -111,29 +111,29 @@ async function searchVehicles(req, res) {
     }
 };
 
-const addVehicle = async (brand, model, price, model_year, mileage, power_type, gearbox_type) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
     try {
         // Query to retrieve brand_id from vehicle database
-        const brandResult = await pool.query('SELECT brand_id FROM car_brand WHERE brand_name = $1', [brand])        
+        const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])        
         if (brandResult.rows.length === 0) {
-            throw new Error(`Brand '${brand}' not found`);
+            throw new Error(`Brand '${brand_id}' not found`);
         }
-        const brand_id = brandResult.rows[0].brand_id;
+        const brand_name = brandResult.rows[0].brand_name;
 
         // Query to retrieve model_id from vehicle database
-        const modelResult = await pool.query('SELECT model_id FROM car_model WHERE model_name = $1', [model])       
+        const modelResult = await pool.query('SELECT model_name FROM car_model WHERE model_id = $1', [model_id])       
         if (modelResult.rows.length === 0) {
-            throw new Error(`Model '${model}' not found`);
+            throw new Error(`Model '${model_id}' not found`);
         }
-        const model_id = modelResult.rows[0].model_id;        
+        const model_name = modelResult.rows[0].model_name;        
         
         // Add new vehicle to database with required parameters
         await pool.query(`INSERT INTO public.cars 
             (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [ brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type]);
+        [ brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type]);
 
-        console.log('Vehicle added successfully:', brand, model);
+        console.log('Vehicle added successfully:', brand_name, model_name);
         return 'Vehicle added successfully';
     } catch (error) {
 

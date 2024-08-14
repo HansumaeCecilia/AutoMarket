@@ -61,10 +61,10 @@ router.post("/", async (req, res) => {
     console.log('Received data:', req.body);
 
     // Required parameters for new vehicle listing
-    const { brand, model, price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type } = req.body;
 
     try {
-        const result = await addVehicle(brand, model, price, model_year, mileage, power_type, gearbox_type);
+        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });

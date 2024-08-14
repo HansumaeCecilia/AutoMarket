@@ -11,16 +11,16 @@
         <form id="addVehicleForm" action="/items" method="post" class="form-inline mb-4">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="brandSelect">Select Brand:</label>
-                <select id="brandSelect" name="brand" class="form-control" multiple="multiple" required>
+                <select id="brandSelect" name="brand_id" class="form-control" multiple="multiple" required>
                     {{#each car_brand}}
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
 
                 <label for="modelSelect">Select Model:</label>
-                <select id="modelSelect" name="model" class="form-control" multiple="multiple" required>
+                <select id="modelSelect" name="model_id" class="form-control" multiple="multiple" required>
                     {{#each car_model}}
-                    <option value="{{this.model_id}}">{{this.model_name}}</option>
+                    <option value="{{this.model_id}}" data-brand="{{this.brand_id}}">{{this.model_name}}</option>
                     {{/each}}
                 </select>
 
