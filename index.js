@@ -46,6 +46,7 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
+// Listing page route
 app.get('/listing', (req, res) => {
   res.render('listing');
 });
@@ -70,6 +71,7 @@ app.get('/', async (req, res) => {
   }
 });
 
+// New listing route
 app.get('/new_listing', async (req, res) => {
   try {
     const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
@@ -89,7 +91,7 @@ app.get('/new_listing', async (req, res) => {
   }
 });
 
-
+// All listings route
 app.get('/listings', async (req, res) => {
   const listingsQuery = `SELECT * FROM public.cars`;
   const listingsResult = await pool.query(listingsQuery);
@@ -105,6 +107,7 @@ app.get('/models', async (req, res) => {
   const brandIds = Array.isArray(req.query.brandIds) ? req.query.brandIds.map(id => parseInt(id, 10)) : [parseInt(req.query.brandIds, 10)];
   const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
 
+  // If brand isn't selected, give error
   if(brandIds.length === 0) {
     return res.status(400).send('Brand ID is required');
   }

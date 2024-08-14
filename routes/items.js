@@ -36,6 +36,7 @@ router.get('/items/search', async (req, res) => {
     }
 });
 
+
 router.get('/models', async (req, res) => {
     const brandId = req.query.brandId;
     if (!brandId) {
@@ -52,21 +53,6 @@ router.get('/models', async (req, res) => {
     }
 });
 
-// // Router to adding a new vehicle
-// router.post("/", async (req, res) => {
-//     console.log('POST request received for adding an item');
-//     console.log('Received data:', req.body); // Log received data from Postman
-    
-//     const { brand_name, model_name, price, model_year, mileage, power_type, gearbox_type } = req.body;
-
-//     // Here brand_name and model_name actually contain brand_id and model_id
-//     try {
-//         const result = await addVehicle(brand_name, model_name, price, model_year, mileage, power_type, gearbox_type);
-//         res.status(200).send(result);
-//     } catch (error) {
-//         res.status(500).send({error:error.message});
-//     }
-// });
 
 // Router to adding a new vehicle
 router.post("/", async (req, res) => {
