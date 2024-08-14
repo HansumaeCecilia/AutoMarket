@@ -43,14 +43,14 @@
         <label for="brand_name">Valitse Merkki:</label>
           <select id="brand_name" name="brand_name" class="form-control" multiple="multiple">
             {{#each car_brand}}
-            <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+            <option value="{{this.brand_name}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
 
         <label for="model_name">Valitse Malli:</label>
           <select id="model_name" name="model_name" class="form-control" multiple="multiple disabled">
             {{#each car_model}}
-            <option value="{{this.model_id}}">{{this.model_name}}</option>
+            <option value="{{this.model_name}}">{{this.model_name}}</option>
             {{/each}}
           </select>
 
