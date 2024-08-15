@@ -19,6 +19,7 @@ const fileUpload = require('express-fileupload');
 
 // Pool for database connection
 const { pool } = require('./db');
+const { getVehicleById } = require('./controllers/items');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -51,10 +52,47 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-// Listing page route
-app.get('/listing', (req, res) => {
-  res.render('listing');
+// Fetch and render unique listing data dynamically
+app.get('/items/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const vehicle = await getVehicleById(id);
+    if (vehicle) {
+      res.render('listing', {
+        title: `${vehicle.brand_name} ${vehicle.model_name}`,
+                imageUrl: `/car_images/${id}`,
+                specs: `Year: ${vehicle.model_year}, Mileage: ${vehicle.mileage}, Power: ${vehicle.power_type}, Gearbox: ${vehicle.gearbox_type}`,
+                description: `Brand: ${vehicle.brand_name}, Model: ${vehicle.model_name}`,
+                price: `Price: $${vehicle.price}`
+      });
+    } else {
+      res.status(404).send('Vehicle not found');
+    }
+  } catch (error) {
+    res.status(500).send('Server error!')
+  }
 });
+
+// // Route for fetching image
+// app.get('/car_images/:car_id', async (req, res) => {
+//   const { car_id } = req.params;
+//   try {
+//     const result = await pool.query('SELECT * FROM car_images WHERE car_id = $1', [car_id]);
+
+//     if (result.rows.length === 0) {
+//       return res.status(400).send('Image not found');
+//     }
+
+//     const image = result.rows[0].image1;
+
+//     res.setHeader('Content-Type', 'image/jpeg');
+//     res.send(image);
+//   } catch (error) {
+//     console.error('Error fetching image:', error);
+//     res.status(500).send('Error fetching image');
+//   }
+// });
 
 // Frontpage route and brand&model search options in dropdown menu (alphabetical order)
 app.get('/', async (req, res) => {

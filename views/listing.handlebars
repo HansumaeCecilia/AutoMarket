@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title></title>
+    <title>{{title}}</title>
     <style>
         img {
-            width: 50%;
-            padding: 8%;
+            width: 30%;
+            margin: 5%;
+            position: left;
         }
     </style>
 </head>
 
 <body>
-    <img src="/img/car-2678274_1280.jpg">
+    <div class="listing-container">
+        <h1 class="listing-title">{{title}}</h1>
+        <img src={{imageUrl}} alt="Car Image">
+        <p class="vehicle-specs">{{specs}}</p>
+        <p class="listing-description">{{description}}</p>
+        <p class="price">{{price}}</p>
+    </div> 
 </body>
+
+</html>

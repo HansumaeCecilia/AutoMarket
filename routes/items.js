@@ -74,9 +74,14 @@ router.post("/", async (req, res) => {
 });
 
 // Router to fetching vehicle by ID
-router.get("/:id", (req, res) => {
-    console.log('GET request received for item with id:', req.params.id);
-    getVehicleById(req, res);
+router.get("/items/:id", async (req, res) => {
+    try {
+        console.log('GET request received for item with id:', req.params.id);
+        await getVehicleById(req, res);
+    } catch (error) {
+        console.error('Error searching vehicle:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // Router for deleting vehicle by ID

@@ -169,19 +169,14 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 
 
 // Function for fetching item via ID
-const getVehicleById = async (req, res) => {
-    console.log(req.params)
-    const { id } = req.params;
+const getVehicleById = async (id) => {
+
     try {
-        const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
-        if (result.rows.length > 0) {
-            res.json(result.rows[0]); // Return the item found in the database
-        } else {
-            res.status(404).send('Vehicle not found');
-        }
+        const result = await pool.query('SELECT cars.*, car_images.image1 FROM public.cars LEFT JOIN car_images ON cars.car_id = car_images.car_id WHERE cars.car_id = $1', [id]);
+        return result.rows[0];
     } catch (error) {
         console.error('Error fetching ID:', error);
-        res.status(500).send('Internal server error');
+        throw error;
     }
 };
 
