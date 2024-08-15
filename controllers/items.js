@@ -119,7 +119,7 @@ async function searchVehicles(req, res) {
     }
 };
 
-const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image) => {
     try {
         // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id]);
@@ -138,11 +138,21 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         console.log('Inserting the new vehicle into the database');
 
         // Add new vehicle to database with required parameters
-        await pool.query('INSERT INTO public.cars (brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        const result = await pool.query('INSERT INTO public.cars (brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id',
         [  brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type]);
 
+        const carId = result.rows[0].car_id;
+
         console.log('Vehicle added successfully:', brand_name, model_name);
-        return 'Vehicle added successfully';
+
+        // Check if the image is uploaded
+        if (image) {
+            // Add it to the db
+            await pool.query('INSERT INTO car_images (car_id, image1) VALUES ($1, $2)', [carId, image.data]);
+            console.log('Image added successfully');
+        } 
+
+        return 'Vehicle and image added successfully';
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints

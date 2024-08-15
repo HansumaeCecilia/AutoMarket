@@ -7,13 +7,7 @@
 </head>
 <body>
     <h1>Uusi Myynti-ilmoitus</h1>
-    <form id="New_Listing_Form" action="/items" method="POST">
-        {{!-- <label for="brand_name">Merkki:</label>
-        <input type="text" id="brand_name" name="brand_name" class="form-control" required/>
-
-        <label for="model_name">Merkki:</label>
-        <input type="text" id="model_name" name="model_name" class="form-control" required> --}}
-
+    <form id="New_Listing_Form" action="/items" method="POST" enctype="multipart/form-data">
         <label for="brandSelect">Valitse Merkki:</label>
           <select id="brandSelect" name="brand_id" class="form-control" multiple="multiple">
             {{#each car_brand}}
@@ -51,11 +45,12 @@
             <option value="Manuaali">Manuaali</option>
         </select>
 
+        <label for="image">Kuva:</label>
+        <input type="file" id="image" name="image" class="form-control"/>
+
         <button type="submit">Lisää auto</button>
     </form>
 
-    {{!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
     <script src="/scripts/scripts.js"></script> 
 </body>
 </html>

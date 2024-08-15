@@ -14,6 +14,9 @@ const userRoutes = require('./routes/userRoutes');
 // .env file loader
 const dotenv = require('dotenv');
 
+// express-fileupload
+const fileUpload = require('express-fileupload');
+
 // Pool for database connection
 const { pool } = require('./db');
 
@@ -29,6 +32,8 @@ app.use(bodyParser.json());
  // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Use express-fileupload for handling images
+app.use(fileUpload());
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
