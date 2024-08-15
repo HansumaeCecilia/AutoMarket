@@ -9,7 +9,9 @@ async function searchVehicles(req, res) {
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
     const powerType = req.query.powerType ? (Array.isArray(req.query.powerType) ? req.query.powerType : [req.query.powerType]) : [];
     const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
-    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage } = req.query;    
+
+    // Variables to type into search form
+    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage } = req.query;
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -94,23 +96,24 @@ async function searchVehicles(req, res) {
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY brand_name ASC';
+        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY model_name ASC';
 
         const brandResult = await pool.query(brandQuery);
-        const modelResult = await pool.query(modelQuery);        
+        const modelResult = await pool.query(modelQuery);
         const result = await pool.query(query, values);
 
         res.render('results', {
             items: result.rows,
             car_brand: brandResult.rows,
-            car_model: modelResult.rows,            
+            car_model: modelResult.rows,
         });
-    } catch (error) {
-        console.error('Error fetching vehicles:', error);
+    } catch (err) {
+        console.error('Error fetching vehicles:', err);
         res.status(500).send("Server error");
     }
 };
 
+// Function for adding new vehicle listings into database
 const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
     try {
         // Query to retrieve brand_id from vehicle database
@@ -149,24 +152,35 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 };
 
 
-// Function for fetching item via ID
-const getVehicleById = async (req, res) => {
-    console.log(req.params)
-    const { id } = req.params;
+// Function for fetching vehicle via ID
+const getVehicleById = async (id) => {        
     try {
         const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
-        if (result.rows.length > 0) {
-            res.json(result.rows[0]); // Return the item found in the database
-        } else {
-            res.status(404).send('Item not found');
-        }
+        return result.rows[0];
     } catch (error) {
-        console.error('Error fetching ID:', error);
-        res.status(500).send('Internal server error');
+        console.error('Error fetching vehicle by ID:', error);
+        throw error;
     }
 };
 
-// Function for deleting item via ID
+// // Function for fetching vehicle via ID
+// const getListingById = async (req, res) => {
+//     console.log(req.params)
+//     const { id } = req.params;
+//     try {
+//         const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
+//         if (result.rows.length > 0) {
+//             res.json(result.rows[0]); // Return the item found in the database
+//         } else {
+//             res.status(404).send('Item not found');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching listing:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
+
+// Function for deleting vehicle via ID
 const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
@@ -178,7 +192,7 @@ const deleteVehicle = async (req, res) => {
     }
 };
 
-// Function for updating item via ID
+// Function for updating vehicle via ID
 const updateVehicle = async (req, res) => {
     const { brand, model, price, model_year, mileage, power_type, gearbox_type } = req.body;
     const { id } = req.params;

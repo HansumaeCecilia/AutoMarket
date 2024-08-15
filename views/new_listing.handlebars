@@ -20,7 +20,7 @@
                 <label for="modelSelect">Select Model:</label>
                 <select id="modelSelect" name="model_id" class="form-control" multiple="multiple" required>
                     {{#each car_model}}
-                    <option value="{{this.model_id}}" data-brand="{{this.brand_id}}">{{this.model_name}}</option>
+                    <option value="{{this.model_id}}">{{this.model_name}}</option>
                     {{/each}}
                 </select>
 

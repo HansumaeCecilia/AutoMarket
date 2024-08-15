@@ -6,11 +6,11 @@ const router = express.Router();
 
 // Imports from 'controllers'
 const {        
-    getVehicleById,
     deleteVehicle,
     updateVehicle,   
     searchVehicles,
-    addVehicle
+    addVehicle,
+    getVehicleById,
 } = require("../controllers/items");
 
 
@@ -20,7 +20,7 @@ const {
 // Fetch vehicles from front page search
 router.get('/search', async (req, res) => {
     try {
-        console.log('GET request received for searching items with query:', req.query.q);
+        console.log('GET request received for searching items with query:', req.query);
         await searchVehicles(req, res);
     } catch (error) {
         console.error('Error searching vehicles:', error);
@@ -39,6 +39,7 @@ router.get('items/search', async (req, res) => {
     }
 });
 
+// Fetch models for search dropdown
 router.get('/models', async (req, res) => {
     const brandId = req.query.brandId;
     if (!brandId) {
@@ -72,9 +73,14 @@ router.post("/", async (req, res) => {
 });
 
 // Router for fetching vehicle by ID
-router.get("/:id", (req, res) => {
-    console.log('GET request received for item with id:', req.params.id);
-    getVehicleById(req, res);
+router.get('/items/:id', async (req, res) => {
+    try {
+        console.log('GET request received for searching with query (id):', req.params.id);
+        await getVehicleById(req, res);
+    } catch (error) {
+        console.error('Error searching vehicles:', error);
+        res.status(500).send('Internal server error.');
+    }
 });
 
 // Router for deleting vehicle by ID

@@ -19,6 +19,7 @@ const dotenv = require('dotenv');
 
 // Pool import for db connection and queries
 const { pool } = require('./db'); 
+const { getVehicleById } = require('./controllers/items');
 
 // APP SETTINGS
 // -----------------------------------------
@@ -87,11 +88,53 @@ app.get('/models', async (req, res) => {
   }
 });
 
+// Result page for all listings
+app.get('/listings', async (req, res) => {
+  const listingsQuery = 'SELECT * FROM public.cars';
+  const listingsResult = await pool.query(listingsQuery);
+
+  res.render('listings', {
+    title: 'All Listings',
+    all_listings: listingsResult.rows
+  });
+});
+
 // Contact page
 app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
+// 
+app.get('/items/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const vehicle = await getVehicleById(id);
+    if (vehicle) {
+      res.render('listing', {
+        title: `${vehicle.brand} ${vehicle.model}`, // Set title dynamically
+                specs: `Year: ${vehicle.model_year}, Mileage: ${vehicle.mileage}, Power: ${vehicle.power_type}, Gearbox: ${vehicle.gearbox_type}`,
+                description: `Brand: ${vehicle.brand}, Model: ${vehicle.model}`,
+                price: `Price: $${vehicle.price}`
+      });
+    } else {
+      res.status(404).send('Vehicle not found');
+    }
+  } catch (error) {
+    res.status(500).send('Server error!')
+  }
+});
+
+// // Listing page route
+// app.get('/listing', (req, res) => {
+//   res.render('listing');
+// });
+
+// app.get('/items/:id', (req, res) => {
+//   res.render('listing');
+// });
+
+// Fetch brands and models from database for adding new listings via form
 app.get('/new_listing', async (req, res) => {
   try {
     const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
@@ -99,7 +142,7 @@ app.get('/new_listing', async (req, res) => {
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 
-    // Render search form dropdown options on frontpage
+    // Render form dropdown options on frontpage
     res.render('new_listing', {
       title: 'Add new vehicle',
       car_brand: brandResult.rows,
