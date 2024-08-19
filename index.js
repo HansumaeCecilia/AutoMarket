@@ -59,12 +59,19 @@ app.get('/items/:id', async (req, res) => {
   try {
     const vehicle = await getVehicleById(id);
     if (vehicle) {
+      const imageBase64 = vehicle.image.toString('base64'); // Muunnetaan kuva base64-muotoon
+      const mimeType = 'image/jpeg'; 
       res.render('listing', {
-        title: `${vehicle.brand_name} ${vehicle.model_name}`,
-                imageUrl: `/car_images/${id}`,
-                specs: `Year: ${vehicle.model_year}, Mileage: ${vehicle.mileage}, Power: ${vehicle.power_type}, Gearbox: ${vehicle.gearbox_type}`,
-                description: `Brand: ${vehicle.brand_name}, Model: ${vehicle.model_name}`,
-                price: `Price: $${vehicle.price}`
+        title: `${vehicle.brand_name} ${vehicle.model_name}`, // Set information dynamically
+                specs: `
+            <div>Price: ${vehicle.price}</div>
+            <div>Year: ${vehicle.model_year}</div>
+            <div>Mileage: ${vehicle.mileage}</div>
+            <div>Power: ${vehicle.power_type}</div>
+            <div>Gearbox: ${vehicle.gearbox_type}</div>
+            <div><img src="data:${mimeType};base64,${imageBase64}"</div>
+        `,
+        description: `${vehicle.description}`
       });
     } else {
       res.status(404).send('Vehicle not found');
@@ -73,26 +80,6 @@ app.get('/items/:id', async (req, res) => {
     res.status(500).send('Server error!')
   }
 });
-
-// // Route for fetching image
-// app.get('/car_images/:car_id', async (req, res) => {
-//   const { car_id } = req.params;
-//   try {
-//     const result = await pool.query('SELECT * FROM car_images WHERE car_id = $1', [car_id]);
-
-//     if (result.rows.length === 0) {
-//       return res.status(400).send('Image not found');
-//     }
-
-//     const image = result.rows[0].image1;
-
-//     res.setHeader('Content-Type', 'image/jpeg');
-//     res.send(image);
-//   } catch (error) {
-//     console.error('Error fetching image:', error);
-//     res.status(500).send('Error fetching image');
-//   }
-// });
 
 // Frontpage route and brand&model search options in dropdown menu (alphabetical order)
 app.get('/', async (req, res) => {

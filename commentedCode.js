@@ -567,3 +567,24 @@
 //         res.status(500).send('Internal server error');
 //     }
 // };
+
+// // Route for fetching image
+// app.get('/items/car_images/:car_id', async (req, res) => {
+//   const { car_id } = req.params;
+//   try {
+//     const result = await pool.query('SELECT * FROM car_images WHERE car_id = $1', [car_id]);
+
+//     if (result.rows.length === 0) {
+//       return res.status(404).send('Image not found');
+//     }
+
+//     const image = result.rows[0].image;
+//     const mimeType = 'image/jpeg';
+
+//     res.setHeader('Content-Type', 'mimeType');
+//     res.send(image);
+//   } catch (error) {
+//     console.error('Error fetching image:', error);
+//     res.status(500).send('Error fetching image');
+//   }
+// });

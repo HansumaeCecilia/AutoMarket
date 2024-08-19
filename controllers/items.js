@@ -148,7 +148,7 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         // Check if the image is uploaded
         if (image) {
             // Add it to the db
-            await pool.query('INSERT INTO car_images (car_id, image1) VALUES ($1, $2)', [carId, image.data]);
+            await pool.query('INSERT INTO car_images (car_id, image) VALUES ($1, $2)', [carId, image.data]);
             console.log('Image added successfully');
         } 
 
@@ -172,7 +172,7 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 const getVehicleById = async (id) => {
 
     try {
-        const result = await pool.query('SELECT cars.*, car_images.image1 FROM public.cars LEFT JOIN car_images ON cars.car_id = car_images.car_id WHERE cars.car_id = $1', [id]);
+        const result = await pool.query('SELECT cars.*, car_images.image FROM public.cars LEFT JOIN car_images ON cars.car_id = car_images.car_id WHERE cars.car_id = $1', [id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching ID:', error);
