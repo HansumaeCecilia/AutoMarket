@@ -17,6 +17,9 @@ const userRoutes = require('./routes/userRoutes');
 // .env file loader
 const dotenv = require('dotenv');
 
+// express-fileupload
+const fileUpload = require('express-fileupload');
+
 // Pool import for db connection and queries
 const { pool } = require('./db'); 
 const { getVehicleById } = require('./controllers/items');
@@ -38,6 +41,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
+
+// Use express-fileupload for handling images
+app.use(fileUpload());
 
 // Routes to use functions
 app.use('/items', itemRoutes);
@@ -104,18 +110,26 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-// 
+// Fetch and render unique listing data dynamically
 app.get('/items/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
     const vehicle = await getVehicleById(id);
     if (vehicle) {
+      const imageBase64 = vehicle.image.toString('base64');
+      const mimeType = 'image/jpeg';
       res.render('listing', {
-        title: `${vehicle.brand} ${vehicle.model}`, // Set title dynamically
-                specs: `Year: ${vehicle.model_year}, Mileage: ${vehicle.mileage}, Power: ${vehicle.power_type}, Gearbox: ${vehicle.gearbox_type}`,
-                description: `Brand: ${vehicle.brand}, Model: ${vehicle.model}`,
-                price: `Price: $${vehicle.price}`
+        title: `${vehicle.brand} ${vehicle.model}`, // Set information dynamically
+                specs: `
+            <div>Price: ${vehicle.price}</div>
+            <div>Year: ${vehicle.model_year}</div>
+            <div>Mileage: ${vehicle.mileage}</div>
+            <div>Power: ${vehicle.power_type}</div>
+            <div>Gearbox: ${vehicle.gearbox_type}</div>
+            <div><img src="data:${mimeType};base64,${imageBase64}"</div>
+        `,
+        description: `${vehicle.description}`
       });
     } else {
       res.status(404).send('Vehicle not found');
@@ -124,15 +138,6 @@ app.get('/items/:id', async (req, res) => {
     res.status(500).send('Server error!')
   }
 });
-
-// // Listing page route
-// app.get('/listing', (req, res) => {
-//   res.render('listing');
-// });
-
-// app.get('/items/:id', (req, res) => {
-//   res.render('listing');
-// });
 
 // Fetch brands and models from database for adding new listings via form
 app.get('/new_listing', async (req, res) => {

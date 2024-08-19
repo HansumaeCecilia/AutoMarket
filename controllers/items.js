@@ -114,7 +114,7 @@ async function searchVehicles(req, res) {
 };
 
 // Function for adding new vehicle listings into database
-const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image) => {
     try {
         // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])        
@@ -129,15 +129,26 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
             throw new Error(`Model '${model_id}' not found`);
         }
         const model_name = modelResult.rows[0].model_name;        
+
+        console.log('Inserting the new vehicle into the database');
         
         // Add new vehicle to database with required parameters
-        await pool.query(`INSERT INTO public.cars 
+        const result = await pool.query(`INSERT INTO public.cars 
             (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [ brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type]);
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id`,
+        [ brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type ]);
 
+        const carId = result.rows[0].car_id
         console.log('Vehicle added successfully:', brand_name, model_name);
-        return 'Vehicle added successfully';
+        
+        // Check if image has been uploaded
+        if (image) {
+            // Add to DB
+            await pool.query('INSERT INTO car_images (car_id, image) VALUES ($1, $2)', [carId, image.data]);
+            console.log('Image added successfully');
+        }
+
+        return 'Vehicle and image added successully';        
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints
@@ -155,30 +166,16 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 // Function for fetching vehicle via ID
 const getVehicleById = async (id) => {        
     try {
-        const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
+        const result = await pool.query(`SELECT cars.*, car_images.image FROM 
+            public.cars LEFT JOIN car_images ON 
+            cars.car_id = car_images.car_id WHERE 
+            cars.car_id = $1`, [id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching vehicle by ID:', error);
         throw error;
     }
 };
-
-// // Function for fetching vehicle via ID
-// const getListingById = async (req, res) => {
-//     console.log(req.params)
-//     const { id } = req.params;
-//     try {
-//         const result = await pool.query('SELECT * FROM public.cars WHERE car_id = $1', [id]);
-//         if (result.rows.length > 0) {
-//             res.json(result.rows[0]); // Return the item found in the database
-//         } else {
-//             res.status(404).send('Item not found');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching listing:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
 
 // Function for deleting vehicle via ID
 const deleteVehicle = async (req, res) => {

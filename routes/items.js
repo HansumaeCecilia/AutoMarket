@@ -64,8 +64,11 @@ router.post("/", async (req, res) => {
     // Required parameters for new vehicle listing
     const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type } = req.body;
 
+    // Check if image has been sent
+    const image = req.files ? req.files.image : null;
+
     try {
-        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type);
+        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });
@@ -78,7 +81,7 @@ router.get('/items/:id', async (req, res) => {
         console.log('GET request received for searching with query (id):', req.params.id);
         await getVehicleById(req, res);
     } catch (error) {
-        console.error('Error searching vehicles:', error);
+        console.error('Error searching vehicle:', error);
         res.status(500).send('Internal server error.');
     }
 });
