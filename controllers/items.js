@@ -138,7 +138,9 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         console.log('Inserting the new vehicle into the database');
 
         // Add new vehicle to database with required parameters
-        const result = await pool.query('INSERT INTO public.cars (brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id',
+        const result = await pool.query(`INSERT INTO public.cars 
+            (brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id`,
         [  brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type]);
 
         const carId = result.rows[0].car_id;
@@ -172,7 +174,10 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 const getVehicleById = async (id) => {
 
     try {
-        const result = await pool.query('SELECT cars.*, car_images.image FROM public.cars LEFT JOIN car_images ON cars.car_id = car_images.car_id WHERE cars.car_id = $1', [id]);
+        const result = await pool.query(`SELECT cars.*, car_images.image 
+            FROM public.cars 
+            LEFT JOIN car_images ON cars.car_id = car_images.car_id 
+            WHERE cars.car_id = $1`, [id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching ID:', error);
@@ -198,7 +203,8 @@ const updateVehicle = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query(`UPDATE public.cars SET brand_name = $1, model_name = $2,
-             price = $3, model_year = $4, mileage = $5, power_type = $6, gearbox_type = $7 WHERE car_id = $8 RETURNING *`, [brand_name, model_name, price, model_year, mileage, power_type, gearbox_type, id]);
+             price = $3, model_year = $4, mileage = $5, power_type = $6, gearbox_type = $7 WHERE car_id = $8 RETURNING *`, 
+             [brand_name, model_name, price, model_year, mileage, power_type, gearbox_type, id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
         } else {
