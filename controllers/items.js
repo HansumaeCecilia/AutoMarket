@@ -28,10 +28,12 @@ async function searchVehicles(req, res) {
             c.model_year,
             c.mileage,
             c.power_type,
-            c.gearbox_type
+            c.gearbox_type,
+            ci.image
         FROM public.cars c
         INNER JOIN public.car_brand cb ON c.brand_id = cb.brand_id
         INNER JOIN public.car_model cm ON c.model_id = cm.model_id
+        LEFT JOIN public.car_images ci ON c.car_id = ci.car_id
         WHERE 1=1`
     ;
     const values = [];
