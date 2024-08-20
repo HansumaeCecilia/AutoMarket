@@ -5,6 +5,9 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 
+// express-fileupload
+const fileUpload = require('express-fileupload');
+
 // Middleware for processing incoming HTTP request bodies
 const bodyParser = require('body-parser');
 
@@ -16,9 +19,6 @@ const userRoutes = require('./routes/userRoutes');
 
 // .env file loader
 const dotenv = require('dotenv');
-
-// express-fileupload
-const fileUpload = require('express-fileupload');
 
 // Pool import for db connection and queries
 const { pool } = require('./db'); 
@@ -39,11 +39,11 @@ app.use(bodyParser.json());
 // For parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
-
 // Use express-fileupload for handling images
 app.use(fileUpload());
+
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 // Routes to use functions
 app.use('/items', itemRoutes);

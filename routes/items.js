@@ -61,11 +61,15 @@ router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
     console.log('Received data:', req.body);
 
+    // Log the files object to debug the upload
+    console.log(req.files);
+
     // Required parameters for new vehicle listing
     const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type } = req.body;
 
     // Check if image has been sent
     const image = req.files ? req.files.image : null;
+    console.log('Image has been sent')
 
     try {
         const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image);

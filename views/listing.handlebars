@@ -11,7 +11,7 @@
             margin: 2%;
         }
 
-        img {
+        .img {
             width: 30%;
             margin: 0%;
             position: left;
@@ -39,11 +39,11 @@
 
 <body>
     <div class="listing-container">
-        <img src={{image}}>
+        <img class="img" src={{image}}>
         <div class="text-container">
             <h1 class="listing-title">{{title}}</h1>            
             <p class="vehicle-specs">{{{specs}}}</p>
-            <p class="listing-description">{{description}}</p>                                          
+            {{!-- <p class="listing-description">{{description}}</p>--}}
         </div>    
     </div> 
 </body>

@@ -134,9 +134,9 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         
         // Add new vehicle to database with required parameters
         const result = await pool.query(`INSERT INTO public.cars 
-            (brand_id, model_id, brand, model, price, model_year, mileage, power_type, gearbox_type) 
+            (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id`,
-        [ brand_id, model_id, brand_name, model_name, price, model_year, mileage, power_type, gearbox_type ]);
+        [ brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type ]);
 
         const carId = result.rows[0].car_id
         console.log('Vehicle added successfully:', brand_name, model_name);
@@ -146,8 +146,9 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
             // Add to DB
             await pool.query('INSERT INTO car_images (car_id, image) VALUES ($1, $2)', [carId, image.data]);
             console.log('Image added successfully');
+        } else {
+            console.log('Problem adding image');
         }
-
         return 'Vehicle and image added successully';        
     } catch (error) {
 
@@ -161,7 +162,6 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         throw new Error(error.message);
     }
 };
-
 
 // Function for fetching vehicle via ID
 const getVehicleById = async (id) => {        
