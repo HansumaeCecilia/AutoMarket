@@ -4,6 +4,23 @@
 
 <head>
     <title>{{title}}</title>
+        <style>
+            .listingImage {
+            width: 30%;
+            margin-bottom: 2px;
+            position: top;
+        }       
+
+        .info-list {
+            margin-bottom: 10px;
+            font-size: large;
+        }         
+
+        .results-title {
+            margin-bottom: 70px;
+            margin-top: 40px;
+        }
+        </style>
     <!-- CSS and other head elements -->
 </head>
 
@@ -62,18 +79,20 @@
         </form>
 
         <div>
-            <h2>Car List</h2>
-            <ul>
+            <h2 class="results-title">Results</h2>
+            <ul style="list-style: none;">
                 {{#each items}}
-                <li>
-                    <strong>Car ID:</strong> {{this.car_id}} <br>
+                <h3>{{this.brand_name}} {{this.model_name}}</h3>
+                <img class="listingImage" src={{this.image}}> <br>
+                <li class="info-list">                    
+                    {{!-- <strong>Car ID:</strong> {{this.car_id}} <br> --}}
                     <strong>Brand:</strong> {{this.brand_name}} <br>
                     <strong>Model:</strong> {{this.model_name}} <br>
                     <strong>Price:</strong> {{this.price}} <br>
                     <strong>Model Year:</strong> {{this.model_year}} <br>
                     <strong>Mileage:</strong> {{this.mileage}} <br>
                     <strong>Power Type:</strong> {{this.power_type}} <br>
-                    <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>
+                    <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>                    
                     <br>
                 </li>
                 {{/each}}

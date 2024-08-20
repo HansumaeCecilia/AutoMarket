@@ -116,12 +116,16 @@ app.get('/items/:id', async (req, res) => {
 
   try {
     const vehicle = await getVehicleById(id);
+
     if (vehicle) {
       const imageBase64 = vehicle.image.toString('base64');
       const mimeType = 'image/jpeg';
+      console.log(typeof vehicle.image); // Should output "object"
+      console.log(Buffer.isBuffer(vehicle.image)); // Should output true
+
       res.render('listing', {
         title: `${vehicle.brand} ${vehicle.model}`, // Set information dynamically
-                specs: `
+        specs: `
             <div>Price: ${vehicle.price}</div>
             <div>Year: ${vehicle.model_year}</div>
             <div>Mileage: ${vehicle.mileage}</div>

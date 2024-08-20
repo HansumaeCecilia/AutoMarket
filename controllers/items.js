@@ -22,10 +22,12 @@ async function searchVehicles(req, res) {
             c.model_year,
             c.mileage,
             c.power_type,
-            c.gearbox_type
+            c.gearbox_type,
+            ci.image
         FROM public.cars c
         INNER JOIN public.car_brand cb ON c.brand_id = cb.brand_id
         INNER JOIN public.car_model cm ON c.model_id = cm.model_id
+        LEFT JOIN public.car_images ci ON c.car_id = ci.car_id
         WHERE 1=1`;
 
     const values = [];
@@ -58,7 +60,7 @@ async function searchVehicles(req, res) {
     }
 
     if (oldestYear) {
-        query += ` AND c.model_year <= $${index}`;
+        query += ` AND c.model_year >= $${index}`;
         values.push(parseInt(oldestYear));
         index += 1;
     }
@@ -70,7 +72,7 @@ async function searchVehicles(req, res) {
     }
 
     if (minMileage) {
-        query += ` AND c.mileage <= $${index}`;
+        query += ` AND c.mileage >= $${index}`;
         values.push(parseInt(minMileage));
         index += 1;
     }
@@ -101,9 +103,20 @@ async function searchVehicles(req, res) {
         const brandResult = await pool.query(brandQuery);
         const modelResult = await pool.query(modelQuery);
         const result = await pool.query(query, values);
+        
+        // Convert images to Base64
+        const carsWithImages = result.rows.map(item => {
+            if (item.image) {
+                const base64Image = item.image.toString('base64');
+                const mimeType = 'image/jpeg';
+                item.image = `data:${mimeType};base64,${base64Image}`; 
+            }
+
+            return item;
+        });
 
         res.render('results', {
-            items: result.rows,
+            items: carsWithImages,
             car_brand: brandResult.rows,
             car_model: modelResult.rows,
         });
