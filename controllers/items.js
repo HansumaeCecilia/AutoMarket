@@ -109,9 +109,20 @@ async function searchVehicles(req, res) {
         const modelResult = await pool.query(modelQuery);
 
         const result = await pool.query(query, values);
+
+        // Convert images to Base64
+        const carsWithImages = result.rows.map(item => {
+            if (item.image) {
+                const base64Image = item.image.toString('base64');
+                const mimeType = 'image/jpeg';
+                item.image = `data:${mimeType};base64,${base64Image}`;
+            }
+
+            return item;
+        });
         
         res.render('results', {
-            items: result.rows,
+            items: carsWithImages,
             car_brand: brandResult.rows,
             car_model: modelResult.rows,
         });

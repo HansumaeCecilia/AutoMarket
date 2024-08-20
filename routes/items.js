@@ -73,11 +73,24 @@ router.post("/", async (req, res) => {
     }
 });
 
+// // Router to fetching vehicle by ID
+// router.get("/items/:id", async (req, res) => {
+//     try {
+//         console.log('GET request received for item with id:', req.params.id);
+//         await getVehicleById(req, res);
+//     } catch (error) {
+//         console.error('Error searching vehicle:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// });
+
 // Router to fetching vehicle by ID
 router.get("/items/:id", async (req, res) => {
     try {
         console.log('GET request received for item with id:', req.params.id);
-        await getVehicleById(req, res);
+        const vehicle = await getVehicleById(req.params.id); // Kutsutaan vain ID:llä
+        // Käsittele vehicle-tiedot tässä tai ohjaa ne eteenpäin
+        res.json(vehicle); // Esimerkki: palautetaan JSON-muodossa
     } catch (error) {
         console.error('Error searching vehicle:', error);
         res.status(500).send('Internal server error');

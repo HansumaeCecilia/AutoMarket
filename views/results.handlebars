@@ -3,12 +3,28 @@
 <html>
 <head>
     <title>{{title}}</title>
-    <!-- Include your CSS and other head elements here -->
+    <style>
+        img {
+            width: 40%;
+            margin: 0%;
+            position: left;
+        }
+
+        ul.car_list {
+            list-style-type: none;
+        }
+
+        .search-form {
+            width: 50%;
+            margin: 25%;
+        }
+    </style>
+        
 </head>
 <body>
     <div class="container mt-5">
         <h1>Etsi autoja</h1>
-        <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
+        <form id="searchForm" action="/items/search" method="get" class="search-form">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="brandSelect">Valitse Merkki:</label>
                 <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
@@ -62,9 +78,13 @@
         
         <div>
             <h2>Autot</h2>
-            <ul>
+            <ul class="car_list">
                 {{#each items}}
+                <br>
+                <h3>{{this.brand_name}} {{this.model_name}}</h3>
+                <img src={{this.image}}>  
                 <li>
+                    <br>
                     <strong>Auton ID:</strong> {{this.car_id}} <br>
                     <strong>Merkki:</strong> {{this.brand_name}} <br>
                     <strong>Malli:</strong> {{this.model_name}} <br>
@@ -72,8 +92,7 @@
                     <strong>Vuosimalli:</strong> {{this.model_year}} <br>
                     <strong>Kilometrit:</strong> {{this.mileage}} <br>
                     <strong>Käyttövoima:</strong> {{this.power_type}} <br>
-                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>
-                    <img src={{this.image}}>                 
+                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>                                  
                     <br>
                 </li>
                 {{/each}}
