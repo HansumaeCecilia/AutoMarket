@@ -127,7 +127,7 @@ async function searchVehicles(req, res) {
 };
 
 // Function for adding new vehicle listings into database
-const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image) => {
     try {
         // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])        
@@ -147,9 +147,9 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         
         // Add new vehicle to database with required parameters
         const result = await pool.query(`INSERT INTO public.cars 
-            (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING car_id`,
-        [ brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type ]);
+            (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING car_id`,
+        [ brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description ]);
 
         const carId = result.rows[0].car_id
         console.log('Vehicle added successfully:', brand_name, model_name);

@@ -5,7 +5,7 @@
 <head>
     <title>{{title}}</title>
         <style>
-            .listingImage {
+            .listing-image {
             width: 30%;
             margin-bottom: 2px;
             position: top;
@@ -20,8 +20,7 @@
             margin-bottom: 70px;
             margin-top: 40px;
         }
-        </style>
-    <!-- CSS and other head elements -->
+        </style>    
 </head>
 
 <body>
@@ -83,7 +82,7 @@
             <ul style="list-style: none;">
                 {{#each items}}
                 <h3>{{this.brand_name}} {{this.model_name}}</h3>
-                <img class="listingImage" src={{this.image}}> <br>
+                <img class="listing-image" src={{this.image}}> <br>
                 <li class="info-list">                    
                     {{!-- <strong>Car ID:</strong> {{this.car_id}} <br> --}}
                     <strong>Brand:</strong> {{this.brand_name}} <br>

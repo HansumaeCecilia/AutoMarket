@@ -65,14 +65,14 @@ router.post("/", async (req, res) => {
     console.log(req.files);
 
     // Required parameters for new vehicle listing
-    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description } = req.body;
 
     // Check if image has been sent
     const image = req.files ? req.files.image : null;
     console.log('Image has been sent')
 
     try {
-        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image);
+        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });
