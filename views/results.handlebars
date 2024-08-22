@@ -8,21 +8,49 @@
             width: 40%;
             margin: 0%;
             position: left;
+            border-radius: 3%;
         }
 
         ul.car_list {
             list-style-type: none;
+            font-weight: 500;
+            font-size: larger;
         }
 
         .search-form {
             width: 50%;
-            margin: 25%;
+            margin-left: 25%;
+            margin-right: 25%;
         }
     </style>
         
 </head>
 <body>
-    <div class="container mt-5">
+        
+        <div>
+            <h2>Autot</h2>
+            <ul class="car_list">
+                {{#each items}}
+                <br>
+                <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
+                <img src={{this.image}}>  
+                <li>
+                    <br>
+                    <strong>Auton ID:</strong> {{this.car_id}} <br>
+                    <strong>Merkki:</strong> {{this.brand_name}} <br>
+                    <strong>Malli:</strong> {{this.model_name}} <br>
+                    <strong>Hinta:</strong> {{this.price}} <br>
+                    <strong>Vuosimalli:</strong> {{this.model_year}} <br>
+                    <strong>Kilometrit:</strong> {{this.mileage}} <br>
+                    <strong>Käyttövoima:</strong> {{this.power_type}} <br>
+                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>                                  
+                    <br>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+        <div class="container mt-5">
         <h1>Etsi autoja</h1>
         <form id="searchForm" action="/items/search" method="get" class="search-form">
             <div class="form-group mx-sm-3 mb-2">
@@ -75,29 +103,28 @@
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
-        
+
+        <form id="IdSearch" method="get" action="javascript:void(0);" class="form-inline mb-4">
         <div>
-            <h2>Autot</h2>
-            <ul class="car_list">
-                {{#each items}}
-                <br>
-                <h3>{{this.brand_name}} {{this.model_name}}</h3>
-                <img src={{this.image}}>  
-                <li>
-                    <br>
-                    <strong>Auton ID:</strong> {{this.car_id}} <br>
-                    <strong>Merkki:</strong> {{this.brand_name}} <br>
-                    <strong>Malli:</strong> {{this.model_name}} <br>
-                    <strong>Hinta:</strong> {{this.price}} <br>
-                    <strong>Vuosimalli:</strong> {{this.model_year}} <br>
-                    <strong>Kilometrit:</strong> {{this.mileage}} <br>
-                    <strong>Käyttövoima:</strong> {{this.power_type}} <br>
-                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>                                  
-                    <br>
-                </li>
-                {{/each}}
-            </ul>
+          <label for="car_id">Hae auton ID:</label>
+          <input type="number" id="car_id" name="car_id" class="form-control" min="0">
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary mb-2" onclick="submitForm()">Hae</button>
+      </form>
+
+      <script>
+        function submitForm() {
+          const carId = document.getElementById('car_id').value;
+          window.location.href = `/items/${carId}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+          document.getElementById('#car_id').addEventListener('keydown', function(e){
+            if(e.key==13) 
+            submitForm;
+            
+          });
+        });
+      </script>
 </body>
 </html>

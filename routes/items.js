@@ -60,20 +60,20 @@ router.post("/", async (req, res) => {
     console.log('Received data:', req.body); // Log received data from Postman
     
     // Required parameters for new vehicle listing
-    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type} = req.body;
+    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description} = req.body;
 
     // Check if the image is sent
     const image = req.files ? req.files.image : null;
 
     try {
-        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, image);
+        const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image);
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({error:error.message});
     }
 });
 
-// // Router to fetching vehicle by ID
+// Router to fetching vehicle by ID
 // router.get("/items/:id", async (req, res) => {
 //     try {
 //         console.log('GET request received for item with id:', req.params.id);
@@ -84,13 +84,12 @@ router.post("/", async (req, res) => {
 //     }
 // });
 
-// Router to fetching vehicle by ID
+// // Router to fetching vehicle by ID
 router.get("/items/:id", async (req, res) => {
     try {
         console.log('GET request received for item with id:', req.params.id);
-        const vehicle = await getVehicleById(req.params.id); // Kutsutaan vain ID:llä
-        // Käsittele vehicle-tiedot tässä tai ohjaa ne eteenpäin
-        res.json(vehicle); // Esimerkki: palautetaan JSON-muodossa
+        const vehicle = await getVehicleById(req.params.id);        
+        res.json(vehicle); 
     } catch (error) {
         console.error('Error searching vehicle:', error);
         res.status(500).send('Internal server error');
