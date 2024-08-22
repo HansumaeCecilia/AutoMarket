@@ -44,16 +44,17 @@
                 <label for="gearboxType">Select Gearbox Type:</label>
                 <select id="gearboxType" name="gearbox_type" class="form-control" multiple="multiple" required>                    
                     <option value="Manual">Manual</option>
-                    <option value="Automatic">Automatic</option>                    
+                    <option value="Automatic">Automatic</option>
                 </select>
 
                 <label for="description">Description:</label>
-                <input type="text" id="description" name="description" class="form-control" placeholder="Type Description" required>                                                
+                <input type="text" id="description" name="description" class="form-control" placeholder="Type Description" required>                                            
 
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image" class="form-control"/>
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>            
+            {{!-- <button> href="/items/{{this.car_id}}" <button type="submit" class="btn btn-primary mb-2">Submit</button></a> --}}
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>        
     </div>   
 </body>

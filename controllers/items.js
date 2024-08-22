@@ -11,7 +11,7 @@ async function searchVehicles(req, res) {
     const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
 
     // Variables to type into search form
-    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage } = req.query;
+    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage, idSearch } = req.query;
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -93,6 +93,12 @@ async function searchVehicles(req, res) {
         query += ` AND c.gearbox_type IN (${gearboxType.map((type, i) => `$${index + i}`).join(', ')})`;
         values.push(...gearboxType);
         index += gearboxType.length;
+    }
+
+    if (idSearch) {   
+        query += ` AND c.car_id = $${index}`;     
+        values.push(parseInt(idSearch));
+        index += 1;
     }
 
     // Fetch and render search results
