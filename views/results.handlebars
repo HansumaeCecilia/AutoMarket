@@ -1,41 +1,65 @@
-{{!-- result.handlebars --}}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>{{title}}</title>
     <style>
-        img {
-            width: 40%;
-            margin: 0%;
-            position: left;
-            border-radius: 3%;
+        .listing-container {
+            margin: 5%;
         }
 
-        ul.car_list {
+        a {
+            color: rgb(18, 48, 41);
+        }
+        img {
+            width: 40%;
+            min-height: 50%;
+            border-radius: 2%;
+            margin-right: 2%;
+            margin-bottom: 5%;
+        }
+        .car_list {
             list-style-type: none;
             font-weight: 500;
             font-size: larger;
         }
 
-        .search-form {
+        .car {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .car_specs {
+            margin-bottom: 10px;
+            font-size: large;
+            list-style-type: none;
+        }
+
+        .searchForm {
             width: 50%;
             margin-left: 25%;
             margin-right: 25%;
         }
+
+        h1 {
+            text-align: center;
+        }
+
+        body {
+            font-family: 'Garamond', serif;
+        }
     </style>
-        
 </head>
 <body>
-        
-        <div>
-            <h2>Autot</h2>
-            <ul class="car_list">
-                {{#each items}}
-                <br>
-                <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
-                <img src={{this.image}}>  
-                <li>
-                    <br>
+    <div class="listing-container">
+        <h2>Autot</h2>
+        <ul class="car_list">
+            {{#each items}}
+            <div class="car">
+                <img src={{this.image}}>
+                <div class="car_specs">
+                    <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
                     <strong>Auton ID:</strong> {{this.car_id}} <br>
                     <strong>Merkki:</strong> {{this.brand_name}} <br>
                     <strong>Malli:</strong> {{this.model_name}} <br>
@@ -43,16 +67,18 @@
                     <strong>Vuosimalli:</strong> {{this.model_year}} <br>
                     <strong>Kilometrit:</strong> {{this.mileage}} <br>
                     <strong>Käyttövoima:</strong> {{this.power_type}} <br>
-                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>                                  
+                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>
+                    <strong>Auton kuvaus:</strong> {{this.description}} <br>
                     <br>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
+                </div>
+            </div>
+            {{/each}}
+        </ul>
     </div>
-        <div class="container mt-5">
+    </div>
+    <div class="container mt-5">
         <h1>Etsi autoja</h1>
-        <form id="searchForm" action="/items/search" method="get" class="search-form">
+        <form id="searchForm" action="/items/search" method="get" class="searchForm">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="brandSelect">Valitse Merkki:</label>
                 <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
@@ -60,7 +86,7 @@
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
-                
+
                 <label for="modelSelect">Valitse Malli:</label>
                 <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
                     {{#each car_model}}
@@ -87,44 +113,44 @@
                 <input type="number" id="maxMileage" name="maxMileage" class="form-control" min="0">
 
                 <label for="powerType">Käyttövoima:</label>
-                    <select id="powerType" name="powerType" class="form-control" multiple="multiple">
-                        <option value="Diesel">Diesel</option>
-                        <option value="Bensiini">Bensiini</option>
-                        <option value="Sähkö">Sähkö</option>
-                        <option value="Hybridi">Hybridi</option>
-                    </select>
+                <select id="powerType" name="powerType" class="form-control" multiple="multiple">
+                    <option value="Diesel">Diesel</option>
+                    <option value="Bensiini">Bensiini</option>
+                    <option value="Sähkö">Sähkö</option>
+                    <option value="Hybridi">Hybridi</option>
+                </select>
 
                 <label for="gearboxType">Vaihteisto:</label>
-                    <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
-                        <option value="Automaatti">Automaatti</option>
-                        <option value="Manuaali">Manuaali</option>
-                    </select>
-            
+                <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
+                    <option value="Automaatti">Automaatti</option>
+                    <option value="Manuaali">Manuaali</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
 
         <form id="IdSearch" method="get" action="javascript:void(0);" class="form-inline mb-4">
-        <div>
-          <label for="car_id">Hae auton ID:</label>
-          <input type="number" id="car_id" name="car_id" class="form-control" min="0">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2" onclick="submitForm()">Hae</button>
-      </form>
+            <div>
+                <label for="car_id">Hae auton ID:</label>
+                <input type="number" id="car_id" name="car_id" class="form-control" min="0">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" onclick="submitForm()">Hae</button>
+        </form>
 
-      <script>
-        function submitForm() {
-          const carId = document.getElementById('car_id').value;
-          window.location.href = `/items/${carId}`;
-        }
+        <script>
+            function submitForm() {
+                const carId = document.getElementById('car_id').value;
+                window.location.href = `/items/${carId}`;
+            }
 
-        document.addEventListener('DOMContentLoaded', function(){
-          document.getElementById('#car_id').addEventListener('keydown', function(e){
-            if(e.key==13) 
-            submitForm;
-            
-          });
-        });
-      </script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('#car_id').addEventListener('keydown', function (e) {
+                    if (e.key == 13)
+                        submitForm;
+
+                });
+            });
+        </script>
 </body>
+
 </html>

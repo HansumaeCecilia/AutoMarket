@@ -73,9 +73,7 @@ app.get('/items/:id', async (req, res) => {
             Mileage: ${vehicle.mileage}<br>
             Power: ${vehicle.power_type}<br>
             Gearbox: ${vehicle.gearbox_type}<br>
-            
-        `,
-        description: `${vehicle.description}`
+            Description: ${vehicle.description}`
       });
     } else {
       res.status(404).send('Vehicle not found');
