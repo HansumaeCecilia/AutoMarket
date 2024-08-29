@@ -68,21 +68,11 @@ router.post("/", async (req, res) => {
     try {
         const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image);
         res.status(200).send(result);
+        
     } catch (error) {
         res.status(500).send({error:error.message});
     }
 });
-
-// Router to fetching vehicle by ID
-// router.get("/items/:id", async (req, res) => {
-//     try {
-//         console.log('GET request received for item with id:', req.params.id);
-//         await getVehicleById(req, res);
-//     } catch (error) {
-//         console.error('Error searching vehicle:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// });
 
 // // Router to fetching vehicle by ID
 router.get("/items/:id", async (req, res) => {
@@ -104,8 +94,13 @@ router.delete("/:id", (req, res) => {
 
 // Router to modifying vehicle information by ID
 router.put("/:id", (req, res) => {
-    console.log('PUT request received for item with id:', req.params.id);
-    updateVehicle(req, res);
+    try {
+        console.log('PUT request received for item with id:', req.params.id);
+        updateVehicle(req, res);
+    } catch (error) {
+        console.error('Error updating vehicle:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 module.exports = router;

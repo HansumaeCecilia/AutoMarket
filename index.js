@@ -5,6 +5,9 @@ const exphbs = require('express-handlebars');
 // Middleware for processing incoming HTTP request bodies
 const bodyParser = require('body-parser');
 
+// Middleware for using  "post" and "delete" in html
+const methodOverride = require('method-override')
+
 // Module import for endpoints' response to client request
 const itemRoutes = require('./routes/items');
 
@@ -32,6 +35,8 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
  // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(methodOverride('_method'));
 
 // Use express-fileupload for handling images
 app.use(fileUpload());
@@ -65,15 +70,16 @@ app.get('/items/:id', async (req, res) => {
         } // Muunnetaan kuva base64-muotoon
       
       res.render('listing', {
+        id: vehicle.car_id,
         title: `${vehicle.brand_name} ${vehicle.model_name}`, // Set information dynamically
         image: imageBase64,
         specs: `
-            Price: ${vehicle.price}<br>
-            Year: ${vehicle.model_year}<br>
-            Mileage: ${vehicle.mileage}<br>
-            Power: ${vehicle.power_type}<br>
-            Gearbox: ${vehicle.gearbox_type}<br>
-            Description: ${vehicle.description}`
+            Hinta: ${vehicle.price}<br>
+            Vuosimalli: ${vehicle.model_year}<br>
+            Kilometrit: ${vehicle.mileage}<br>
+            Käyttövoima: ${vehicle.power_type}<br>
+            Vaihteisto: ${vehicle.gearbox_type}<br>
+            Kuvaus: ${vehicle.description}`
       });
     } else {
       res.status(404).send('Vehicle not found');

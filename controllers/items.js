@@ -10,14 +10,16 @@ const { pool } = require('../db');
 async function searchVehicles(req, res) {
     const brandIds = req.query.brandSelect ? (Array.isArray(req.query.brandSelect) ? req.query.brandSelect : [req.query.brandSelect]) : [];
     const modelIds = req.query.modelSelect ? (Array.isArray(req.query.modelSelect) ? req.query.modelSelect : [req.query.modelSelect]) : [];
+    const powerType = req.query.powerType ? (Array.isArray(req.query.powerType) ? req.query.powerType : [req.query.powerType]) : [];
+    const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
     const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null; 
     const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : null;
     const minYear = req.query.minYear ? parseInt(req.query.minYear) : null;
     const maxYear = req.query.maxYear ? parseInt(req.query.maxYear) : null;
     const minMileage = req.query.minMileage ? parseInt(req.query.minMileage) : null;
     const maxMileage = req.query.maxMileage ? parseInt(req.query.maxMileage) : null;
-    const powerType = req.query.powerType ? (Array.isArray(req.query.powerType) ? req.query.powerType : [req.query.powerType]) : [];
-    const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
+    const idSearch = req.query.idSearch ? parseInt(req.query.idSearch) : null;
+
 
     // Search query for selected parameters
     let query = `SELECT
@@ -98,6 +100,12 @@ async function searchVehicles(req, res) {
         query += ` AND c.gearbox_type IN (${gearboxType.map((type, i) => `$${index + i}`).join(', ')})`;
         values.push(...gearboxType);
         index += gearboxType.length;
+    }
+
+    if (idSearch !== null) {
+        query += ` AND c.car_id = $${index}`;     
+        values.push(parseInt(idSearch));
+        index += 1;
     }
 
 
@@ -212,14 +220,67 @@ const deleteVehicle = async (req, res) => {
 
 // Function for updating item via ID
 const updateVehicle = async (req, res) => {
-    const { brand_name, model_name, price, model_year, mileage, power_type, gearbox_type } = req.body;
-    const { id } = req.params;
+
+    // Destructure relevant fields from request body
+    const { price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { id } = req.params; // Get vehicle ID from request parameters
+
+    // Initialize arrays to hold the fields to update and their corresponding values
+    let updateFields = [];
+    let values = [];
+    let index = 1;  // Start indexing for parameterized queries
+
+    // conditionally add parameters to the update fields if provided
+    if (price) {
+        updateFields.push(`price=$${index}`);
+        values.push(price);
+        index++;
+    }
+
+    if (model_year) {
+        updateFields.push(`model_year=$${index}`);
+        values.push(model_year);
+        index++;
+    }
+
+    if (mileage) {
+        updateFields.push(`mileage=$${index}`);
+        values.push(mileage);
+        index++;
+    }
+
+    if (power_type) {
+        updateFields.push(`power_type=$${index}`);
+        values.push(power_type);
+        index++;
+    }
+
+    if (gearbox_type) {
+        updateFields.push(`gearbox_type=$${index}`);
+        values.push(gearbox_type);
+        index++;
+    }
+
+    // Add vehicle ID as final parameter for the WHERE clause
+    values.push(id);
+
+    // If no fields where provided to update, return 400 Bad Request response
+    if (updateFields.length === 0) {
+        return res.status(400).send('No fields to update');
+    }
+
+    // Dynamically construct SQL query based on fields to update
+    const query = `UPDATE public.cars SET ${updateFields.join(', ')} WHERE car_id = $${index} RETURNING*`;
+
     try {
-        const result = await pool.query(`UPDATE public.cars SET brand_name = $1, model_name = $2,
-             price = $3, model_year = $4, mileage = $5, power_type = $6, gearbox_type = $7 WHERE car_id = $8 RETURNING *`, 
-             [brand_name, model_name, price, model_year, mileage, power_type, gearbox_type, id]);
+
+        // Execute query with values array
+        const result = await pool.query(query, values);
+
+        // If update was successful, redirect to updated vehicle's page
         if (result.rows.length > 0) {
-            res.json(result.rows[0]);
+            console.log('Vehicle updated successfully')
+            return res.redirect(`/items/${id}`);
         } else {
             res.status(404).send('Item not found');
         }

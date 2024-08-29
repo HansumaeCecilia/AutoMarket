@@ -588,3 +588,27 @@
 //     res.status(500).send('Error fetching image');
 //   }
 // });
+
+
+// {{!-- <form id="IdSearch" method="get" action="javascript:void(0);" class="form-inline mb-4">
+//   <div>
+//     <label for="car_id">Hae auton ID:</label>
+//     <input type="number" id="car_id" name="car_id" class="form-control" min="0">
+//   </div>
+//   <button type="submit" class="btn btn-primary mb-2" onclick="submitForm()">Hae</button>
+// </form>
+
+// <script>
+//   function submitForm() {
+//     const carId = document.getElementById('car_id').value;
+//     window.location.href = `/items/${carId}`;
+//   }
+
+//   document.addEventListener('DOMContentLoaded', function(){
+//     document.getElementById('#car_id').addEventListener('keydown', function(e){
+//       if(e.key==13) 
+//       submitForm;
+      
+//     });
+//   });
+// </script> --}}
