@@ -97,9 +97,21 @@ router.delete("/:id", (req, res) => {
 });
 
 // Router for modifying vehicle information by ID
-router.put("/:id", (req, res) => {
-    console.log('PUT request received for item with id:', req.params.id);
-    updateVehicle(req, res);
+router.put("/:id", async (req, res) => {    
+    try {
+        console.log('PUT request received for item with id:', req.params.id);
+        await updateVehicle(req, res);
+
+        // if (result.rows.length > 0) {
+        //     return res.redirect(`/items/${id}`);
+        // }
+        // else {
+        //     return res.send(400).send('Listing not found');
+        // }        
+    } catch (error) {
+        console.error('Could not update vehicle');
+        res.status(500).send('Internal Server Error');
+    }    
 });
 
 module.exports = router;

@@ -1,9 +1,17 @@
 // MODULE AND LIBRARY IMPORTS
 // ==========================
 
+// .env file loader
+const dotenv = require('dotenv');
+// Load environment variables from .env file
+dotenv.config();
+
 // Express-web engine
 const express = require('express');
 const exphbs = require('express-handlebars');
+
+// Middleware for using "PUT" and "DELETE" in HTML form
+const methodOverride = require('method-override');
 
 // express-fileupload
 const fileUpload = require('express-fileupload');
@@ -17,9 +25,6 @@ const itemRoutes = require('./routes/items');
 // Module import for user routes
 const userRoutes = require('./routes/userRoutes');
 
-// .env file loader
-const dotenv = require('dotenv');
-
 // Pool import for db connection and queries
 const { pool } = require('./db'); 
 const { getVehicleById } = require('./controllers/items');
@@ -27,17 +32,22 @@ const { getVehicleById } = require('./controllers/items');
 // APP SETTINGS
 // -----------------------------------------
 
-// Load environment variables from .env file
-dotenv.config();
-
 // Create server
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Engine settings
+app.engine('handlebars', exphbs.engine());
+app.set('view engine', 'handlebars');
+
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
+
 // For parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Node middlware for using HTTP verbs where client doesn't support it
+app.use(methodOverride('_method'));
 
 // Use express-fileupload for handling images
 app.use(fileUpload());
@@ -49,9 +59,10 @@ app.use(express.static('public'));
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
 
-// Engine settings
-app.engine('handlebars', exphbs.engine());
-app.set('view engine', 'handlebars');
+// Start the server
+app.listen(port, () => {
+  console.log(`Server started at port http://localhost:${port}`);
+});
 
 // Home page route and vehicle search options in dropdown
 app.get('/', async (req, res) => {
@@ -125,6 +136,7 @@ app.get('/items/:id', async (req, res) => {
       }      
 
       res.render('listing', {
+        id: vehicle.car_id,
         title: `${vehicle.brand} ${vehicle.model}`, // Set information dynamically
         image: imageBase64,
         specs: `
@@ -162,8 +174,4 @@ app.get('/new_listing', async (req, res) => {
     console.error('Error executing query', err.stack);
     res.status(500).send('Error fetching data');
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server started at port http://localhost:${port}`);
 });
