@@ -91,23 +91,21 @@ router.get('/items/:id', async (req, res) => {
 });
 
 // Router for deleting vehicle by ID
-router.delete("/:id", (req, res) => {
-    console.log('DELETE request received for item with id:', req.params.id);
-    deleteVehicle(req, res);
+router.delete("/:id", async (req, res) => {
+    try {
+        console.log('DELETE request received for item with id:', req.params.id);
+        await deleteVehicle(req, res);
+    } catch (error) {
+        console.error('Could not delete vehicle');
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // Router for modifying vehicle information by ID
 router.put("/:id", async (req, res) => {    
     try {
         console.log('PUT request received for item with id:', req.params.id);
-        await updateVehicle(req, res);
-
-        // if (result.rows.length > 0) {
-        //     return res.redirect(`/items/${id}`);
-        // }
-        // else {
-        //     return res.send(400).send('Listing not found');
-        // }        
+        await updateVehicle(req, res);                     
     } catch (error) {
         console.error('Could not update vehicle');
         res.status(500).send('Internal Server Error');

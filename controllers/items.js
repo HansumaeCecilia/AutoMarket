@@ -11,7 +11,7 @@ async function searchVehicles(req, res) {
     const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
 
     // Variables to type into search form
-    const { minPrice, maxPrice,  oldestYear, newestYear, minMileage, maxMileage, idSearch } = req.query;
+    const { minPrice, maxPrice, oldestYear, newestYear, minMileage, maxMileage, idSearch } = req.query;
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -95,8 +95,8 @@ async function searchVehicles(req, res) {
         index += gearboxType.length;
     }
 
-    if (idSearch) {   
-        query += ` AND c.car_id = $${index}`;     
+    if (idSearch) {
+        query += ` AND c.car_id = $${index}`;
         values.push(parseInt(idSearch));
         index += 1;
     }
@@ -109,13 +109,13 @@ async function searchVehicles(req, res) {
         const brandResult = await pool.query(brandQuery);
         const modelResult = await pool.query(modelQuery);
         const result = await pool.query(query, values);
-        
+
         // Convert images to Base64
         const carsWithImages = result.rows.map(item => {
             if (item.image) {
                 const base64Image = item.image.toString('base64');
                 const mimeType = 'image/jpeg';
-                item.image = `data:${mimeType};base64,${base64Image}`; 
+                item.image = `data:${mimeType};base64,${base64Image}`;
             }
 
             return item;
@@ -136,30 +136,30 @@ async function searchVehicles(req, res) {
 const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image) => {
     try {
         // Query to retrieve brand_id from vehicle database
-        const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])        
+        const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])
         if (brandResult.rows.length === 0) {
             throw new Error(`Brand '${brand_id}' not found`);
         }
         const brand_name = brandResult.rows[0].brand_name;
 
         // Query to retrieve model_id from vehicle database
-        const modelResult = await pool.query('SELECT model_name FROM car_model WHERE model_id = $1', [model_id])       
+        const modelResult = await pool.query('SELECT model_name FROM car_model WHERE model_id = $1', [model_id])
         if (modelResult.rows.length === 0) {
             throw new Error(`Model '${model_id}' not found`);
         }
-        const model_name = modelResult.rows[0].model_name;        
+        const model_name = modelResult.rows[0].model_name;
 
         console.log('Inserting the new vehicle into the database');
-        
+
         // Add new vehicle to database with required parameters
         const result = await pool.query(`INSERT INTO public.cars 
             (brand, model, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING car_id`,
-        [ brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description ]);
+            [brand_name, model_name, brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description]);
 
         const carId = result.rows[0].car_id
         console.log('Vehicle added successfully:', brand_name, model_name);
-        
+
         // Check if image has been uploaded
         if (image) {
             // Add to DB
@@ -167,15 +167,15 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
             console.log('Image added successfully');
         } else {
             console.log('Problem adding image');
-        }       
+        }
 
-        return 'Vehicle and image added successfully';        
+        return 'Vehicle and image added successfully';
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints
         if (error.code === '23505') {
             console.log('Vehicle already exists:', brand, model);
-            return 'Vehicle already exists'; 
+            return 'Vehicle already exists';
         }
         console.error('Error handling vehicle:', error.message);
         console.error('Error stack:', error.stack);
@@ -184,7 +184,7 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
 };
 
 // Function for fetching vehicle via ID
-const getVehicleById = async (id) => {        
+const getVehicleById = async (id) => {
     try {
         const result = await pool.query(`SELECT cars.*, car_images.image FROM 
             public.cars LEFT JOIN car_images ON 
@@ -201,18 +201,18 @@ const getVehicleById = async (id) => {
 const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM public.cars WHERE car_id = $1', [id]);
-        res.send(`Item with ID ${id} has been successfully deleted`);
+        await pool.query('DELETE FROM public.cars WHERE car_id = $1 RETURNING *', [id]);
+        res.send(`Vehicle with ID ${id} has been successfully deleted`);
     } catch (error) {
         console.error('Error deleting item:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).send('Internal Server Error');
     }
 };
 
 // Function for updating vehicle via ID
 const updateVehicle = async (req, res) => {
     // Destructure relevant fields from request body
-    const {price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { price, model_year, mileage, power_type, gearbox_type } = req.body;
     const { id } = req.params; // Get vehicle ID from request parameters
 
     // Initialize arrays to hold the fields to update and their corresponding values
@@ -260,15 +260,16 @@ const updateVehicle = async (req, res) => {
     }
 
     // Dynamically construct SQL query based on fields to update
-    const query = `UPDATE public.cars SET ${updateFields.join(', ')} WHERE car_id = $${index} RETURNING*`;
+    const query = `UPDATE public.cars SET ${updateFields.join(', ')} WHERE car_id = $${index} RETURNING *`;
 
     try {
         // Execute query with values array
         const result = await pool.query(query, values);
+
         // If update was successful, redirect to updated vehicle's page
         if (result.rows.length > 0) {
             console.log('Vehicle updated successfully');
-            return res.redirect(`/items/${id}`);    
+            return res.redirect(`/items/${id}`);
         } else {
             res.status(404).send('Item not found');
         }
