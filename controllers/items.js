@@ -218,6 +218,30 @@ const deleteVehicle = async (req, res) => {
     }
   };
 
+// Function to update or insert an image in the car_images table
+const updateOrInsertImage = async (car_id, image) => {
+    try {
+        // Tarkista onko kuva jo olemassa
+        const selectQuery = `SELECT * FROM car_images WHERE car_id = $1`;
+        const selectResult = await pool.query(selectQuery, [car_id]);
+
+        if (selectResult.rows.length > 0) {
+            // Jos kuva löytyy, päivitä se
+            const updateQuery = `UPDATE car_images SET image = $2 WHERE car_id = $1 RETURNING *`;
+            const updateResult = await pool.query(updateQuery, [car_id, image]);
+            return updateResult.rows[0];
+        } else {
+            // Jos kuvaa ei löydy, lisää se
+            const insertQuery = `INSERT INTO car_images (car_id, image) VALUES ($1, $2) RETURNING *`;
+            const insertResult = await pool.query(insertQuery, [car_id, image]);
+            return insertResult.rows[0];
+        }
+    } catch (error) {
+        console.error('Error inserting or updating image:', error);
+        throw error;
+    }
+};
+
 // Function for updating item via ID
 const updateVehicle = async (req, res) => {
 
@@ -261,6 +285,19 @@ const updateVehicle = async (req, res) => {
         index++;
     }
 
+    // Kuvan käsittely
+    if (req.files && req.files.image) {
+        const image = req.files.image;
+        const imageData = image.data;
+
+        try {
+            await updateOrInsertImage(id, imageData);
+        } catch (error) {
+            console.error('Error updating image:',error)
+            return res.status(500).send('Failed to update image');
+        }
+    }
+
     // Add vehicle ID as final parameter for the WHERE clause
     values.push(id);
 
@@ -279,10 +316,10 @@ const updateVehicle = async (req, res) => {
 
         // If update was successful, redirect to updated vehicle's page
         if (result.rows.length > 0) {
-            console.log('Vehicle updated successfully')
+            console.log('Vehicle updated successfully');
             return res.redirect(`/items/${id}`);
         } else {
-            res.status(404).send('Item not found');
+            res.status(404).send('Item not found')
         }
     } catch (error) {
         console.error('Error updating item:', error);
