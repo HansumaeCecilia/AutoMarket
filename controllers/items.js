@@ -133,7 +133,7 @@ async function searchVehicles(req, res) {
 };
 
 // Function for adding new vehicle listings into database
-const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image, res) => {
     try {
         // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])
@@ -169,7 +169,7 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
             console.log('Problem adding image');
         }
 
-        return 'Vehicle and image added successfully';
+        return 'Vehicle added successfully';
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints
@@ -201,8 +201,15 @@ const getVehicleById = async (id) => {
 const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM public.cars WHERE car_id = $1 RETURNING *', [id]);
-        res.send(`Vehicle with ID ${id} has been successfully deleted`);
+        const result = await pool.query('DELETE FROM car_images WHERE car_id = $1', [id]);
+        res.send(`Vehicle with car_id ${id} has been successfully deleted`);
+
+        if (result) {
+            await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
+            console.log(`Car with id ${id} has been successfully deleted`);
+        } else {
+            console.log(`Error deleting image`);
+        }
     } catch (error) {
         console.error('Error deleting item:', error);
         res.status(500).send('Internal Server Error');
