@@ -210,8 +210,15 @@ const getVehicleById = async (id) => {
 const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM public.cars WHERE car_id = $1', [id]);
-        res.send(`Item with ID ${id} has been successfully deleted`)
+        const result = await pool.query(`DELETE FROM car_images WHERE car_id = $1`, [id]);
+            res.send(`Image with  car_id ${id} has been successfully deleted`);
+        
+        if (result) {
+            await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
+            console.log(`Car with id ${id} has been successfully deleted`);
+        } else {
+            console.log('Error deleting image')
+        }
     } catch (error) {
         console.error('Error deleting item:', error);
         res.status(500).send('Internal server error');
@@ -246,7 +253,7 @@ const updateOrInsertImage = async (car_id, image) => {
 const updateVehicle = async (req, res) => {
 
     // Destructure relevant fields from request body
-    const { price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { price, model_year, mileage, power_type, gearbox_type, description } = req.body;
     const { id } = req.params; // Get vehicle ID from request parameters
 
     // Initialize arrays to hold the fields to update and their corresponding values
@@ -282,6 +289,12 @@ const updateVehicle = async (req, res) => {
     if (gearbox_type) {
         updateFields.push(`gearbox_type=$${index}`);
         values.push(gearbox_type);
+        index++;
+    }
+
+    if (description) {
+        updateFields.push(`description=$${index}`);
+        values.push(description);
         index++;
     }
 
