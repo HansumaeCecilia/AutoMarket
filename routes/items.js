@@ -5,9 +5,9 @@ const express = require("express");
 const router = express.Router();
 
 // Imports from 'controllers'
-const {        
+const {
     deleteVehicle,
-    updateVehicle,   
+    updateVehicle,
     searchVehicles,
     addVehicle,
     getVehicleById,    
@@ -76,7 +76,7 @@ router.post("/", async (req, res) => {
         res.status(200).send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });
-    }    
+    }
 });
 
 // Router for fetching vehicle by ID
@@ -102,14 +102,14 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Router for modifying vehicle information by ID
-router.put("/:id", async (req, res) => {    
+router.put("/:id", async (req, res) => {
     try {
         console.log('PUT request received for item with id:', req.params.id);
-        await updateVehicle(req, res);                     
+        await updateVehicle(req, res);
     } catch (error) {
         console.error('Could not update vehicle');
         res.status(500).send('Internal Server Error');
-    }    
+    }
 });
 
 module.exports = router;

@@ -212,7 +212,7 @@ const deleteVehicle = async (req, res) => {
 // Function for updating vehicle via ID
 const updateVehicle = async (req, res) => {
     // Destructure relevant fields from request body
-    const { price, model_year, mileage, power_type, gearbox_type } = req.body;
+    const { price, model_year, mileage, power_type, gearbox_type, description } = req.body;
     const { id } = req.params; // Get vehicle ID from request parameters
 
     // Initialize arrays to hold the fields to update and their corresponding values
@@ -251,16 +251,39 @@ const updateVehicle = async (req, res) => {
         index++;
     }
 
+    if (description) {
+        updateFields.push(`description=$${index}`);
+        values.push(description);
+        index++;
+    }
+
+    if (req.files && req.files.image) {
+        const image = req.files.image;
+        const imageData = image.data;
+
+        try {
+            await updateOrInsertImage(id, imageData);
+        } catch (error) {
+            console.error('Error updating image:', error);
+            return res.status(500).send('Failes to update image');
+        }
+    }
+
     // Add vehicle ID as final parameter for the WHERE clause
     values.push(id);
 
-    // If no fields were provided to update, return 400 Bad Request response
+    // If no fields were provided to update in the cars table, skip the main update query
     if (updateFields.length === 0) {
-        return res.status(400).send('No fields to update');
+        if (req.files?.image) {
+            return res.redirect(`/items/${id}`); // Redirect if only image was updated
+        } else {
+            return res.status(400).send('No fields to update');
+        }
     }
 
     // Dynamically construct SQL query based on fields to update
     const query = `UPDATE public.cars SET ${updateFields.join(', ')} WHERE car_id = $${index} RETURNING *`;
+    console.log(query);
 
     try {
         // Execute query with values array
@@ -271,11 +294,34 @@ const updateVehicle = async (req, res) => {
             console.log('Vehicle updated successfully');
             return res.redirect(`/items/${id}`);
         } else {
-            res.status(404).send('Item not found');
+            res.status(404).send('Item not found')
         }
     } catch (error) {
-        console.error('Error updating vehicle:', error);
-        res.status(500).send('Internal server error');
+        console.error('Error updating item:', error);
+        res.status(500).send('Internal Server Error!');
+    }
+};
+
+const updateOrInsertImage = async (car_id, image) => {
+    try {
+        //Check if an image already exists
+        const selectQuery = `SELECT * FROM car_images WHERE car_id = $1`;
+        const selectResult = await pool.query(selectQuery, [car_id]);
+
+        if (selectResult.rows.length > 0) {
+            // If image exists, update it
+            const updateQuery = `UPDATE car_images SET image = $2 WHERE car_id = $1`;
+            const updateResult = await pool.query(updateQuery, [car_id, image]);
+            return updateResult.rows[0];
+        } else {
+            // If no image exists, insert new one
+            const insertQuery = `INSERT INTO car_images (car_id, image) VALUES ($1, $2) RETURNING *`;
+            const insertresult = await pool.query(insertQuery, [car_id, image]);
+            return insertresult.rows[0];
+        }
+    } catch (error) {
+        console.error('Error inserting or updating image:', error);
+        throw error;
     }
 };
 
