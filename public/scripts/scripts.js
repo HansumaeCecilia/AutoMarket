@@ -3,20 +3,23 @@
 
 //Script for matching models with selected brands in vehicle search
 $(document).ready(function() {
+
+    const isAddVehicleForm = $('#addVehicleForm').length > 0;
+    
     $('#brandSelect').select2({
-        multiple: true
+        multiple: !isAddVehicleForm
     });
 
     $('#modelSelect').select2({
-        multiple: true
+        multiple: !isAddVehicleForm
     });
 
     $('#powerType').select2({
-        multiple: true
+        multiple: !isAddVehicleForm
     });
 
     $('#gearboxType').select2({
-        multiple: true
+        multiple: !isAddVehicleForm
     });
 
     // Initially disabled the modelSelect dropdown
@@ -50,13 +53,17 @@ $(document).ready(function() {
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();
+                modelSelect.append('<option value="" disabled selected>Valitse malli</option>')
                 $.each(models, function(index, model) {
                     modelSelect.append($('<option>', {
                         value: model.model_id,
                         text: model.model_name
                     }));
                 });
+
+                if(!isAddVehicleForm) {
                 modelSelect.trigger('change');
+                }
             },
             error: function(error) {
                 console.error('Error fetching models:', error);

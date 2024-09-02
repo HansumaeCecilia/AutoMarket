@@ -215,7 +215,7 @@ const deleteVehicle = async (req, res) => {
         if (result) {
             await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
             //res.send(`Car with id ${id} has been successfully deleted`);
-            return res.redirect('/items/search?');
+            return res.redirect('/');
             
         } else {
             console.log('Error deleting image')
@@ -346,3 +346,9 @@ const updateVehicle = async (req, res) => {
 };
 
 module.exports = { addVehicle, getVehicleById, deleteVehicle, updateVehicle, searchVehicles};
+
+
+
+
+//TODO: pop-up ilmoitukset
+//TODO: filtteröinti (aakkosjärjestys, hinta, kilometrit)

@@ -7,16 +7,19 @@
 </head>
 <body>
     <h1>Uusi Myynti-ilmoitus</h1>
-    <form id="New_Listing_Form" action="/items" method="POST" enctype="multipart/form-data">
+    <form id="addVehicleForm" action="/items" method="POST" enctype="multipart/form-data">
+    
         <label for="brandSelect">Valitse Merkki:</label>
-          <select id="brandSelect" name="brand_id" class="form-control" multiple="multiple">
+          <select id="brandSelect" name="brand_id" class="form-control" required>
+            <option value="" disabled selected>Valitse merkki</option>
             {{#each car_brand}}
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>
             {{/each}}
           </select>
 
         <label for="modelSelect">Valitse Malli:</label>
-          <select id="modelSelect" name="model_id" class="form-control" multiple="multiple disabled">
+          <select id="modelSelect" name="model_id" class="form-control" required>
+            <option value="" disabled selected>Valitse malli</option>
             {{#each car_model}}
             <option value="{{this.model_id}}">{{this.model_name}}</option>
             {{/each}}
@@ -33,6 +36,7 @@
 
         <label for="power_type">Käyttövoima:</label>
         <select id="power_type" name="power_type" class="form-control" required>
+            <option value="" disabled selected></option>
             <option value="Diesel">Diesel</option>
             <option value="Bensiini">Bensiini</option>
             <option value="Sähkö">Sähkö</option>
@@ -41,6 +45,7 @@
 
         <label for="gearbox_type">Vaihteisto:</label>
         <select id="gearbox_type" name="gearbox_type" class="form-control" required>
+            <option value="" disabled selected></option>
             <option value="Automaatti">Automaatti</option>
             <option value="Manuaali">Manuaali</option>
         </select>
