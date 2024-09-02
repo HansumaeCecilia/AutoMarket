@@ -133,7 +133,7 @@ async function searchVehicles(req, res) {
 };
 
 // Function for adding new vehicle listings into database
-const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image, res) => {
+const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image) => {
     try {
         // Query to retrieve brand_id from vehicle database
         const brandResult = await pool.query('SELECT brand_name FROM car_brand WHERE brand_id = $1', [brand_id])
@@ -165,11 +165,8 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
             // Add to DB
             await pool.query('INSERT INTO car_images (car_id, image) VALUES ($1, $2)', [carId, image.data]);
             console.log('Image added successfully');
-        } else {
-            console.log('Problem adding image');
-        }
 
-        return 'Vehicle added successfully';
+        } return { message: 'Cannot add vehicle',  id: carId}        
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints
@@ -202,11 +199,12 @@ const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query('DELETE FROM car_images WHERE car_id = $1', [id]);
-        res.send(`Vehicle with car_id ${id} has been successfully deleted`);
+        // res.send(`Vehicle with ID ${id} has been successfully deleted`);
 
         if (result) {
             await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
-            console.log(`Car with id ${id} has been successfully deleted`);
+            console.log(`Car with ID ${id} has been successfully deleted`);
+            return res.redirect(`/`);
         } else {
             console.log(`Error deleting image`);
         }
@@ -282,7 +280,7 @@ const updateVehicle = async (req, res) => {
     // If no fields were provided to update in the cars table, skip the main update query
     if (updateFields.length === 0) {
         if (req.files?.image) {
-            return res.redirect(`/items/${id}`); // Redirect if only image was updated
+            return res.redirect(`/items/${id}`); // If fields updated, redirect back to listing
         } else {
             return res.status(400).send('No fields to update');
         }
@@ -309,6 +307,7 @@ const updateVehicle = async (req, res) => {
     }
 };
 
+// Function for image inserting/updating
 const updateOrInsertImage = async (car_id, image) => {
     try {
         //Check if an image already exists

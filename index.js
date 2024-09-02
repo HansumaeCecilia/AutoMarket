@@ -121,7 +121,7 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-// Fetch and render unique listing data dynamically
+// Fetch and render listing data
 app.get('/items/:id', async (req, res) => {
   const { id } = req.params;
 
