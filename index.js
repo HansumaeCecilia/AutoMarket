@@ -79,7 +79,7 @@ app.get('/items/:id', async (req, res) => {
             Kilometrit: ${vehicle.mileage}<br>
             Käyttövoima: ${vehicle.power_type}<br>
             Vaihteisto: ${vehicle.gearbox_type}<br>
-            Kuvaus: ${vehicle.description}`
+               ${vehicle.description}`
       });
     } else {
       res.status(404).send('Vehicle not found');
