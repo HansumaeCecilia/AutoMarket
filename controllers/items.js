@@ -167,15 +167,14 @@ const addVehicle = async (brand_id, model_id, price, model_year, mileage, power_
         const carId = result.rows[0].car_id;
 
         console.log('Vehicle added successfully:', brand_name, model_name);
-
+        
         // Check if the image is uploaded
         if (image) {
             // Add it to the db
             await pool.query('INSERT INTO car_images (car_id, image) VALUES ($1, $2)', [carId, image.data]);
             console.log('Image added successfully');
-        } 
-
-        return 'Vehicle and image added successfully';
+        }        
+        return { message: 'Uusi myynti-ilmoitus luotu onnistuneesti', id: carId };
     } catch (error) {
 
         // PostgreSQL error (23505) for breaking constraints
@@ -211,11 +210,13 @@ const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query(`DELETE FROM car_images WHERE car_id = $1`, [id]);
-            res.send(`Image with  car_id ${id} has been successfully deleted`);
+            console.log(`Image with  car_id ${id} has been successfully deleted`);
         
         if (result) {
             await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
-            console.log(`Car with id ${id} has been successfully deleted`);
+            //res.send(`Car with id ${id} has been successfully deleted`);
+            return res.redirect('/items/search?');
+            
         } else {
             console.log('Error deleting image')
         }
@@ -316,7 +317,11 @@ const updateVehicle = async (req, res) => {
 
     // If no fields where provided to update, return 400 Bad Request response
     if (updateFields.length === 0) {
+        if (req.files?.image) {
+            return res.redirect(`/items/${id}`);
+        } else {
         return res.status(400).send('No fields to update');
+        }
     }
 
     // Dynamically construct SQL query based on fields to update

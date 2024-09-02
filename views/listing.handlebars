@@ -12,10 +12,11 @@
         }
 
         .listing-image {
-            width: 30%;
-            max-height: 30%;
-            margin: 0%;
+            width: 50%;
+            height: auto;
+            margin-right: 20px;
             position: left;
+            border-radius: 2%;
         }
 
         .listing-title {
@@ -42,6 +43,18 @@
             font-weight: 300;
         }
 
+        .update_Form {
+            width: 50%;
+            margin-left: 25%;
+            margin-right: 25%;
+            font-weight: 600;
+            font-size: 125%;
+        }
+
+        .update {
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -54,59 +67,71 @@
             <p class="listing-description">{{description}}</p>
         </div>
     </div> 
+    <div class="update">
+        <h1>Muokkaa auton tietoja</h1>
+        <form id="update_Form" class="update_Form" method="POST" action="/items/{{id}}?_method=PUT"  enctype="multipart/form-data">
+        <input type="hidden" name="_method" value="PUT">
 
-    <h1>Muokkaa auton tietoja</h1>
-    <form id="update_Form" method="POST" action="/items/{{id}}?_method=PUT"  enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="PUT">
 
+            <label for="price">Hinta (€):</label>
+            <input type="number" id="price" name="price" class="form-control" >
 
-        <label for="price">Hinta (€):</label>
-        <input type="number" id="price" name="price" class="form-control" >
+            <label for="model_year">Vuosimalli:</label>
+            <input type="number" id="model_year" name="model_year" class="form-control">
 
-        <label for="model_year">Vuosimalli:</label>
-        <input type="number" id="model_year" name="model_year" class="form-control">
+            <label for="mileage">Kilometrit (km):</label>
+            <input type="number" id="mileage" name="mileage" class="form-control">
 
-        <label for="mileage">Kilometrit (km):</label>
-        <input type="number" id="mileage" name="mileage" class="form-control">
+            <label for="powerType">Käyttövoima:</label>
+            <select id="powerType" name="powerType" class="form-control" multiple="multiple">
+                <option value="Diesel">Diesel</option>
+                <option value="Bensiini">Bensiini</option>
+                <option value="Sähkö">Sähkö</option>
+                <option value="Hybridi">Hybridi</option>
+            </select>
 
-        <label for="powerType">Käyttövoima:</label>
-        <select id="powerType" name="powerType" class="form-control" multiple="multiple">
-            <option value="Diesel">Diesel</option>
-            <option value="Bensiini">Bensiini</option>
-            <option value="Sähkö">Sähkö</option>
-            <option value="Hybridi">Hybridi</option>
-        </select>
+            <label for="gearboxType">Vaihteisto:</label>
+            <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
+                <option value="Automaatti">Automaatti</option>
+                <option value="Manuaali">Manuaali</option>
+            </select>
 
-        <label for="gearboxType">Vaihteisto:</label>
-        <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
-            <option value="Automaatti">Automaatti</option>
-            <option value="Manuaali">Manuaali</option>
-        </select>
+            <label for="image">Kuva:</label>
+            <input type="file" id="image" name="image" class="form-control"/>
 
-        <label for="image">Kuva:</label>
-        <input type="file" id="image" name="image" class="form-control"/>
+            <label for="description">Auton kuvaus:</label>
+            <input type="text" id="description" name="description" class="form-control"placeholder="Kirjoita auton kuvaus">
 
-        <label for="description">Auton kuvaus:</label>
-        <input type="text" id="description" name="description" class="form-control"placeholder="Kirjoita auton kuvaus">
-
-        <button type="submit">Tallenna muutokset</button>
-    </form>
-    <button onclick="document.getElementById('deleteModal').style.display='block'">Poista auto</button>
-    <div id="deleteModal" class="modal">
-        <span onclick="document.getElementById('deleteModal').style.display='none'" class="close" title="Close Modal">&times;</span>
-        <form class="modal-content" method="POST" action="/items/{{id}}?_method=DELETE">
-        <input type="hidden" name="_method" value="DELETE">
-            <div class="container">
-                <h1>Poista auto</h1>
-                <p>Oletko varma, että haluat poistaa myynti-ilmoituksesi?</p>
-
-                <div class="clearfix">
-                    <button type="submit" class="cancelbtn">Peruuta</button>
-                    <button type="submit" class="deletebtn">Poista</button>
-                </div>
-            </div>
+            <button type="submit" onclick="myFunction">Tallenna muutokset</button>
         </form>
+
+        <button onclick="document.getElementById('deleteModal').style.display='block'">Poista auto</button>
+        <div id="deleteModal" class="modal">
+
+            
+            <span onclick="document.getElementById('deleteModal').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+            
+            <form class="modal-content" method="POST" action="/items/{{id}}?_method=DELETE">
+            <input type="hidden" name="_method" value="DELETE">
+                <div class="container">
+                    <h1>Poista auto</h1>
+                    <p>Oletko varma, että haluat poistaa myynti-ilmoituksesi?</p>
+
+                    <div class="clearfix">
+                        <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Peruuta</button>
+                        <button type="submit" onclick="delete_Function" class="deletebtn">Poista</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+    <script>
+        function myFunction() {
+            location.replace(`/items/${id}`)
+        }
+    </script>
+
 </body>
 
 </html>
