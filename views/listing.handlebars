@@ -42,7 +42,54 @@
         .listing-description {
             margin-top: 20px;
             font-size: 22px;
-        }        
+        }
+
+        .modal-content {
+            align-items: center;
+            padding: 10px;
+            background-color: rgb(76, 76, 76, 0.9);
+            color: aliceblue;
+        }
+
+        .cancelbtn {
+            background-color: rgb(21, 134, 166);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .deletebtn {
+            background-color: rgb(173, 42, 22);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .divider {
+            width: 10px;
+            height: auto;
+            display: inline-block;
+        }
+
+        .submitbtn {
+            background-color: rgb(21, 124, 153);
+            color: aliceblue;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-left: 17px;
+        }
+
+        .delete-listing-btn {
+            background-color: rgb(208, 51, 27);
+            color: aliceblue;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-left: 17px;
+        }
     </style>
 </head>
 
@@ -93,10 +140,11 @@
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image" class="form-control" />
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>
-            <button type="button" class="btn btn-danger" name="delete-listing-button" onclick="document.getElementById('deleteModal').style.display='block'">Delete Listing</button>
-        </form>        
-        <div id="deleteModal" class="modal">            
+            <button type="submit" class="submitbtn">Submit</button>
+            <button type="button" class="delete-listing-btn" name="delete-listing-button"
+                onclick="document.getElementById('deleteModal').style.display='block'">Delete Listing</button>
+        </form>
+        <div id="deleteModal" class="modal">
             <form class="modal-content" action="/items/{{id}}?_method=DELETE" method="POST">
                 <div class="modal-container">
                     <h1>Delete Listing</h1>
@@ -104,6 +152,7 @@
 
                     <div class="clearfix">
                         <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+                        <div class="divider"></div>
                         <button type="submit" class="deletebtn">Delete</button>
                     </div>
                 </div>

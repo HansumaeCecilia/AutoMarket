@@ -9,6 +9,50 @@
     <link rel="stylesheet" href="/css/Simple-Slider-swiper-bundle.min.css">
     <link rel="stylesheet" href="/css/Simple-Slider.css">
     <title>Home page</title>
+
+    <style>
+        #snackbar {
+            visibility: hidden; /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #snackbar.show {
+            visibility: visible; / Show snackbar when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
 </head>
 
 <body style="background: rgb(49, 60, 49);">
@@ -96,8 +140,28 @@
             </div>
         </div>
     </div>
+    <div id="snackbar"></div>
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
     <script src="/js/Simple-Slider.js"></script>
+
+    <script>
+        // Once DOM is loaded, check if snackbar should be shown
+        document.addEventListener('DOMContentLoaded', function() {
+            {{#if showSnackbar}}
+            showSnackbar('Listing has been successfully deleted');
+            {{/if}}
+        });
+
+        // Function for showing the snackbar
+        function showSnackbar(message) {
+            var snackbar = document.getElementById("snackbar");
+            snackbar.innerText = message;
+            snackbar.className = "show";
+            setTimeout(function() {
+                snackbar.className = snackbar.className.replace("show", ""); // Delete "show"-class after timeout (5 seconds)
+            }, 5000);
+        }
+    </script>
 </body>
 
 </html>

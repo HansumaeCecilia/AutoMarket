@@ -16,6 +16,9 @@ const methodOverride = require('method-override');
 // express-fileupload
 const fileUpload = require('express-fileupload');
 
+// cookie-parser for using localStorage and showing a pop-up notification
+const cookieParser = require('cookie-parser');
+
 // Middleware for processing incoming HTTP request bodies
 const bodyParser = require('body-parser');
 
@@ -46,6 +49,8 @@ app.use(bodyParser.json());
 // For parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+
 // Node middlware for using HTTP verbs where client doesn't support it
 app.use(methodOverride('_method'));
 
@@ -74,11 +79,21 @@ app.get('/', async (req, res) => {
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 
+    // Check cookie: is item deleted successfully?
+    let showSnackbar = false;
+    if (req.cookies.deleteSuccess === 'true') {
+      // If item is deleted, show snackbar
+      showSnackbar = true;
+      // After showing, delete cookie, so it doesn't show up again
+      res.clearCookie('deleteSuccess');
+    }
+
     // Render search form dropdown options on frontpage
     res.render('frontpage', {
       title: 'Search cars',
       car_brand: brandResult.rows,
-      car_model: modelResult.rows
+      car_model: modelResult.rows,
+      showSnackbar: showSnackbar
     });
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -168,7 +183,7 @@ app.get('/new_listing', async (req, res) => {
     res.render('new_listing', {
       title: 'Add new vehicle',
       car_brand: brandResult.rows,
-      car_model: modelResult.rows
+      car_model: modelResult.rows      
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

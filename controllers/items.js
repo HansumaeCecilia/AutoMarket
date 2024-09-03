@@ -199,11 +199,11 @@ const deleteVehicle = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query('DELETE FROM car_images WHERE car_id = $1', [id]);
-        // res.send(`Vehicle with ID ${id} has been successfully deleted`);
+        console.log(`Vehicle with ID ${id} has been successfully deleted`);
 
         if (result) {
             await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
-            console.log(`Car with ID ${id} has been successfully deleted`);
+            res.cookie('deleteSuccess', 'true', { maxAge: 60000, httpOnly: true });            
             return res.redirect(`/`);
         } else {
             console.log(`Error deleting image`);
