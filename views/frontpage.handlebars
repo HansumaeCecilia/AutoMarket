@@ -7,7 +7,7 @@
   <title>{{title}}</title>
   <style>
     #snackbar {
-            visibility: hidden;
+            visibility: hidden; /* Hidden at first */
             min-width: 250px;
             margin-left: -125px;
             background-color: #333;
@@ -23,7 +23,7 @@
         }
 
         #snackbar.show {
-            visibility: visible;
+            visibility: visible; /* Show snackbar when "show" class is added */
             -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
@@ -141,19 +141,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/scripts/scripts.js"></script>
     <script>
+
+      /* When DOM is loaded, check if snackbar should show */
       document.addEventListener('DOMContentLoaded', function() {
         {{#if showSnackbar}}
         showSnackbar('Myynti-ilmoitus poistettu onnistuneesti');
         {{/if}}
       });
 
+      /* Function for showing the snackbar */
       function showSnackbar(message) {
             var snackbar = document.getElementById("snackbar");
             snackbar.innerText = message;
-            snackbar.className = "show";
+            snackbar.className = "show"; // Add "show"-class 
             setTimeout(function(){ 
-              snackbar.className = snackbar.className.replace("show", "");
-            }, 3000);
+              snackbar.className = snackbar.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 5000);
             }
     </script>
 </body>

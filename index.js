@@ -102,9 +102,12 @@ app.get('/', async (req, res) => {
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 
+    // check cookie: is item deleted successfully?
     let showSnackbar = false;
     if (req.cookies.deleteSuccess === 'true') {
+      // if is, show snackbar
       showSnackbar = true;
+      // after showing, delete cookie, so it doesn't show again
       res.clearCookie('deleteSuccess');
     }
 
