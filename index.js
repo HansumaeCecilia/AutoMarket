@@ -20,6 +20,9 @@ const dotenv = require('dotenv');
 // express-fileupload
 const fileUpload = require('express-fileupload');
 
+// cookie-parser for using localStorage and showing a pop-up notification
+const cookieParser = require('cookie-parser'); 
+
 // Pool for database connection
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
@@ -35,6 +38,8 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
  // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 app.use(methodOverride('_method'));
 
@@ -97,11 +102,18 @@ app.get('/', async (req, res) => {
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 
+    let showSnackbar = false;
+    if (req.cookies.deleteSuccess === 'true') {
+      showSnackbar = true;
+      res.clearCookie('deleteSuccess');
+    }
+
     // Render search form dropdown options on frontpage
     res.render('frontpage', {
       title: 'Etusivu',
       car_brand: brandResult.rows,
-      car_model: modelResult.rows
+      car_model: modelResult.rows,
+      showSnackbar: showSnackbar
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

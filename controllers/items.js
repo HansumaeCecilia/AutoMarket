@@ -214,7 +214,7 @@ const deleteVehicle = async (req, res) => {
         
         if (result) {
             await pool.query('DELETE FROM cars WHERE car_id = $1', [id]);
-            //res.send(`Car with id ${id} has been successfully deleted`);
+            res.cookie('deleteSuccess', 'true', { maxAge: 60000, httpOnly: true });
             return res.redirect('/');
             
         } else {
