@@ -26,6 +26,7 @@ const cookieParser = require('cookie-parser');
 // Pool for database connection
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
+const { updateUser } = require('./controllers/userController');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -68,6 +69,13 @@ app.get('/items/:id', async (req, res) => {
 
   try {
     const vehicle = await getVehicleById(id);
+    let showupdatePopUp = false;
+    if (req.cookies.updateSuccess === 'true') {
+      // if is, show deletePopUp
+      showupdatePopUp = true;
+      // after showing, delete cookie, so it doesn't show again
+      res.clearCookie('updateSuccess');
+    }
     if (vehicle) {
       let imageBase64 = null;
         if (vehicle.image) {
@@ -84,7 +92,8 @@ app.get('/items/:id', async (req, res) => {
             Kilometrit: ${vehicle.mileage}<br>
             Käyttövoima: ${vehicle.power_type}<br>
             Vaihteisto: ${vehicle.gearbox_type}<br>
-               ${vehicle.description}`
+               ${vehicle.description}`,
+        showupdatePopUp: showupdatePopUp
       });
     } else {
       res.status(404).send('Vehicle not found');
@@ -103,10 +112,10 @@ app.get('/', async (req, res) => {
     const modelResult = await pool.query(modelQuery);
 
     // check cookie: is item deleted successfully?
-    let showSnackbar = false;
+    let showdeletePopUp = false;
     if (req.cookies.deleteSuccess === 'true') {
-      // if is, show snackbar
-      showSnackbar = true;
+      // if is, show deletePopUp
+      showdeletePopUp = true;
       // after showing, delete cookie, so it doesn't show again
       res.clearCookie('deleteSuccess');
     }
@@ -116,7 +125,7 @@ app.get('/', async (req, res) => {
       title: 'Etusivu',
       car_brand: brandResult.rows,
       car_model: modelResult.rows,
-      showSnackbar: showSnackbar
+      showdeletePopUp: showdeletePopUp
     });
   } catch (err) {
     console.error('Error executing query', err.stack);

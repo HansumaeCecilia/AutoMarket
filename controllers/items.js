@@ -335,6 +335,7 @@ const updateVehicle = async (req, res) => {
         // If update was successful, redirect to updated vehicle's page
         if (result.rows.length > 0) {
             console.log('Vehicle updated successfully');
+            res.cookie('updateSuccess', 'true', { maxAge: 60000, httpOnly: true });
             return res.redirect(`/items/${id}`);
         } else {
             res.status(404).send('Item not found')

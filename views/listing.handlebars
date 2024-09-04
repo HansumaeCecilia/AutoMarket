@@ -55,6 +55,76 @@
             text-align: center;
         }
 
+        .modal-content {
+            align-items: center;
+            padding: 10px;
+            background-color: rgb(76, 76, 76, 0.9);
+            color: rgb(158, 196, 158);
+        }
+
+        .cancelbtn {
+            background-color: rgb(21, 134, 166);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .deletebtn {
+            background-color: rgb(173, 42, 22);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .divider {
+            width: 10px;
+            height: auto;
+            display: inline-block;
+        }
+
+        #updatePopUp {
+            visibility: hidden; /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #updatePopUp.show {
+            visibility: visible; /* Show deletePopUp when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
         
 
     </style>
@@ -116,12 +186,14 @@
 
                     <div class="clearfix">
                         <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Peruuta</button>
+                        <div class="divider"></div>
                         <button type="submit" class="deletebtn">Poista</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <div id="updatePopUp"></div>
     <script>
         // Get the modal
         var modal = document.getElementById('deleteModal');
@@ -132,6 +204,23 @@
                 modal.style.display = "none";
             }
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        {{#if showupdatePopUp}}
+        showupdatePopUp('Myynti-ilmoitus päivitetty onnistuneesti');
+        {{/if}}
+      });
+
+      /* Function for showing the deletePopUp */
+      function showupdatePopUp(message) {
+            var updatePopUp = document.getElementById("updatePopUp");
+            updatePopUp.innerText = message;
+            updatePopUp.className = "show"; // Add "show"-class 
+            setTimeout(function(){ 
+              updatePopUp.className = updatePopUp.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 3000);
+            }
     </script>
 </body>
 

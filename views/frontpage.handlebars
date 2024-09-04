@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>{{title}}</title>
   <style>
-    #snackbar {
+    #deletePopUp {
             visibility: hidden; /* Hidden at first */
             min-width: 250px;
             margin-left: -125px;
             background-color: #333;
-            color: #fff;
+            color: #ffffff;
             text-align: center;
             border-radius: 2px;
             padding: 16px;
@@ -22,8 +22,8 @@
             font-size: 17px;
         }
 
-        #snackbar.show {
-            visibility: visible; /* Show snackbar when "show" class is added */
+        #deletePopUp.show {
+            visibility: visible; /* Show deletePopUp when "show" class is added */
             -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
@@ -134,7 +134,7 @@
         </div>
       </div>
     </div>
-    <div id="snackbar"></div>
+    <div id="deletePopUp"></div>
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
     <script src="/js/Simple-Slider.js"></script> 
       <!-- Include jQuery for AJAX functionality -->
@@ -142,21 +142,21 @@
     <script src="/scripts/scripts.js"></script>
     <script>
 
-      /* When DOM is loaded, check if snackbar should show */
+      /* When DOM is loaded, check if deletePopUp should show */
       document.addEventListener('DOMContentLoaded', function() {
-        {{#if showSnackbar}}
-        showSnackbar('Myynti-ilmoitus poistettu onnistuneesti');
+        {{#if showdeletePopUp}}
+        showdeletePopUp('Myynti-ilmoitus poistettu onnistuneesti');
         {{/if}}
       });
 
-      /* Function for showing the snackbar */
-      function showSnackbar(message) {
-            var snackbar = document.getElementById("snackbar");
-            snackbar.innerText = message;
-            snackbar.className = "show"; // Add "show"-class 
+      /* Function for showing the deletePopUp */
+      function showdeletePopUp(message) {
+            var deletePopUp = document.getElementById("deletePopUp");
+            deletePopUp.innerText = message;
+            deletePopUp.className = "show"; // Add "show"-class 
             setTimeout(function(){ 
-              snackbar.className = snackbar.className.replace("show", ""); // Delete "show"-class after time is out (3000)
-            }, 5000);
+              deletePopUp.className = deletePopUp.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 3000);
             }
     </script>
 </body>
