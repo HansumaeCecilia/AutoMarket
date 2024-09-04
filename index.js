@@ -154,15 +154,15 @@ app.get('/new_listing', async (req, res) => {
 });
 
 // All listings route
-app.get('/listings', async (req, res) => {
-  const listingsQuery = `SELECT * FROM public.cars`;
-  const listingsResult = await pool.query(listingsQuery);
+// app.get('/listings', async (req, res) => {
+//   const listingsQuery = `SELECT * FROM public.cars`;
+//   const listingsResult = await pool.query(listingsQuery);
 
-  res.render('listings', {
-    title: 'Kaikki autot',
-    all_listings: listingsResult.rows
-  });
-});
+//   res.render('listings', {
+//     title: 'Kaikki autot',
+//     all_listings: listingsResult.rows
+//   });
+// });
 
 // Get car models in ascending alphabetical order
 app.get('/models', async (req, res) => {

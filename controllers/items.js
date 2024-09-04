@@ -19,6 +19,7 @@ async function searchVehicles(req, res) {
     const minMileage = req.query.minMileage ? parseInt(req.query.minMileage) : null;
     const maxMileage = req.query.maxMileage ? parseInt(req.query.maxMileage) : null;
     const idSearch = req.query.idSearch ? parseInt(req.query.idSearch) : null;
+    const sortOrder = req.query.sortOrder ? parseInt(req.query.sortOrder) : null;
 
 
     // Search query for selected parameters
@@ -36,7 +37,8 @@ async function searchVehicles(req, res) {
         INNER JOIN public.car_brand cb ON c.brand_id = cb.brand_id
         INNER JOIN public.car_model cm ON c.model_id = cm.model_id
         LEFT JOIN public.car_images ci ON c.car_id = ci.car_id
-        WHERE 1=1`
+        WHERE 1=1
+        ORDER BY ${sortOrder}`
     ;
     const values = [];
     let index = 1;
@@ -106,6 +108,22 @@ async function searchVehicles(req, res) {
         query += ` AND c.car_id = $${index}`;     
         values.push(parseInt(idSearch));
         index += 1;
+    }
+
+    if (sortOrder === 'price_asc') {
+        query +=  ` ORDER BY c.price ASC`;
+    } else if (sortOrder === 'price_desc') {
+        query += ` ORDER BY c.price DESC`;
+    } else if (sortOrder === 'mileage_asc') {
+        query += ` ORDER BY c.mileage ASC`;
+    } else if (sortOrder === 'mileage_desc') {
+        query += ` ORDER BY c.mileage DESC`;
+    } else if (sortOrder === 'model_year_asc') {
+        query += ` ORDER BY c.model_year ASC`;
+    } else if (sortOrder === 'model_year_desc') {
+        query += ` ORDER BY c.model_year DESC`;
+    } else {
+        query += ` ORDER BY c.car_id DESC`;
     }
 
 

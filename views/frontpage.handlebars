@@ -64,7 +64,7 @@
           </select>
 
           <label for="modelSelect">Valitse Malli:</label>
-          <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple disabled">
+          <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
             {{#each car_model}}
             <option value="{{this.model_id}}">{{this.model_name}}</option>
             {{/each}}

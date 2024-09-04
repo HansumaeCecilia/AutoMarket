@@ -47,13 +47,24 @@
         }
 
         body {
-            font-family: 'Garamond', serif;
+            font-family: 'Garamond';
         }
     </style>
 </head>
 <body>
     <div class="listing-container">
         <h2>Autot</h2>
+        <select id="sortSelect">
+            <option value="car_id_desc">Ilmoitukset uusimmasta vanhimpaan</option>
+            <option value="car_id_asc">Ilmoituksen vanhimmasta uusimpaan</option>
+            <option value="price_asc">Hinta: halvimmasta kalleimpaan</option>
+            <option value="price_desc">Hinta: kalliimmasta halvimpaan</option>
+            <option value="mileage_asc">Kilometrit: pienimmästä suurimpaan</option>
+            <option value="mileage_desc">Kilometrit: suurimmasta pienimpään</option>
+            <option value="model_year_asc">Vuosimalli: uusimmasta vanhimpaan</option>
+            <option value="model_year_desc">Vuosimalli: vanhimmasta uusimpaan</option>
+        </select>
+        <div id="carList"></div>
         <ul class="car_list">
             {{#each items}}
             <div class="car">

@@ -53,7 +53,12 @@ $(document).ready(function() {
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();
-                modelSelect.append('<option value="" disabled selected>Valitse malli</option>')
+                modelSelect.append($('<option>', {
+                    value: '',
+                    text: '',
+                    selected: false
+                }));
+
                 $.each(models, function(index, model) {
                     modelSelect.append($('<option>', {
                         value: model.model_id,
@@ -71,4 +76,29 @@ $(document).ready(function() {
         });
     };
 });
+
+// $(document).ready(function() {
+//     $('#sortSelect').on('change', function() {
+//         const sortOrder = $(this).val();
+//             fetchListings(sortOrder);
+//         });
+
+//         function fetchListings(sortOrder) {
+//             $.ajax({
+//                 url: '/listings',
+//                 method: 'GET',
+//                 data: {sortOrder: sortOrder},
+//                 success: function(listings) {
+//                     const carList = $('#carList');
+//                     carList.empty();
+//                     $.each(listings, function(index, listings) {
+//                         carList.append(`<div>${product.name} - ${product.price}€</div>`);
+//                     });
+//                 },
+//                 error: function(error) {
+//                     console.error('Error fetching listings:', error);
+//                 }
+//             });
+//         }
+//     });
 

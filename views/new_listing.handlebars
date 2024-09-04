@@ -9,7 +9,7 @@
           width: 50%;
           margin-left: 25%;
           margin-right: 25%;
-          font-weight: 600;
+          
           font-size: 125%;
           
       }
@@ -20,8 +20,10 @@
     </style>
 </head>
 <body>
+  <div class="container mt-5">
     <h1>Uusi Myynti-ilmoitus</h1>
     <form id="addVehicleForm" class="addVehicleForm" action="/items" method="POST" enctype="multipart/form-data">   
+      <div class="form-group mx-sm-3 mb-2">
         <label for="brandSelect">Valitse Merkki:</label>
           <select id="brandSelect" name="brand_id" class="form-control" required>
             <option value="" disabled selected></option>
@@ -48,7 +50,7 @@
         <input type="number" id="mileage" name="mileage" class="form-control" required>
 
         <label for="power_type">Käyttövoima:</label>
-        <select id="power_type" name="power_type" class="form-control" required>
+        <select id="power_type" name="powerType" class="form-control" required>
             <option value="" disabled selected></option>
             <option value="Diesel">Diesel</option>
             <option value="Bensiini">Bensiini</option>
@@ -57,7 +59,7 @@
         </select>
 
         <label for="gearbox_type">Vaihteisto:</label>
-        <select id="gearbox_type" name="gearbox_type" class="form-control" required>
+        <select id="gearbox_type" name="gearboxType" class="form-control" required>
             <option value="" disabled selected></option>
             <option value="Automaatti">Automaatti</option>
             <option value="Manuaali">Manuaali</option>
@@ -70,9 +72,11 @@
         <input type="file" id="image" name="image" class="form-control"/>
 
         <button type="submit">Lisää auto</button>
+      </div>
     </form>
 
-    <script src="/scripts/scripts.js"></script> 
+    <script src="/scripts/scripts.js"></script>
+  </div>
 </body>
 </html>
 
