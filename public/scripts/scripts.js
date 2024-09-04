@@ -20,7 +20,7 @@ $(document).ready(function() {
 
     $('#gearboxType').select2({
         multiple: !isAddVehicleForm
-    });    
+    });
 
     // Initially disable the modelSelect dropdown
     $('#modelSelect').prop('disabled', true);
@@ -54,7 +54,7 @@ $(document).ready(function() {
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();
-                modelSelect.append('<option value="" disabled selected>Select a model</option>');
+                modelSelect.append();
                 $.each(models, function(index, model) {
                     modelSelect.append($('<option>', {
                         value: model.model_id,
@@ -70,5 +70,5 @@ $(document).ready(function() {
                 console.error('Error fetching models:', error);
             }
         });
-    }
+    }    
 });

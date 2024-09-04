@@ -11,7 +11,7 @@
     <title>Home page</title>
 
     <style>
-        #snackbar {
+        #deletePopup {
             visibility: hidden; /* Hidden at first */
             min-width: 250px;
             margin-left: -125px;
@@ -27,8 +27,8 @@
             font-size: 17px;
         }
 
-        #snackbar.show {
-            visibility: visible; / Show snackbar when "show" class is added */
+        #deletePopup.show {
+            visibility: visible; /* Show delete pop-up when "show" class is added */
             -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
@@ -140,26 +140,26 @@
             </div>
         </div>
     </div>
-    <div id="snackbar"></div>
+    <div id="deletePopup"></div>
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
     <script src="/js/Simple-Slider.js"></script>
 
     <script>
-        // Once DOM is loaded, check if snackbar should be shown
+        // Once DOM is loaded, check if pop-up should be shown
         document.addEventListener('DOMContentLoaded', function() {
-            {{#if showSnackbar}}
-            showSnackbar('Listing has been successfully deleted');
+            {{#if showDeletePopup}}
+            showDeletePopup('Listing has been successfully deleted');
             {{/if}}
         });
 
-        // Function for showing the snackbar
-        function showSnackbar(message) {
-            var snackbar = document.getElementById("snackbar");
-            snackbar.innerText = message;
-            snackbar.className = "show";
+        // Function for showing the pop-up
+        function showDeletePopup(message) {
+            var deletePopup = document.getElementById("deletePopup");
+            deletePopup.innerText = message;
+            deletePopup.className = "show";
             setTimeout(function() {
-                snackbar.className = snackbar.className.replace("show", ""); // Delete "show"-class after timeout (5 seconds)
-            }, 5000);
+                deletePopup.className = deletePopup.className.replace("show", ""); // Delete "show"-class after timeout (3 seconds)
+            }, 3000);
         }
     </script>
 </body>

@@ -73,6 +73,22 @@
             display: inline-block;
         }
 
+        .form-control {
+            border: 1%;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 18px;   
+            border-radius: 7px;         
+        }
+
         .submitbtn {
             background-color: rgb(21, 124, 153);
             color: aliceblue;
@@ -89,6 +105,78 @@
             border-radius: 10px;
             border: none;
             margin-left: 17px;
+        }
+
+        #updatePopup {
+            visibility: hidden;
+            /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #updatePopup.show {
+            visibility: visible;
+            /* Show delete pop-up when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -119,16 +207,18 @@
                 <input type="number" id="mileage" name="mileage" class="form-control" placeholder="Type Mileage"
                     min="0">
 
-                <label for="powerType">Select Power Type:</label>
-                <select id="powerType" name="power_type" class="form-control" multiple="multiple">
+                <label for="power_type">Power Type:</label>
+                <select id="power_type" name="power_type" class="form-control">
+                    <option value="" disabled selected></option>
                     <option value="Petrol">Petrol</option>
                     <option value="Diesel">Diesel</option>
                     <option value="Electric">Electric</option>
                     <option value="Hybrid">Hybrid</option>
                 </select>
 
-                <label for="gearboxType">Select Gearbox Type:</label>
-                <select id="gearboxType" name="gearbox_type" class="form-control" multiple="multiple">
+                <label for="gearbox_type">Gearbox Type:</label>
+                <select id="gearbox_type" name="gearbox_type" class="form-control">
+                    <option value="" disabled selected></option>
                     <option value="Manual">Manual</option>
                     <option value="Automatic">Automatic</option>
                 </select>
@@ -151,7 +241,8 @@
                     <p>Are you sure you want to delete this listing?</p>
 
                     <div class="clearfix">
-                        <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+                        <button type="button" class="cancelbtn"
+                            onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
                         <div class="divider"></div>
                         <button type="submit" class="deletebtn">Delete</button>
                     </div>
@@ -159,6 +250,7 @@
             </form>
         </div>
     </div>
+    <div id="updatePopup"></div>
 
     <script>
         // Get the modal
@@ -169,6 +261,24 @@
             if (event.target == modal) {
                 modal.style.display = "none";
             }
+        }        
+    </script>
+    <script>
+        // Once DOM is loaded, check if update pop-up should be shown
+        document.addEventListener('DOMContentLoaded', function () {
+            {{#if showUpdatePopup}}
+            showUpdatePopup('Listing has been successfully updated');
+            {{/if}}
+        });
+
+        // Function for showing the update pop-up
+        function showUpdatePopup(message) {
+            var updatePopup = document.getElementById("updatePopup");
+            updatePopup.innerText = message;
+            updatePopup.className = "show";
+            setTimeout(function () {
+                updatePopup.className = updatePopup.className.replace("show", ""); // Delete "show"-class after timeout (3 seconds)
+            }, 3000);
         }
     </script>
 </body>

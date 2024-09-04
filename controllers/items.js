@@ -279,7 +279,7 @@ const updateVehicle = async (req, res) => {
 
     // If no fields were provided to update in the cars table, skip the main update query
     if (updateFields.length === 0) {
-        if (req.files?.image) {
+        if (req.files?.image) {            
             return res.redirect(`/items/${id}`); // If fields updated, redirect back to listing
         } else {
             return res.status(400).send('No fields to update');
@@ -296,6 +296,7 @@ const updateVehicle = async (req, res) => {
 
         // If update was successful, redirect to updated vehicle's page
         if (result.rows.length > 0) {
+            res.cookie('updateSuccess', 'true', { maxAge: 60000, httpOnly: true });
             console.log('Vehicle updated successfully');
             return res.redirect(`/items/${id}`);
         } else {

@@ -79,11 +79,11 @@ app.get('/', async (req, res) => {
     const brandResult = await pool.query(brandQuery);
     const modelResult = await pool.query(modelQuery);
 
-    // Check cookie: is item deleted successfully?
-    let showSnackbar = false;
+    // Check cookie: was item deleted successfully?
+    let showDeletePopup = false;
     if (req.cookies.deleteSuccess === 'true') {
-      // If item is deleted, show snackbar
-      showSnackbar = true;
+      // If item is deleted, show pop-up
+      showDeletePopup = true;
       // After showing, delete cookie, so it doesn't show up again
       res.clearCookie('deleteSuccess');
     }
@@ -93,7 +93,7 @@ app.get('/', async (req, res) => {
       title: 'Search cars',
       car_brand: brandResult.rows,
       car_model: modelResult.rows,
-      showSnackbar: showSnackbar
+      showDeletePopup: showDeletePopup
     });
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -150,10 +150,19 @@ app.get('/items/:id', async (req, res) => {
         imageBase64 = vehicle.image.toString('base64');
       }      
 
+      // Check cookie: was item updated successfully?
+      let showUpdatePopup = false;
+      if (req.cookies.updateSuccess === 'true') {
+        // If item is updated, show pop-up
+        showUpdatePopup = true;
+        // After showing, delete cookie, so it doesn't show up again
+        res.clearCookie('updateSuccess');
+      }
+
       res.render('listing', {
         id: vehicle.car_id,
         title: `${vehicle.brand} ${vehicle.model}`, // Set information dynamically
-        image: imageBase64,
+        image: imageBase64,        
         specs: `
               Price: ${vehicle.price}<br>
               Year: ${vehicle.model_year}<br>
@@ -161,7 +170,8 @@ app.get('/items/:id', async (req, res) => {
               Power: ${vehicle.power_type}<br>
               Gearbox: ${vehicle.gearbox_type}
         `,
-        description: `${vehicle.description}`
+        description: `${vehicle.description}`,
+        showUpdatePopup: showUpdatePopup
       });
     } else {
       res.status(404).send('Vehicle not found');
