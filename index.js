@@ -120,16 +120,16 @@ app.get('/models', async (req, res) => {
   }
 });
 
-// Result page for all listings
-app.get('/listings', async (req, res) => {
-  const listingsQuery = 'SELECT * FROM public.cars';
-  const listingsResult = await pool.query(listingsQuery);
+// // Result page for all listings
+// app.get('/listings', async (req, res) => {
+//   const listingsQuery = 'SELECT * FROM public.cars';
+//   const listingsResult = await pool.query(listingsQuery);
 
-  res.render('listings', {
-    title: 'All Listings',
-    all_listings: listingsResult.rows
-  });
-});
+//   res.render('listings', {
+//     title: 'All Listings',
+//     all_listings: listingsResult.rows
+//   });
+// });
 
 // Contact page
 app.get('/contact', (req, res) => {

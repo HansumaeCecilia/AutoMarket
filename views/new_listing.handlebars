@@ -12,7 +12,7 @@
             <div class="form-group mx-sm-3 mb-2">
                 <label for="brandSelect">Select Brand:</label>
                 <select id="brandSelect" name="brand_id" class="form-control" required>
-                    <option value="" disabled selected>Select a brand</option>
+                    <option value="" disabled selected></option>
                     {{#each car_brand}}
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
@@ -20,7 +20,7 @@
 
                 <label for="modelSelect">Select Model:</label>
                 <select id="modelSelect" name="model_id" class="form-control" required>
-                    <option value="" disabled selected>Select a model</option>
+                    <option value="" disabled selected></option>
                     {{#each car_model}}
                     <option value="{{this.model_id}}">{{this.model_name}}</option>
                     {{/each}}
@@ -37,7 +37,7 @@
 
                 <label for="powerType">Select Power Type:</label>
                 <select id="powerType" name="power_type" class="form-control" required>
-                    <option value="" disabled selected>Select Power Type</option>                   
+                    <option value="" disabled selected></option>                   
                     <option value="Petrol">Petrol</option>
                     <option value="Diesel">Diesel</option>                    
                     <option value="Electric">Electric</option>
@@ -46,7 +46,7 @@
 
                 <label for="gearboxType">Select Gearbox Type:</label>
                 <select id="gearboxType" name="gearbox_type" class="form-control" required>                    
-                    <option value="" disabled selected>Select Gearbox Type</option>
+                    <option value="" disabled selected></option>
                     <option value="Manual">Manual</option>
                     <option value="Automatic">Automatic</option>
                 </select>

@@ -54,7 +54,11 @@ $(document).ready(function() {
             success: function(models) {
                 const modelSelect = $('#modelSelect');
                 modelSelect.empty();
-                modelSelect.append();
+                modelSelect.append($('<option disabled selected>', {
+                    value: '',
+                    text: '',
+                    selected: false
+                }));
                 $.each(models, function(index, model) {
                     modelSelect.append($('<option>', {
                         value: model.model_id,

@@ -11,7 +11,7 @@ async function searchVehicles(req, res) {
     const gearboxType = req.query.gearboxType ? (Array.isArray(req.query.gearboxType) ? req.query.gearboxType : [req.query.gearboxType]) : [];
 
     // Variables to type into search form
-    const { minPrice, maxPrice, oldestYear, newestYear, minMileage, maxMileage, idSearch } = req.query;
+    const { minPrice, maxPrice, oldestYear, newestYear, minMileage, maxMileage, idSearch, sortOrder } = req.query;
 
     // Search query for selected parameters
     let query = `SELECT 
@@ -101,13 +101,29 @@ async function searchVehicles(req, res) {
         index += 1;
     }
 
+    if (sortOrder === 'price_asc') {
+        query += ` ORDER BY c.price ASC`;
+    } else if (sortOrder === 'price_desc') {
+        query += ` ORDER BY c.price DESC`;
+    } else if (sortOrder === 'mileage_asc') {
+        query += ` ORDER BY c.mileage ASC`;
+    } else if (sortOrder === 'mileage_desc') {
+        query += ` ORDER BY c.mileage DESC`;
+    } else if (sortOrder === 'model_year_asc') {
+        query += ` ORDER BY c.model_year ASC`;
+    } else if (sortOrder === 'model_year_desc') {
+        query += ` ORDER BY c.model_year DESC`;
+    } else {
+        query += ` ORDER BY c.car_id DESC`;
+    }
+
     // Fetch and render search results
     try {
         const brandQuery = 'SELECT brand_id, brand_name FROM car_brand ORDER BY brand_name ASC';
-        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY model_name ASC';
+        const modelQuery = 'SELECT model_id, model_name FROM car_model ORDER BY model_name ASC';        
 
         const brandResult = await pool.query(brandQuery);
-        const modelResult = await pool.query(modelQuery);
+        const modelResult = await pool.query(modelQuery);        
         const result = await pool.query(query, values);
 
         // Convert images to Base64
@@ -124,7 +140,7 @@ async function searchVehicles(req, res) {
         res.render('results', {
             items: carsWithImages,
             car_brand: brandResult.rows,
-            car_model: modelResult.rows,
+            car_model: modelResult.rows,           
         });
     } catch (err) {
         console.error('Error fetching vehicles:', err);
