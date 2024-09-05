@@ -44,6 +44,7 @@
 
         h1 {
             text-align: center;
+            font-weight: 600;
         }
 
         body {
@@ -53,8 +54,18 @@
 </head>
 <body>
     <div class="listing-container">
-        <h3>Järjestä ilmoitukset</h3>
+        <h5>Järjestä hakutulokset</h5>
         <form id="sortForm" action="/items/search" method="GET">
+            <input type="hidden" name="brandSelect" id="sortBrand">
+            <input type="hidden" name="modelSelect" id="sortModel">
+            <input type="hidden" name="minPrice" id="sortMinPrice">
+            <input type="hidden" name="maxPrice" id="sortMaxPrice">
+            <input type="hidden" name="minYear" id="sortMinYear">
+            <input type="hidden" name="maxYear" id="sortMaxYear">
+            <input type="hidden" name="minMileage" id="sortMinMileage">
+            <input type="hidden" name="maxMileage" id="sortMaxMileage">
+            <input type="hidden" name="powerType" id="sortpowerType">
+            <input type="hidden" name="gearboxType" id="sortgearboxType">
             <select id="sortSelect" name="sortOrder">
                 <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}}>Ilmoitukset uusimmasta vanhimpaan</option>
                 <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}}>Ilmoituksen vanhimmasta uusimpaan</option>
@@ -67,8 +78,11 @@
             </select>
             <button type="submit">Järjestä</button>
         </form>
+        <br>
         <div id="carList"></div>
-        
+        <br>
+        <h1>Haetut autot</h1>
+        <br>
         <ul class="car_list">
             {{#each items}}
             <div class="car">
@@ -147,6 +161,26 @@
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
     </div>
+    <script>
+        document.getElementById('searchForm').onsubmit = function() {
+            document.getElementById('sortBrand').value = document.querySelector('brandSelect');
+            document.getElementById('sortModel').value = document.querySelector('modelSelect');
+            document.getElementById('sortMinPrice').value = document.querySelector('input[name="minPrice"]').value;
+            document.getElementById('sortMaxPrice').value = document.querySelector('input[name="maxPrice"]').value;
+            document.getElementById('sortMinYear').value = document.querySelector('input[name="minYear"]').value;
+            document.getElementById('sortMaxYear').value = document.querySelector('input[name="maxYear"]').value;
+            document.getElementById('sortMinMileage').value = document.querySelector('input[name="minMileage"]').value;
+            document.getElementById('sortMaxMileage').value = document.querySelector('input[name="maxMileage"]').value;
+            document.getElementById('sortPowerType').value = document.querySelector('powerType');
+            document.getElementById('sortGearboxType').value = document.querySelector('gearboxType');
+            };
+
+            function getMultiSelectValues(selectId) {
+                var selectElement = document.getElementById(selectId);
+                var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
+                return selectedValues.join(','); // Yhdistää arvot pilkulla erotettuna
+}
+    </script>
 </body>
 
 </html>

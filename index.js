@@ -34,8 +34,6 @@ const hbs = exphbs.create({
   }
 });
 
-console.log('Available helpers:', hbs.helpers);
-
 // Pool for database connection
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');

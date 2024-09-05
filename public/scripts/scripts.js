@@ -77,28 +77,3 @@ $(document).ready(function() {
     };
 });
 
-// $(document).ready(function() {
-//     $('#sortSelect').on('change', function() {
-//         const sortOrder = $(this).val();
-//             fetchListings(sortOrder);
-//         });
-
-//         function fetchListings(sortOrder) {
-//             $.ajax({
-//                 url: '/listings',
-//                 method: 'GET',
-//                 data: {sortOrder: sortOrder},
-//                 success: function(listings) {
-//                     const carList = $('#carList');
-//                     carList.empty();
-//                     $.each(listings, function(index, listings) {
-//                         carList.append(`<div>${product.name} - ${product.price}€</div>`);
-//                     });
-//                 },
-//                 error: function(error) {
-//                     console.error('Error fetching listings:', error);
-//                 }
-//             });
-//         }
-//     });
-
