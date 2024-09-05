@@ -612,3 +612,14 @@
 //     });
 //   });
 // </script> --}}
+
+// All listings route
+// app.get('/listings', async (req, res) => {
+//   const listingsQuery = `SELECT * FROM public.cars`;
+//   const listingsResult = await pool.query(listingsQuery);
+
+//   res.render('listings', {
+//     title: 'Kaikki autot',
+//     all_listings: listingsResult.rows
+//   });
+// });

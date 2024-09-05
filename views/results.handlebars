@@ -53,18 +53,22 @@
 </head>
 <body>
     <div class="listing-container">
-        <h2>Autot</h2>
-        <select id="sortSelect">
-            <option value="car_id_desc">Ilmoitukset uusimmasta vanhimpaan</option>
-            <option value="car_id_asc">Ilmoituksen vanhimmasta uusimpaan</option>
-            <option value="price_asc">Hinta: halvimmasta kalleimpaan</option>
-            <option value="price_desc">Hinta: kalliimmasta halvimpaan</option>
-            <option value="mileage_asc">Kilometrit: pienimmästä suurimpaan</option>
-            <option value="mileage_desc">Kilometrit: suurimmasta pienimpään</option>
-            <option value="model_year_asc">Vuosimalli: uusimmasta vanhimpaan</option>
-            <option value="model_year_desc">Vuosimalli: vanhimmasta uusimpaan</option>
-        </select>
+        <h3>Järjestä ilmoitukset</h3>
+        <form id="sortForm" action="/items/search" method="GET">
+            <select id="sortSelect" name="sortOrder">
+                <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}}>Ilmoitukset uusimmasta vanhimpaan</option>
+                <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}}>Ilmoituksen vanhimmasta uusimpaan</option>
+                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}}>Hinta: halvimmasta kalleimpaan</option>
+                <option value="price_desc" {{#if (eq sortOrder 'price_desc')}}selected{{/if}}>Hinta: kalliimmasta halvimpaan</option>
+                <option value="mileage_asc" {{#if (eq sortOrder 'mileage_asc')}}selected{{/if}}>Kilometrit: pienimmästä suurimpaan</option>
+                <option value="mileage_desc" {{#if (eq sortOrder 'mileage_desc')}}selected{{/if}}>Kilometrit: suurimmasta pienimpään</option>
+                <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}}>Vuosimalli: uusimmasta vanhimpaan</option>
+                <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}}>Vuosimalli: vanhimmasta uusimpaan</option>
+            </select>
+            <button type="submit">Järjestä</button>
+        </form>
         <div id="carList"></div>
+        
         <ul class="car_list">
             {{#each items}}
             <div class="car">
@@ -86,7 +90,7 @@
             {{/each}}
         </ul>
     </div>
-    </div>
+
     <div class="container mt-5">
         <h1>Etsi autoja</h1>
         <form id="searchForm" action="/items/search" method="get" class="searchForm">
@@ -142,6 +146,7 @@
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
+    </div>
 </body>
 
 </html>

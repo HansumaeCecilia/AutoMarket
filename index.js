@@ -21,7 +21,20 @@ const dotenv = require('dotenv');
 const fileUpload = require('express-fileupload');
 
 // cookie-parser for using localStorage and showing a pop-up notification
-const cookieParser = require('cookie-parser'); 
+const cookieParser = require('cookie-parser');
+
+const path = require('path');
+
+const hbs = exphbs.create({
+  extname: '.handlebars',
+  helpers: {
+      eq: function (a, b) {
+          return a === b;
+      }
+  }
+});
+
+console.log('Available helpers:', hbs.helpers);
 
 // Pool for database connection
 const { pool } = require('./db');
@@ -34,6 +47,11 @@ dotenv.config();
 // Create server
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Engine settings
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'))
 
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
@@ -54,9 +72,7 @@ app.use(express.static('public'));
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
 
-// Engine settings
-app.engine('handlebars', exphbs.engine());
-app.set('view engine', 'handlebars');
+
 
 // Contact us page route
 app.get('/contact', (req, res) => {
@@ -66,7 +82,7 @@ app.get('/contact', (req, res) => {
 // Fetch and render unique listing data dynamically
 app.get('/items/:id', async (req, res) => {
   const { id } = req.params;
-
+  console.log('Available helpers:', hbs.helpers);
   try {
     const vehicle = await getVehicleById(id);
     let showupdatePopUp = false;
@@ -93,7 +109,8 @@ app.get('/items/:id', async (req, res) => {
             Käyttövoima: ${vehicle.power_type}<br>
             Vaihteisto: ${vehicle.gearbox_type}<br>
                ${vehicle.description}`,
-        showupdatePopUp: showupdatePopUp
+        showupdatePopUp: showupdatePopUp,
+        
       });
     } else {
       res.status(404).send('Vehicle not found');
@@ -152,17 +169,6 @@ app.get('/new_listing', async (req, res) => {
     res.status(500).send('Error fetching data');
   }
 });
-
-// All listings route
-// app.get('/listings', async (req, res) => {
-//   const listingsQuery = `SELECT * FROM public.cars`;
-//   const listingsResult = await pool.query(listingsQuery);
-
-//   res.render('listings', {
-//     title: 'Kaikki autot',
-//     all_listings: listingsResult.rows
-//   });
-// });
 
 // Get car models in ascending alphabetical order
 app.get('/models', async (req, res) => {
