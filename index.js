@@ -39,9 +39,21 @@ const { getVehicleById } = require('./controllers/items');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const hbs = exphbs.create( {
+  extname: '.handlebars',
+  helpers: {
+    eq: function (a, b) {
+      return a === b;
+    }
+  }
+});
+
+const path = require('path');
+
 // Engine settings
-app.engine('handlebars', exphbs.engine());
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
@@ -93,7 +105,7 @@ app.get('/', async (req, res) => {
       title: 'Search cars',
       car_brand: brandResult.rows,
       car_model: modelResult.rows,
-      showDeletePopup: showDeletePopup
+      showDeletePopup: showDeletePopup      
     });
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -171,7 +183,8 @@ app.get('/items/:id', async (req, res) => {
               Gearbox: ${vehicle.gearbox_type}
         `,
         description: `${vehicle.description}`,
-        showUpdatePopup: showUpdatePopup
+        showUpdatePopup: showUpdatePopup,
+        sortOrder: sortOrder
       });
     } else {
       res.status(404).send('Vehicle not found');
