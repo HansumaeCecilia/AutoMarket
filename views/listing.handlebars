@@ -68,6 +68,7 @@
             padding: 8px;
             border-radius: 10px;
             border: none;
+            
         }
 
         .deletebtn {
@@ -141,6 +142,7 @@
     </div> 
     <div class="update">
         <h1>Muokkaa auton tietoja</h1>
+        <!-- Form for updating and deleting listing -->
         <form id="update_Form" class="update_Form" method="POST" action="/items/{{id}}?_method=PUT"  enctype="multipart/form-data">
         <input type="hidden" name="_method" value="PUT">
 
@@ -179,6 +181,8 @@
             <button type="submit" class="btn btn-primary mb-2">Tallenna muutokset</button>
             <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'">Poista auto</button>
         </form>
+
+        <!-- delete modal for verifying delete function -->
         <div id="deleteModal" class="modal">
             <form class="modal-content" method="POST" action="/items/{{id}}?_method=DELETE">
             <input type="hidden" name="_method" value="DELETE">
@@ -207,6 +211,8 @@
             }
         }
     </script>
+
+    <!-- If updated, show popup notification -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         {{#if showupdatePopUp}}

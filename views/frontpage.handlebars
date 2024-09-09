@@ -5,7 +5,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>{{title}}</title>
+  <!-- styles in frontpage -->
   <style>
+    .search_Form {
+      width: 50%;
+      margin-left: 25%;
+      margin-right: 25%;
+      font-weight: 600;
+      font-size: 125%;
+    }
+
+    h1 {
+      text-align: center;
+    }
     #deletePopUp {
             visibility: hidden; /* Hidden at first */
             min-width: 250px;
@@ -51,11 +63,14 @@
 </head>
 
 <body>
-    <div class="container mt-5">
+    <!-- container for search form -->
+    <div class="search_Form">
+      <br>
       <h1>Etsi autoja</h1>
+      <br>
       <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
         <div class="form-group mx-sm-3 mb-2">
-
+          <!-- options for searching vehicles with specific parameters -->
           <label for="brandSelect">Valitse Merkki:</label>
           <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
             {{#each car_brand}}
@@ -107,9 +122,8 @@
         </div>
         <button type="submit" class="btn btn-primary mb-2">Hae</button>
       </form>
-
-
     </div>
+    <!-- container for image-slider -->
     <div class="container" style="margin-top:100px;margin-bottom:100px;">
       <div class="row">
         <div class="col-md-12">
@@ -120,11 +134,6 @@
                   style="background: url(img/car-1376190_1280.jpg) center center / cover no-repeat;"></div>
                 <div class="swiper-slide"
                   style="background: url(img/car-2678274_1280.jpg) center center / cover no-repeat;"></div>
-                <div class="swiper-slide"
-                  style="background: url(img/ferrari-f430-2930661_1280.jpg) center center / cover no-repeat;"></div>
-                <div class="swiper-slide"
-                  style="background: url(&quot;https://www.kbb.com/wp-content/uploads/2022/08/2022-mercedes-amg-eqs-front-left-3qtr.jpg?w=918&quot;) center center / cover no-repeat;">
-                </div>
               </div>
               <div class="swiper-pagination"></div>
               <div class="swiper-button-prev"></div>
@@ -134,7 +143,11 @@
         </div>
       </div>
     </div>
+
+    <!-- container for delete popup notification -->
     <div id="deletePopUp"></div>
+
+    <!-- imported scripts -->
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
     <script src="/js/Simple-Slider.js"></script> 
       <!-- Include jQuery for AJAX functionality -->
@@ -142,9 +155,9 @@
     <script src="/scripts/scripts.js"></script>
     <script>
 
-      /* When DOM is loaded, check if deletePopUp should show */
+      /* When DOM is loaded, check if deletePopUp should show and show if needed*/
       document.addEventListener('DOMContentLoaded', function() {
-        {{#if showdeletePopUp}}
+        {{#if showdeletePopUp}} 
         showdeletePopUp('Myynti-ilmoitus poistettu onnistuneesti');
         {{/if}}
       });
