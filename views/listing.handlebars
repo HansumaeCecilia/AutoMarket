@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+    <style>
+
+        .listing-container {
+            display: flex;
+            align-items: flex-start;
+            margin: 2%;
+        }
+
+        .listing-image {
+            width: 50%;
+            height: auto;
+            margin-right: 20px;
+            position: left;
+            border-radius: 2%;
+        }
+
+        .listing-title {
+            position: relative;
+            margin-top: 2%;
+            margin-bottom: 10%;
+            font-size: 300%;
+            font-weight: 600;
+        }
+
+        .text-container {
+            position: relative;
+            margin-left: 10%;
+        }
+
+        .vehicle-specs {
+            margin-bottom: 8px; /* Adds spacing between specs */
+            font-weight: 400;
+            font-size: 150%;
+        }
+
+        .listing-description {
+            font-size: 100%;
+            font-weight: 300;
+        }
+
+        .update_Form {
+            width: 50%;
+            margin-left: 25%;
+            margin-right: 25%;
+            font-weight: 600;
+            font-size: 125%;
+        }
+
+        .update {
+            text-align: center;
+        }
+
+        .modal-content {
+            align-items: center;
+            padding: 10px;
+            background-color: rgb(76, 76, 76, 0.9);
+            color: rgb(158, 196, 158);
+        }
+
+        .cancelbtn {
+            background-color: rgb(21, 134, 166);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            
+        }
+
+        .deletebtn {
+            background-color: rgb(173, 42, 22);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .divider {
+            width: 10px;
+            height: auto;
+            display: inline-block;
+        }
+
+        #updatePopUp {
+            visibility: hidden; /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #updatePopUp.show {
+            visibility: visible; /* Show deletePopUp when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    <div class="listing-container">
+        <img class="listing-image" src="data:image/jpeg;base64,{{image}}">
+        <div class="text-container">
+            <h1 class="listing-title">{{title}}</h1>
+            <p class="vehicle-specs">{{{specs}}}</p>
+            <p class="listing-description">{{description}}</p>
+        </div>
+    </div> 
+    <div class="update">
+        <h1>Muokkaa auton tietoja</h1>
+        <!-- Form for updating and deleting listing -->
+        <form id="update_Form" class="update_Form" method="POST" action="/items/{{id}}?_method=PUT"  enctype="multipart/form-data">
+        <input type="hidden" name="_method" value="PUT">
+
+
+            <label for="price">Hinta (€):</label>
+            <input type="number" id="price" name="price" class="form-control" >
+
+            <label for="model_year">Vuosimalli:</label>
+            <input type="number" id="model_year" name="model_year" class="form-control">
+
+            <label for="mileage">Kilometrit (km):</label>
+            <input type="number" id="mileage" name="mileage" class="form-control">
+
+            <label for="power_type">Käyttövoima:</label>
+            <select id="power_type" name="power_type" class="form-control">
+                <option value="" disabled selected></option>
+                <option value="Diesel">Diesel</option>
+                <option value="Bensiini">Bensiini</option>
+                <option value="Sähkö">Sähkö</option>
+                <option value="Hybridi">Hybridi</option>
+            </select>
+
+            <label for="gearbox_type">Vaihteisto:</label>
+            <select id="gearbox_type" name="gearbox_type" class="form-control">
+                <option value="" disabled selected></option>
+                <option value="Automaatti">Automaatti</option>
+                <option value="Manuaali">Manuaali</option>
+            </select>
+
+            <label for="image">Kuva:</label>
+            <input type="file" id="image" name="image" class="form-control"/>
+
+            <label for="description">Auton kuvaus:</label>
+            <input type="text" id="description" name="description" class="form-control"placeholder="Kirjoita auton kuvaus">
+
+            <button type="submit" class="btn btn-primary mb-2">Tallenna muutokset</button>
+            <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'">Poista auto</button>
+        </form>
+
+        <!-- delete modal for verifying delete function -->
+        <div id="deleteModal" class="modal">
+            <form class="modal-content" method="POST" action="/items/{{id}}?_method=DELETE">
+            <input type="hidden" name="_method" value="DELETE">
+                <div class="container">
+                    <h1>Poista auto</h1>
+                    <p>Oletko varma, että haluat poistaa myynti-ilmoituksesi?</p>
+
+                    <div class="clearfix">
+                        <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Peruuta</button>
+                        <div class="divider"></div>
+                        <button type="submit" class="deletebtn">Poista</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="updatePopUp"></div>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('deleteModal');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- If updated, show popup notification -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        {{#if showupdatePopUp}}
+        showupdatePopUp('Myynti-ilmoitus päivitetty onnistuneesti');
+        {{/if}}
+      });
+
+      /* Function for showing the deletePopUp */
+      function showupdatePopUp(message) {
+            var updatePopUp = document.getElementById("updatePopUp");
+            updatePopUp.innerText = message;
+            updatePopUp.className = "show"; // Add "show"-class 
+            setTimeout(function(){ 
+              updatePopUp.className = updatePopUp.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 3000);
+            }
+    </script>
+</body>
+
+</html>

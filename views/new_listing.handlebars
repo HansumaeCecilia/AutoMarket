@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisää auto</title>
+    <style>
+      .addVehicleForm {
+          width: 50%;
+          margin-left: 25%;
+          margin-right: 25%;
+          
+          font-size: 125%;
+          
+      }
+
+      body {
+          text-align: center;
+      }
+    </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Uusi Myynti-ilmoitus</h1>
+
+    <!-- Form for adding new listing -->
+    <form id="addVehicleForm" class="addVehicleForm" action="/items" method="POST" enctype="multipart/form-data">   
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="brandSelect">Valitse Merkki:</label>
+          <select id="brandSelect" name="brand_id" class="form-control" required>
+            <option value="" disabled selected></option>
+            {{#each car_brand}}
+            <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+            {{/each}}
+          </select>
+
+        <label for="modelSelect">Valitse Malli:</label>
+          <select id="modelSelect" name="model_id" class="form-control" required>
+            <option value="" disabled selected></option>
+            {{#each car_model}}
+            <option value="{{this.model_id}}">{{this.model_name}}</option>
+            {{/each}}
+          </select>
+
+        <label for="price">Hinta (€):</label>
+        <input type="number" id="price" name="price" class="form-control" required>
+
+        <label for="model_year">Vuosimalli:</label>
+        <input type="number" id="model_year" name="model_year" class="form-control" required>
+
+        <label for="mileage">Kilometrit (km):</label>
+        <input type="number" id="mileage" name="mileage" class="form-control" required>
+
+        <label for="power_type">Käyttövoima:</label>
+        <select id="power_type" name="power_type" class="form-control" required>
+            <option value="" disabled selected></option>
+            <option value="Diesel">Diesel</option>
+            <option value="Bensiini">Bensiini</option>
+            <option value="Sähkö">Sähkö</option>
+            <option value="Hybridi">Hybridi</option>
+        </select>
+
+        <label for="gearbox_type">Vaihteisto:</label>
+        <select id="gearbox_type" name="gearbox_type" class="form-control" required>
+            <option value="" disabled selected></option>
+            <option value="Automaatti">Automaatti</option>
+            <option value="Manuaali">Manuaali</option>
+        </select>
+
+        <label for="description">Auton kuvaus:</label>
+        <input type="text" id="description" name="description" class="form-control"placeholder="Kirjoita auton kuvaus" required>
+
+        <label for="image">Kuva:</label>
+        <input type="file" id="image" name="image" class="form-control"/>
+
+        <button type="submit">Lisää auto</button>
+      </div>
+    </form>
+
+    <script src="/scripts/scripts.js"></script>
+  </div>
+</body>
+</html>
+
+ 

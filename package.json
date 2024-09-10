@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "express-fileupload": "^1.5.1",
+    "express-handlebars": "^7.1.2",
+    "hbs": "^4.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "pg": "^8.11.5",
+    "pg-hstore": "^2.3.4",
+    "pg-pool": "^3.6.2",
+    "uuidv4": "^6.2.13"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "name": "test",
+  "description": "A repository for final project. It is an application (AutoMarket) for buying, selling and swapping used vehicles. Users create an account to put up listings. Listings are created by filling out a form with a wide variety of characteristics to choose from, such as the make, model, mileage, color, fuel type, and transmission. The listings include a contact form that potential buyers can use to reach the seller. The app will be created with Node.js in Visual Studio Code, pgAdmin, and Bootstrap Studio.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "type": "commonjs"
+}

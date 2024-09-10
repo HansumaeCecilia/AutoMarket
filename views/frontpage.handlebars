@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>{{title}}</title>
+  <!-- styles in frontpage -->
+  <style>
+    .search_Form {
+      width: 50%;
+      margin-left: 25%;
+      margin-right: 25%;
+      font-weight: 600;
+      font-size: 125%;
+    }
+
+    h1 {
+      text-align: center;
+    }
+    #deletePopUp {
+            visibility: hidden; /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #deletePopUp.show {
+            visibility: visible; /* Show deletePopUp when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+  </style>
+</head>
+
+<body>
+    <!-- container for search form -->
+    <div class="search_Form">
+      <br>
+      <h1>Etsi autoja</h1>
+      <br>
+      <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
+        <div class="form-group mx-sm-3 mb-2">
+          <!-- options for searching vehicles with specific parameters -->
+          <label for="brandSelect">Valitse Merkki:</label>
+          <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
+            {{#each car_brand}}
+            <option value="{{this.brand_id}}">{{this.brand_name}}</option>
+            {{/each}}
+          </select>
+
+          <label for="modelSelect">Valitse Malli:</label>
+          <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
+            {{#each car_model}}
+            <option value="{{this.model_id}}">{{this.model_name}}</option>
+            {{/each}}
+          </select>
+
+          <label for="minPrice">Min Hinta:</label>
+          <input type="number" id="minPrice" name="minPrice" class="form-control" min="0">
+
+          <label for="maxPrice">Max Hinta:</label>
+          <input type="number" id="maxPrice" name="maxPrice" class="form-control" min="0">
+
+          <label for="minYear">Vuosimalli alkaen:</label>
+          <input type="number" id="minYear" name="minYear" class="form-control" min="0">
+
+          <label for="maxYear">Vuosimalli päättyen:</label>
+          <input type="number" id="maxYear" name="maxYear" class="form-control" min="0">
+
+          <label for="minMileage">Kilometrit minimi:</label>
+          <input type="number" id="minMileage" name="minMileage" class="form-control" min="0">
+
+          <label for="maxMileage">Kilometrit maksimi:</label>
+          <input type="number" id="maxMileage" name="maxMileage" class="form-control" min="0">
+
+          <label for="powerType">Käyttövoima:</label>
+            <select id="powerType" name="powerType" class="form-control" multiple="multiple">
+                <option value="Diesel">Diesel</option>
+                <option value="Bensiini">Bensiini</option>
+                <option value="Sähkö">Sähkö</option>
+                <option value="Hybridi">Hybridi</option>
+            </select>
+
+          <label for="gearboxType">Vaihteisto:</label>
+            <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
+                <option value="Automaatti">Automaatti</option>
+                <option value="Manuaali">Manuaali</option>
+            </select>
+
+          <label for="idSearch">Auton ID:</label>
+            <input type="number" id="idSearch" name="idSearch" class="form-control" placeholder="Kirjoita haettavan auton id" min="0">  
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Hae</button>
+      </form>
+    </div>
+    <!-- container for image-slider -->
+    <div class="container" style="margin-top:100px;margin-bottom:100px;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="simple-slider">
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"
+                  style="background: url(img/car-1376190_1280.jpg) center center / cover no-repeat;"></div>
+                <div class="swiper-slide"
+                  style="background: url(img/car-2678274_1280.jpg) center center / cover no-repeat;"></div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- container for delete popup notification -->
+    <div id="deletePopUp"></div>
+
+    <!-- imported scripts -->
+    <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
+    <script src="/js/Simple-Slider.js"></script> 
+      <!-- Include jQuery for AJAX functionality -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/scripts.js"></script>
+    <script>
+
+      /* When DOM is loaded, check if deletePopUp should show and show if needed*/
+      document.addEventListener('DOMContentLoaded', function() {
+        {{#if showdeletePopUp}} 
+        showdeletePopUp('Myynti-ilmoitus poistettu onnistuneesti');
+        {{/if}}
+      });
+
+      /* Function for showing the deletePopUp */
+      function showdeletePopUp(message) {
+            var deletePopUp = document.getElementById("deletePopUp");
+            deletePopUp.innerText = message;
+            deletePopUp.className = "show"; // Add "show"-class 
+            setTimeout(function(){ 
+              deletePopUp.className = deletePopUp.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 3000);
+            }
+    </script>
+</body>
+
+</html>
