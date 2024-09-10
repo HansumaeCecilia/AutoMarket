@@ -1,190 +1,152 @@
+{{!-- result.handlebars --}}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>{{title}}</title>
     <style>
-        .listing-container {
-            margin: 5%;
+        .listing-layout {
+            margin-left: 10%;
+        }    
+       
+        .results-title {
+            margin-bottom: 70px;
+            margin-top: 40px;
         }
 
         a {
-            color: rgb(18, 48, 41);
-        }
-        img {
-            width: 40%;
-            min-height: 50%;
-            border-radius: 2%;
-            margin-right: 10%;
-            margin-bottom: 5%;
-        }
-        .car_list {
-            list-style-type: none;
-            font-weight: 500;
-            font-size: larger;           
+            color: rgb(52, 77, 27);
         }
 
-        .car {
-            margin-bottom: 5px;
+        .listing-item {
+            margin-bottom: 20px;
+        }
+
+        .listing-content {
             display: flex;
             align-items: flex-start;
         }
 
-        .car_specs {
-            margin-bottom: 10px;
+        .listing-image {
+            width: 30%;
+            margin-right: 2px;
+            height: auto;           
+        }
+
+        .info-list {            
             font-size: large;
-            list-style-type: none;
-        }
-
-        .searchForm {
-            width: 50%;
-            margin-left: 25%;
-            margin-right: 25%;
-            font-weight: 600;
-            font-size: 125%;
-        }
-
-        h1 {
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 5%;
+            margin-left: 10px
         }
 
     </style>
 </head>
+
 <body>
-    <div class="listing-container">
-        <h5>Järjestä hakutulokset</h5>
-        <!-- form for sorting searching results -->
-        <form id="sortForm" action="/items/search" method="GET">
-            <input type="hidden" name="brandSelect" id="sortBrand">
-            <input type="hidden" name="modelSelect" id="sortModel">
-            <input type="hidden" name="minPrice" id="sortMinPrice">
-            <input type="hidden" name="maxPrice" id="sortMaxPrice">
-            <input type="hidden" name="minYear" id="sortMinYear">
-            <input type="hidden" name="maxYear" id="sortMaxYear">
-            <input type="hidden" name="minMileage" id="sortMinMileage">
-            <input type="hidden" name="maxMileage" id="sortMaxMileage">
-            <input type="hidden" name="powerType" id="sortpowerType">
-            <input type="hidden" name="gearboxType" id="sortgearboxType">
-            <select id="sortSelect" name="sortOrder">
-                <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}}>Ilmoitukset uusimmasta vanhimpaan</option>
-                <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}}>Ilmoituksen vanhimmasta uusimpaan</option>
-                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}}>Hinta: halvimmasta kalleimpaan</option>
-                <option value="price_desc" {{#if (eq sortOrder 'price_desc')}}selected{{/if}}>Hinta: kalliimmasta halvimpaan</option>
-                <option value="mileage_asc" {{#if (eq sortOrder 'mileage_asc')}}selected{{/if}}>Kilometrit: pienimmästä suurimpaan</option>
-                <option value="mileage_desc" {{#if (eq sortOrder 'mileage_desc')}}selected{{/if}}>Kilometrit: suurimmasta pienimpään</option>
-                <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}}>Vuosimalli: uusimmasta vanhimpaan</option>
-                <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}}>Vuosimalli: vanhimmasta uusimpaan</option>
+    <div class="sortOrder-container">
+        <h3>Select filtering option</h3>
+        <form class="sortForm" action="/items/search" method="get">
+            <select class="filter" name="sortOrder" id="sortOrder">  
+                <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}}>Newest listing</option>
+                <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}}>Oldest listing</option>
+                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}}>Price: Low to High</option>              
+                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}}>Price: Low to High</option>
+                <option value="price_desc" {{#if (eq sortOrder 'price_desc')}}selected{{/if}}>Price: High to Low</option>
+                <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}}>Year: Oldest to Newest</option>
+                <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}}>Year: Newest to Oldest</option>
+                <option value="mileage_asc" {{#if (eq sortOrder 'mileage_asc')}}selected{{/if}}>Mileage: Low to High</option>
+                <option value="mileage_desc" {{#if (eq sortOrder 'mileage_desc')}}selected{{/if}}>Mileage: High to Low</option>
             </select>
-            <button type="submit">Järjestä</button>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
-        <br>
-        <div id="carList"></div>
-        <br>
-        <h1>Haetut autot</h1>
-        <!-- Show search results -->
-        <ul class="car_list">
+    </div>
+    <div class="listing-layout">
+        <h2 class="results-title">Results</h2>
+        <ul style="list-style: none;">
             {{#each items}}
-            <div class="car">
-                <img src={{this.image}}>
-                <div class="car_specs">
-                    <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
-                    <strong>Auton ID:</strong> {{this.car_id}} <br>
-                    <strong>Merkki:</strong> {{this.brand_name}} <br>
-                    <strong>Malli:</strong> {{this.model_name}} <br>
-                    <strong>Hinta:</strong> {{this.price}} <br>
-                    <strong>Vuosimalli:</strong> {{this.model_year}} <br>
-                    <strong>Kilometrit:</strong> {{this.mileage}} <br>
-                    <strong>Käyttövoima:</strong> {{this.power_type}} <br>
-                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>
-                    
-                    <br>
+            <li>
+                <div class="listing-item">                    
+                    <div class="listing-content">
+                        <img class="listing-image" src="{{this.image}}">                        
+                        <div class="info-list">
+                            <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
+                            <strong>Car ID:</strong> {{this.car_id}} <br>
+                            <strong>Brand:</strong> {{this.brand_name}} <br>
+                            <strong>Model:</strong> {{this.model_name}} <br>
+                            <strong>Price:</strong> {{this.price}} <br>
+                            <strong>Model Year:</strong> {{this.model_year}} <br>
+                            <strong>Mileage:</strong> {{this.mileage}} <br>
+                            <strong>Power Type:</strong> {{this.power_type}} <br>
+                            <strong>Gearbox Type:</strong> {{this.gearbox_type}} <br>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </li>
             {{/each}}
         </ul>
     </div>
-
     <div class="container mt-5">
-        <h1>Etsi autoja</h1>
-        <!-- Form for new search -->
-        <form id="searchForm" action="/items/search" method="get" class="searchForm">
+        <h1>Search cars</h1>
+        <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
             <div class="form-group mx-sm-3 mb-2">
-                <label for="brandSelect">Valitse Merkki:</label>
+                <label for="brandSelect">Select Brand:</label>
                 <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
                     {{#each car_brand}}
                     <option value="{{this.brand_id}}">{{this.brand_name}}</option>
                     {{/each}}
                 </select>
 
-                <label for="modelSelect">Valitse Malli:</label>
+                <label for="modelSelect">Select Model:</label>
                 <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
                     {{#each car_model}}
                     <option value="{{this.model_id}}">{{this.model_name}}</option>
                     {{/each}}
                 </select>
 
-                <label for="minPrice">Min Hinta:</label>
-                <input type="number" id="minPrice" name="minPrice" class="form-control" min="0">
+                <label for="minPrice">Min Price:</label>
+                <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Type min price"
+                    min="0">
 
-                <label for="maxPrice">Max Hinta:</label>
-                <input type="number" id="maxPrice" name="maxPrice" class="form-control" min="0">
+                <label for="maxPrice">Max Price:</label>
+                <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Type max price"
+                    min="0">
 
-                <label for="minYear">Vuosimalli alkaen:</label>
-                <input type="number" id="minYear" name="minYear" class="form-control" min="0">
+                <label for="oldestYear">Oldest Year:</label>
+                <input type="number" id="oldestYear" name="oldestYear" class="form-control" placeholder="Type year"
+                    min="0">
 
-                <label for="maxYear">Vuosimalli päättyen:</label>
-                <input type="number" id="maxYear" name="maxYear" class="form-control" min="0">
+                <label for="newestYear">Newest Year:</label>
+                <input type="number" id="newestYear" name="newestYear" class="form-control" placeholder="Type year"
+                    min="0">
 
-                <label for="minMileage">Kilometrit minimi:</label>
-                <input type="number" id="minMileage" name="minMileage" class="form-control" min="0">
+                <label for="minMileage">Min Mileage:</label>
+                <input type="number" id="minMileage" name="minMileage" class="form-control"
+                    placeholder="Type min mileage" min="0">
 
-                <label for="maxMileage">Kilometrit maksimi:</label>
-                <input type="number" id="maxMileage" name="maxMileage" class="form-control" min="0">
+                <label for="maxMileage">Max Mileage:</label>
+                <input type="number" id="maxMileage" name="maxMileage" class="form-control"
+                    placeholder="Type max mileage" min="0">
 
-                <label for="powerType">Käyttövoima:</label>
+                <label for="powerType">Select Power Type:</label>
                 <select id="powerType" name="powerType" class="form-control" multiple="multiple">
+                    <option value="Petrol">Petrol</option>
                     <option value="Diesel">Diesel</option>
-                    <option value="Bensiini">Bensiini</option>
-                    <option value="Sähkö">Sähkö</option>
-                    <option value="Hybridi">Hybridi</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
                 </select>
 
-                <label for="gearboxType">Vaihteisto:</label>
+                <label for="gearboxType">Select Gearbox Type:</label>
                 <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
-                    <option value="Automaatti">Automaatti</option>
-                    <option value="Manuaali">Manuaali</option>
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
                 </select>
 
-                <label for="idSearch">Auton ID:</label>
-                <input type="number" id="idSearch" name="idSearch" class="form-control" placeholder="Kirjoita haettavan auton id" min="0">  
+                <label for="idSearch">Search Vehicle by ID:</label>
+                <input type="number" id="idSearch" name="idSearch" class="form-control" placeholder="Type Vehicle ID"
+                    min="0">
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
     </div>
-
-    <!-- Script for sorting results -->
-    <script>
-        document.getElementById('searchForm').onsubmit = function() {
-            document.getElementById('sortBrand').value = document.querySelector('brandSelect');
-            document.getElementById('sortModel').value = document.querySelector('modelSelect');
-            document.getElementById('sortMinPrice').value = document.querySelector('input[name="minPrice"]').value;
-            document.getElementById('sortMaxPrice').value = document.querySelector('input[name="maxPrice"]').value;
-            document.getElementById('sortMinYear').value = document.querySelector('input[name="minYear"]').value;
-            document.getElementById('sortMaxYear').value = document.querySelector('input[name="maxYear"]').value;
-            document.getElementById('sortMinMileage').value = document.querySelector('input[name="minMileage"]').value;
-            document.getElementById('sortMaxMileage').value = document.querySelector('input[name="maxMileage"]').value;
-            document.getElementById('sortPowerType').value = document.querySelector('powerType');
-            document.getElementById('sortGearboxType').value = document.querySelector('gearboxType');
-            };
-
-            function getMultiSelectValues(selectId) {
-                var selectElement = document.getElementById(selectId);
-                var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
-                return selectedValues.join(','); // Yhdistää arvot pilkulla erotettuna
-}
-    </script>
 </body>
 
 </html>

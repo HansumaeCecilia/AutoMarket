@@ -1,21 +1,23 @@
-// MODULE FOR APP'S ENDPOINTS' TO CLIENT REQUEST
+// MODULE FOR APP'S ENDPOINTS' RESPONSE TO CLIENT REQUESTS
+// =======================================================
 
 const express = require("express");
 const router = express.Router();
 
 // Imports from 'controllers'
 const {
-    addVehicle,
-    getVehicleById,
     deleteVehicle,
     updateVehicle,
-    searchVehicles
+    searchVehicles,
+    addVehicle,
+    getVehicleById,    
 } = require("../controllers/items");
 
-// EXPRESS ROUTES TO USE '/controllers' FUNCTIONS
-// ----------------------------------------------
 
-// Fetch vehicles from front page
+// EXPRESS ROUTERS TO USE '/controllers' FUNCTIONS
+//------------------------------------------------
+
+// Fetch vehicles from front page search
 router.get('/search', async (req, res) => {
     try {
         console.log('GET request received for searching items with query:', req.query);
@@ -27,16 +29,17 @@ router.get('/search', async (req, res) => {
 });
 
 // Fetch vehicles from results-page
-router.get('/items/search', async (req, res) => {
+router.get('items/search', async (req, res) => {
     try {
+        console.log('GET request received for searching with query:', req.query.q);
         await searchVehicles(req, res);
     } catch (error) {
         console.error('Error searching vehicles:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).send('Internal server error.');
     }
 });
 
-
+// Fetch models for search dropdown
 router.get('/models', async (req, res) => {
     const brandId = req.query.brandId;
     if (!brandId) {
@@ -53,54 +56,61 @@ router.get('/models', async (req, res) => {
     }
 });
 
-
-// Router to adding a new vehicle
+// Router for adding a new vehicle
 router.post("/", async (req, res) => {
     console.log('POST request received for adding an item');
-    console.log('Received data:', req.body); // Log received data from Postman
-    
-    // Required parameters for new vehicle listing
-    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description} = req.body;
+    console.log('Received data:', req.body);
 
-    // Check if the image is sent
+    // Log the files object to debug the upload
+    console.log(req.files);
+
+    // Required parameters for new vehicle listing
+    const { brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description } = req.body;
+
+    // Check if image has been sent
     const image = req.files ? req.files.image : null;
+    console.log('Image has been sent')
 
     try {
         const result = await addVehicle(brand_id, model_id, price, model_year, mileage, power_type, gearbox_type, description, image);
         if (result.id) {
             res.status(201).redirect(`/items/${result.id}`);
-        }
+        }        
     } catch (error) {
-        res.status(500).send({error:error.message});
+        res.status(500).send({ error: error.message });
     }
 });
 
-// // Router to fetching vehicle by ID
-router.get("/items/:id", async (req, res) => {
+// Router for fetching vehicle by ID
+router.get('/items/:id', async (req, res) => {
     try {
-        console.log('GET request received for item with id:', req.params.id);
-        const vehicle = await getVehicleById(req.params.id);        
-        res.json(vehicle); 
+        console.log('GET request received for searching with query (id):', req.params.id);
+        await getVehicleById(req, res);
     } catch (error) {
         console.error('Error searching vehicle:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).send('Internal server error.');
     }
 });
 
 // Router for deleting vehicle by ID
-router.delete("/:id", (req, res) => {
-    console.log('DELETE request received for item with id:', req.params.id);
-    deleteVehicle(req, res);
+router.delete("/:id", async (req, res) => {
+    try {
+        console.log('DELETE request received for item with id:', req.params.id);
+        await deleteVehicle(req, res);
+    } catch (error) {
+        console.error('Could not delete vehicle');
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-// Router to modifying vehicle information by ID
-router.put("/:id", (req, res) => {
+// Router for modifying vehicle information by ID
+router.put("/:id", async (req, res) => {
     try {
         console.log('PUT request received for item with id:', req.params.id);
-        updateVehicle(req, res);
+        await updateVehicle(req, res);
     } catch (error) {
-        console.error('Error updating vehicle:', error);
-        res.status(500).send('Internal server error');
+        console.error('Could not update vehicle');
+        res.status(500).send('Internal Server Error');
     }
 });
 

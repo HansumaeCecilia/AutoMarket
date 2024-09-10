@@ -3,39 +3,10 @@ const jwt = require('jsonwebtoken');
 const { pool } = require('../db');
 
 // Get all existing users from database
-// const getUsers = async (req, res) => {
-//     try {
-//         const result = await pool.query('SELECT * FROM public.users');
-//         console.log("Fetched users:", result.rows);
-//         res.json(result.rows);
-//     } catch (error) {
-//         console.error('Error fetching users:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
-
 const getUsers = async (req, res) => {
-    const  { name, email, password } = req.query;
-    let query = 'SELECT * FROM public.users WHERE 1=1';
-    const queryParams = [];
-
-    if (name) {
-        query += ' AND name ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${name}%`);
-    }
-
-    if (email) {
-        query += ' AND email ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${email}%`);
-    }
-
-    if (password) {
-        query += 'SELECT password ILIKE $' + (queryParams.length + 1);
-        queryParams.push(`%${password}%`);
-    }
-
     try {
-        const result = await pool.query(query, queryParams);
+        const result = await pool.query('SELECT * FROM public.users');
+        console.log("Fetched users:", result.rows);
         return result.rows;
     } catch (error) {
         console.error('Error fetching users:', error);
