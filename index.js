@@ -25,11 +25,29 @@ const cookieParser = require('cookie-parser');
 
 const path = require('path');
 
+// i18next for translating
+const i18next = require('i18next');
+const i18nextMiddleware = require('i18next-express-middleware');
+const Backend = require('i18next-fs-backend');
+
+i18next
+  .use(Backend)
+  .init({
+    lng: 'en', // Aseta oletuskieli englanniksi
+    preload: ['en', 'fi'],
+    backend: {
+      loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json')
+    }
+  });
+
 const hbs = exphbs.create({
   extname: '.handlebars',
   helpers: {
       eq: function (a, b) {
           return a === b;
+      },
+      t: function (key) {
+        return i18next.t(key);
       }
   }
 });
@@ -49,7 +67,7 @@ const port = process.env.PORT || 3000;
 // Engine settings
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'views'));
 
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
@@ -69,6 +87,9 @@ app.use(express.static('public'));
 // Routes to functions
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
+
+// Use i18next fo traslation
+app.use(i18nextMiddleware.handle(i18next));
 
 
 
@@ -133,7 +154,7 @@ app.get('/', async (req, res) => {
       showdeletePopUp = true;
       // after showing, delete cookie, so it doesn't show again
       res.clearCookie('deleteSuccess');
-    }
+    };
 
     // Render search form dropdown options on frontpage
     res.render('frontpage', {

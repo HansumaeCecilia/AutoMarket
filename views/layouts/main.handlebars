@@ -18,7 +18,7 @@
         style="background: url(/img/porsche-1851246_1280.jpg) center / cover no-repeat;height: 555px;margin-bottom: 0px;">
         <nav class="navbar navbar-expand-md py-3" data-bs-theme="dark"
             style="background: rgba(0,0,0,0.76);padding: 15px 0px;">
-            <div class="container">
+            <div class="container" id="navbar">
                 <a class="navbar-brand d-flex align-items-center" href="#">
                     <span
                         class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"
@@ -52,6 +52,8 @@
                                 Yhteyttä</a></li>
                     </ul>
                 </div>
+                <button id="enButton">English</button>
+                <button id="fiButton">Suomi</button>
             </div>
         </nav>
     </header>
@@ -95,6 +97,42 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>    
     <script src="/scripts/scripts.js"></script> 
+    <script src="https://unpkg.com/i18next@latest/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@latest/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="https://unpkg.com/i18next-xhr-backend@latest/dist/umd/i18nextXHRBackend.min.js"></script>
+    <script>
+        i18next
+            .use(i18nextBrowserLanguageDetector)
+            .use(i18nextXHRBackend)
+            .init({
+            lng: 'en', // Oletuskieli
+            backend: {
+                loadPath: '/locales/{{lng}}/{{ns}}.json' // Käännettävät tiedostot
+            }
+            }, function(err, t) {
+            if (err) return console.error(err);
+            updateContent();
+            });
+
+        function updateContent() {
+            // Päivittää sivun sisällön kieliversion mukaan
+            document.getElementById('navbar').innerHTML = i18next.t({{search_vehicles}});
+        }
+    </script>
+    <script>
+        // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
+        document.getElementById('enButton').addEventListener('click', () => {
+            i18next.changeLanguage('en', () => {
+            updateContent();
+            });
+        });
+
+        document.getElementById('fiButton').addEventListener('click', () => {
+            i18next.changeLanguage('fi', () => {
+            updateContent();
+            });
+        });
+    </script>
 </body>
 
 </html>
