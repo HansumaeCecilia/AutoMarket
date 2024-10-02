@@ -32,12 +32,24 @@ const Backend = require('i18next-fs-backend');
 
 i18next
   .use(Backend)
+  
   .init({
-    lng: 'en', // Aseta oletuskieli englanniksi
+    lng: 'fi', // Aseta oletuskieli englanniksi
     preload: ['en', 'fi'],
+    ns: ['translation'],
+    defaultNS: 'translation',
     backend: {
-      loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json')
+      loadPath: path.join(__dirname, '/locales/fi/translation.json')
     }
+  }, (err, t) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log('i18next initialized successfully'); // Lisää tämä rivi
+    console.log("Current language:", i18next.language);
+    console.log("Load path:", path.join(__dirname, `/locales/${i18next.language}/translation.json`));
+    updateContent(); // Varmista, että tämä kutsuu vain, kun init on onnistunut
   });
 
 const hbs = exphbs.create({

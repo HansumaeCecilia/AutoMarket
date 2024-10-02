@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lng="en">
 
 <head>
     <meta charset="UTF-8">
@@ -52,8 +52,8 @@
                                 Yhteyttä</a></li>
                     </ul>
                 </div>
-                <button id="enButton">English</button>
-                <button id="fiButton">Suomi</button>
+                <button id="enButton" onclick="changeLanguage('en')">English</button>
+                <button id="fiButton" onclick="changeLanguage('fi')">Suomi</button>
             </div>
         </nav>
     </header>
@@ -97,39 +97,45 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>    
     <script src="/scripts/scripts.js"></script> 
-    <script src="https://unpkg.com/i18next@latest/dist/umd/i18next.min.js"></script>
-    <script src="https://unpkg.com/i18next-browser-languagedetector@latest/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
-    <script src="https://unpkg.com/i18next-xhr-backend@latest/dist/umd/i18nextXHRBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
     <script>
-        i18next
-            .use(i18nextBrowserLanguageDetector)
-            .use(i18nextXHRBackend)
-            .init({
-            lng: 'en', // Oletuskieli
-            backend: {
-                loadPath: '/locales/{{lng}}/{{ns}}.json' // Käännettävät tiedostot
-            }
-            }, function(err, t) {
+        // Function to change the language
+        function changeLanguage(lng) {
+            console.log('Changing language to:', lng);
+            i18next.changeLanguage(lng, (err) => {
             if (err) return console.error(err);
-            updateContent();
+            updateContent(); // Update content after language change
             });
+        }
 
         function updateContent() {
-            // Päivittää sivun sisällön kieliversion mukaan
-            document.getElementById('navbar').innerHTML = i18next.t({{search_vehicles}});
+            console.log("Updating content..")
+            const kaannosElement = document.getElementById('etsi_kaannos');
+            if (kaannosElement) {
+                kaannosElement.innerHTML = i18next.t('search_vehicles');
+            } else {
+                console.error("Element with id 'etsi_kaannos' not found.")
+            }
         }
-    </script>
-    <script>
-        // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
-        document.getElementById('enButton').addEventListener('click', () => {
-            i18next.changeLanguage('en', () => {
-            updateContent();
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded and parsed');
+            // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
+            document.getElementById('enButton').addEventListener('click', () => {
+                console.log('English button clicked');
+                i18next.changeLanguage('en', () => {
+                    console.log('Language changed to English');
+                    updateContent();
+                });
             });
-        });
 
-        document.getElementById('fiButton').addEventListener('click', () => {
-            i18next.changeLanguage('fi', () => {
-            updateContent();
+            document.getElementById('fiButton').addEventListener('click', () => {
+                console.log('Finnish button clicked');
+                i18next.changeLanguage('fi', () => {
+                    console.log('Language changed to Finnish');
+                    updateContent();
+                });
             });
         });
     </script>
