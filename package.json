@@ -16,6 +16,7 @@
     "i18next-fs-backend": "^2.3.2",
     "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
+    "ns": "^1.0.2",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
     "pg-pool": "^3.6.2",

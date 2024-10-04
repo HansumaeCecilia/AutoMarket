@@ -28,28 +28,28 @@ const path = require('path');
 // i18next for translating
 const i18next = require('i18next');
 const i18nextMiddleware = require('i18next-express-middleware');
-const Backend = require('i18next-fs-backend');
+const FsBackend = require('i18next-fs-backend');
 
 i18next
-  .use(Backend)
+  .use(FsBackend)
   
   .init({
-    lng: 'fi', // Aseta oletuskieli englanniksi
+    lng: 'en', // Aseta oletuskieli englanniksi
     preload: ['en', 'fi'],
+    debug: false,
+    fallbackLng: 'en',
     ns: ['translation'],
     defaultNS: 'translation',
     backend: {
-      loadPath: path.join(__dirname, '/locales/fi/translation.json')
+      loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json')
     }
   }, (err, t) => {
     if (err) {
       console.error(err);
       return;
     }
-    console.log('i18next initialized successfully'); // Lisää tämä rivi
+    console.log('i18next initialized successfully');
     console.log("Current language:", i18next.language);
-    console.log("Load path:", path.join(__dirname, `/locales/${i18next.language}/translation.json`));
-    updateContent(); // Varmista, että tämä kutsuu vain, kun init on onnistunut
   });
 
 const hbs = exphbs.create({
@@ -64,6 +64,8 @@ const hbs = exphbs.create({
   }
 });
 
+
+
 // Pool for database connection
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
@@ -76,10 +78,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+
 // Engine settings
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
+
+// Use i18next fo traslation
+app.use(i18nextMiddleware.handle(i18next));
 
 // Express middleware for parsing incoming requests
 app.use(bodyParser.json());
@@ -96,12 +102,13 @@ app.use(fileUpload());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
+app.use('/locales', express.static('locales'));
+
 // Routes to functions
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
 
-// Use i18next fo traslation
-app.use(i18nextMiddleware.handle(i18next));
+
 
 
 

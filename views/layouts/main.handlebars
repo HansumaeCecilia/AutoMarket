@@ -91,7 +91,6 @@
             </div>
         </div>
     </nav>
-
     <script src="/js/bootstrap.min.js"></script>        
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -101,43 +100,65 @@
     <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
     <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
     <script>
+        // Alustetaan i18next
+        i18next.init({
+            lng: 'en',
+            debug: true,
+            backend: {
+                loadPath: '/locales/en/translation.json'
+            }
+        }).then(() => {
+            console.log('i18next initialized successfully in the browser');
+        
+            // Kun DOM on ladattu, lisää tapahtumankäsittelijät
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('DOM fully loaded and parsed!');
+                // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
+                document.getElementById('enButton').addEventListener('click', () => {
+                    console.log('English button clicked');
+                    changeLanguage('en');
+                });
+
+                document.getElementById('fiButton').addEventListener('click', () => {
+                    console.log('Finnish button clicked');
+                    changeLanguage('fi'); 
+                });
+                updateContent();
+            });
+        }).catch(err => {
+            console.error('i18next initialization error in the browser:', err)
+        });
+
+
         // Function to change the language
         function changeLanguage(lng) {
             console.log('Changing language to:', lng);
-            i18next.changeLanguage(lng, (err) => {
-            if (err) return console.error(err);
-            updateContent(); // Update content after language change
-            });
-        }
+            i18next.changeLanguage(lng)
+                .then(() => {
+                    console.log(`Language changed to: ${lng}`);
+                    updateContent();
+                })
+                .catch((error) => {
+                    console.error('Error changing language:', error);
+                });
+            };
 
+        // function to updating content
         function updateContent() {
-            console.log("Updating content..")
+            console.log("Updating content..");
             const kaannosElement = document.getElementById('etsi_kaannos');
             if (kaannosElement) {
-                kaannosElement.innerHTML = i18next.t('search_vehicles');
+                const translation = i18next.t("search_vehicles");
+                console.log('Translation found:', translation);
+                kaannosElement.innerHTML = translation;
             } else {
-                console.error("Element with id 'etsi_kaannos' not found.")
-            }
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM fully loaded and parsed');
-            // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
-            document.getElementById('enButton').addEventListener('click', () => {
-                console.log('English button clicked');
-                i18next.changeLanguage('en', () => {
-                    console.log('Language changed to English');
-                    updateContent();
-                });
-            });
+                console.error("Element with id 'etsi_kaannos' not found.");
+            };
+        };
 
-            document.getElementById('fiButton').addEventListener('click', () => {
-                console.log('Finnish button clicked');
-                i18next.changeLanguage('fi', () => {
-                    console.log('Language changed to Finnish');
-                    updateContent();
-                });
-            });
-        });
+
+
+
     </script>
 </body>
 
