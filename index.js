@@ -28,12 +28,11 @@ const path = require('path');
 // i18next for translating
 const i18next = require('i18next');
 const i18nextMiddleware = require('i18next-express-middleware');
-const FsBackend = require('i18next-fs-backend');
+const Backend = require('i18next-fs-backend');
+const httpBackend = require('i18next-http-backend');
 
 i18next
-  .use(FsBackend)
-  
-  .init({
+  .use(Backend).init({
     lng: 'en', // Aseta oletuskieli englanniksi
     preload: ['en', 'fi'],
     debug: false,
@@ -59,7 +58,10 @@ const hbs = exphbs.create({
           return a === b;
       },
       t: function (key) {
-        return i18next.t(key);
+        const translation = i18next.t(key);
+        console.log(`Translation for ${key}:`, translation);
+      return translation;
+        //return i18next.t(key);
       }
   }
 });
@@ -70,6 +72,7 @@ const hbs = exphbs.create({
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
 const { updateUser } = require('./controllers/userController');
+const { default: I18NextHttpBackend } = require('i18next-http-backend');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -102,7 +105,7 @@ app.use(fileUpload());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-app.use('/locales', express.static('locales'));
+app.use('locales', express.static('locales'));
 
 // Routes to functions
 app.use('/items', itemRoutes);

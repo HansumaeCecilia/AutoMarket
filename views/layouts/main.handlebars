@@ -96,16 +96,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>    
     <script src="/scripts/scripts.js"></script> 
-    <script src="https://unpkg.com/i18next/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next@latest/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
     <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
     <script>
         // Alustetaan i18next
-        i18next.init({
+        i18next.use(i18nextHttpBackend).init({
             lng: 'en',
             debug: true,
             backend: {
-                loadPath: '/locales/en/translation.json'
+                loadPath: '/locales/{{lng}}/translation.json'
             }
         }).then(() => {
             console.log('i18next initialized successfully in the browser');
@@ -123,7 +124,7 @@
                     console.log('Finnish button clicked');
                     changeLanguage('fi'); 
                 });
-                updateContent();
+               // updateContent();
             });
         }).catch(err => {
             console.error('i18next initialization error in the browser:', err)
@@ -148,7 +149,7 @@
             console.log("Updating content..");
             const kaannosElement = document.getElementById('etsi_kaannos');
             if (kaannosElement) {
-                const translation = i18next.t("search_vehicles");
+                const translation = i18next.t('search_vehicles1');
                 console.log('Translation found:', translation);
                 kaannosElement.innerHTML = translation;
             } else {
