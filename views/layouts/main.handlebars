@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lng="en">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/hamburger.css">
@@ -52,8 +52,8 @@
                                 Yhteyttä</a></li>
                     </ul>
                 </div>
-                <button id="enButton" onclick="changeLanguage('en')">English</button>
-                <button id="fiButton" onclick="changeLanguage('fi')">Suomi</button>
+                <button id="enButton">English</button>
+                <button id="fiButton">Suomi</button>
             </div>
         </nav>
     </header>
@@ -97,70 +97,78 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>    
     <script src="/scripts/scripts.js"></script> 
     <script src="https://unpkg.com/i18next@latest/i18next.min.js"></script>
-    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
-    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
     <script src="https://unpkg.com/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
-    <script>
-        // Alustetaan i18next
-        i18next.use(i18nextHttpBackend).init({
-            lng: 'en',
-            debug: true,
-            backend: {
-                loadPath: '/locales/{{lng}}/translation.json'
-            }
-        }).then(() => {
-            console.log('i18next initialized successfully in the browser');
-        
-            // Kun DOM on ladattu, lisää tapahtumankäsittelijät
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('DOM fully loaded and parsed!');
-                // Kun nappia klikataan, vaihda kieli ja päivitä sisältö
-                document.getElementById('enButton').addEventListener('click', () => {
-                    console.log('English button clicked');
-                    changeLanguage('en');
-                });
+    <script>       
+        // Kun DOM on ladattu, lisää tapahtumankäsittelijät
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed!'); // Varmistetaan, että DOM on valmis
 
-                document.getElementById('fiButton').addEventListener('click', () => {
-                    console.log('Finnish button clicked');
-                    changeLanguage('fi'); 
-                });
-               // updateContent();
-            });
-        }).catch(err => {
-            console.error('i18next initialization error in the browser:', err)
-        });
-
-
-        // Function to change the language
-        function changeLanguage(lng) {
-            console.log('Changing language to:', lng);
-            i18next.changeLanguage(lng)
-                .then(() => {
-                    console.log(`Language changed to: ${lng}`);
-                    updateContent();
+            // i18nextin alustus
+            i18next
+                .use(i18nextHttpBackend) // Käytetään HTTP-backendiä hakemaan käännökset palvelimelta
+                .init({
+                    lng: 'en', // Oletuskieli selaimessa Englanti
+                    debug: true,
+                    backend: {
+                        loadPath: function(lngs, namespaces) {
+                            return `/locales/${lngs[0]}/translation.json`; // Käännöstiedoston polku, missä lngs[0] on valittu kieli
+                        }
+                    },
+                    fallbackLng: 'en',
+                    interpolation: {
+                        escapeValue: false
+                    }
                 })
-                .catch((error) => {
-                    console.error('Error changing language:', error);
+                .then(() => {
+                    console.log('i18next initialized successfully');
+                    const currentLang = i18next.language; // Hanki aktiivinen kieli
+                    const loadPath = `locales/${currentLang}/translation.json`; // Muodosta polku
+                    console.log('Current language:', currentLang);
+                    console.log('Load path:', loadPath);
+                    updateContent(); // Päivitä käännetty sisältö
+                })
+                .catch(err => {
+                    console.error('i18next initialization error:', err);
                 });
-            };
 
-        // function to updating content
-        function updateContent() {
-            console.log("Updating content..");
-            const kaannosElement = document.getElementById('etsi_kaannos');
-            if (kaannosElement) {
-                const translation = i18next.t('search_vehicles1');
-                console.log('Translation found:', translation);
-                kaannosElement.innerHTML = translation;
-            } else {
-                console.error("Element with id 'etsi_kaannos' not found.");
-            };
-        };
+                 // Käsittelijä Englanti-napille
+                document.getElementById('enButton').addEventListener('click', function() {
+                    if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                        i18next.changeLanguage('en').then(() => { // Vaihda kieli englanniksi
+                            console.log('Language changed to English');
+                            updateContent(); // Päivitä sisältö
+                        }).catch(err => {
+                            console.error('Error changing language to English:', err); // Virhe käännöksessä
+                        });
+                    } else {
+                        console.error('i18next is not initialized yet'); // Virheilmoitus, jos i18next ei ole alustettu
+                    }
+                });
 
+                // Kun Suomi nappia klikataan, vaihda kieli ja päivitä sisältö
+                document.getElementById('fiButton').addEventListener('click', function() {
+                    if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                        i18next.changeLanguage('fi').then(() => {
+                            console.log('Language changed to Finnish');
+                            updateContent();
+                        }).catch(err => {
+                            console.error('Error changing language to Finnish', err);
+                        });
+                    } else {
+                        console.error('i18next is not initialized yet');
+                    }
+                });
 
-
-
+                // Funktio, joka päivittää käännetyn sisällön
+                function updateContent() {
+                    const translatedText = i18next.t('search_vehicles1'); // Hae käännetty teksti
+                    if (translatedText) {
+                        document.getElementById('etsi_kaannos').textContent = translatedText; // Päivitä elementin teksti
+                    } else {
+                        console.error('Translation for "search_vehicles1" not found'); // Ilmoitus, jos käännöstä ei löydy
+                    }
+                }
+            });
     </script>
 </body>
-
 </html>

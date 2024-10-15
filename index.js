@@ -25,43 +25,47 @@ const cookieParser = require('cookie-parser');
 
 const path = require('path');
 
+// Create server
+const app = express();
+const port = process.env.PORT || 3000;
+
 // i18next for translating
-const i18next = require('i18next');
-const i18nextMiddleware = require('i18next-express-middleware');
-const Backend = require('i18next-fs-backend');
-const httpBackend = require('i18next-http-backend');
+const i18next = require('i18next'); //Ladataan i18next kirjasto palvelinpuolelle
+const i18nextMiddleware = require('i18next-express-middleware'); // i18next middleware Express palvelimelle
+const Backend = require('i18next-fs-backend'); // Käytetään tiedostopohjaista backendia lataamaan käännökset tiedostosta
+
+let i18nextInitialized = false; // Lippu, joka seuraa i18nextin alustusta
 
 i18next
-  .use(Backend).init({
-    lng: 'en', // Aseta oletuskieli englanniksi
-    preload: ['en', 'fi'],
-    debug: false,
-    fallbackLng: 'en',
-    ns: ['translation'],
-    defaultNS: 'translation',
-    backend: {
-      loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json')
-    }
-  }, (err, t) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log('i18next initialized successfully');
-    console.log("Current language:", i18next.language);
-  });
+    .use(Backend)
+    .init({
+        lng: 'en',
+        debug: true,
+        backend: {
+            loadPath: 'public/locales/{{lng}}/translation.json' //Määritetään käännöstiedostojen polku, missä {{lng}} korvataan valitulla kielellä
+        },
+        fallbackLng: 'en', // Jos käännöstä ei löydy, käytetään Englantia
+        interpolation: {
+            escapeValue: false // Turvallinen interpolaatio kehityksessä, ei pakoiteta arvoja HTML:ssä
+        }
+    })
+    .then(() => {
+        console.log('i18next initialized successfully');
+        console.log('Test translation:', i18next.t('search_vehicles1')); //Testikäännös
+        i18nextInitialized = true; // Merkitään, että alustus on valmis
+    })
+    .catch(err => {
+        console.error('i18next initialization error in the browser:', err);
+    });
 
 const hbs = exphbs.create({
-  extname: '.handlebars',
+  extname: '.handlebars', // Määritetään Handlebars-tiedostojen laajennus .handlebars
   helpers: {
       eq: function (a, b) {
-          return a === b;
+          return a === b; // Helper-funktio, joka vertaa kahta arvoa
       },
       t: function (key) {
-        const translation = i18next.t(key);
-        console.log(`Translation for ${key}:`, translation);
-      return translation;
-        //return i18next.t(key);
+        return i18next.t(key); // Kutsutaan i18nextin käännöksiä suoraan handlebarsissa
       }
   }
 });
@@ -72,14 +76,12 @@ const hbs = exphbs.create({
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
 const { updateUser } = require('./controllers/userController');
-const { default: I18NextHttpBackend } = require('i18next-http-backend');
+//const { default: I18NextHttpBackend } = require('i18next-http-backend');
 
 // Load environment variables from .env file
 dotenv.config();
 
-// Create server
-const app = express();
-const port = process.env.PORT || 3000;
+
 
 
 // Engine settings
@@ -104,8 +106,8 @@ app.use(fileUpload());
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
-
-app.use('locales', express.static('locales'));
+//app.use(express.static(path.join(__dirname, 'locales')));
+app.use('/locales', express.static('locales'));
 
 // Routes to functions
 app.use('/items', itemRoutes);
