@@ -71,7 +71,7 @@
       <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
         <div class="form-group mx-sm-3 mb-2">
           <!-- options for searching vehicles with specific parameters -->
-          <label for="brandSelect">Valitse Merkki:</label>
+          <label for="brandSelect">Valitse merkki:</label>
           <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
             {{#each car_brand}}
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>

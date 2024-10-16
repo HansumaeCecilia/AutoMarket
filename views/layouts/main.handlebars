@@ -108,7 +108,7 @@
                 .use(i18nextHttpBackend) // Käytetään HTTP-backendiä hakemaan käännökset palvelimelta
                 .init({
                     lng: 'en', // Oletuskieli selaimessa Englanti
-                    debug: true,
+                    debug: false,
                     backend: {
                         loadPath: function(lngs, namespaces) {
                             return `/locales/${lngs[0]}/translation.json`; // Käännöstiedoston polku, missä lngs[0] on valittu kieli
@@ -118,10 +118,10 @@
                 })
                 .then(() => {
                     console.log('i18next initialized successfully');
-                    const currentLang = i18next.language; // Hanki aktiivinen kieli
-                    const loadPath = `locales/${currentLang}/translation.json`; // Muodosta polku
-                    console.log('Current language:', currentLang);
-                    console.log('Load path:', loadPath);
+                    //const currentLang = i18next.language; // Hanki aktiivinen kieli
+                    //const loadPath = `locales/${currentLang}/translation.json`; // Muodosta polku
+                    //console.log('Current language:', currentLang);
+                    //console.log('Load path:', loadPath);
                     updateContent(); // Päivitä käännetty sisältö
                 })
                 .catch(err => {

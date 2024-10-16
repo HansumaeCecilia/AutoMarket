@@ -103,8 +103,6 @@ app.use(fileUpload());
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
-//app.use(express.static(path.join(__dirname, 'locales')));
-app.use('/locales', express.static('locales'));
 
 // Routes to functions
 app.use('/items', itemRoutes);
