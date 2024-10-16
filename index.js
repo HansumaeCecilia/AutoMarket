@@ -40,14 +40,11 @@ i18next
     .use(Backend)
     .init({
         lng: 'en',
-        debug: true,
+        debug: false,
         backend: {
             loadPath: 'public/locales/{{lng}}/translation.json' //Määritetään käännöstiedostojen polku, missä {{lng}} korvataan valitulla kielellä
         },
         fallbackLng: 'en', // Jos käännöstä ei löydy, käytetään Englantia
-        interpolation: {
-            escapeValue: false // Turvallinen interpolaatio kehityksessä, ei pakoiteta arvoja HTML:ssä
-        }
     })
     .then(() => {
         console.log('i18next initialized successfully');

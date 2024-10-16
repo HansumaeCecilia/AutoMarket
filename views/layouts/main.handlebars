@@ -114,10 +114,7 @@
                             return `/locales/${lngs[0]}/translation.json`; // Käännöstiedoston polku, missä lngs[0] on valittu kieli
                         }
                     },
-                    fallbackLng: 'en',
-                    interpolation: {
-                        escapeValue: false
-                    }
+                    fallbackLng: 'en'
                 })
                 .then(() => {
                     console.log('i18next initialized successfully');
