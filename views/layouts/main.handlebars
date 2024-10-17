@@ -118,10 +118,6 @@
                 })
                 .then(() => {
                     console.log('i18next initialized successfully');
-                    //const currentLang = i18next.language; // Hanki aktiivinen kieli
-                    //const loadPath = `locales/${currentLang}/translation.json`; // Muodosta polku
-                    //console.log('Current language:', currentLang);
-                    //console.log('Load path:', loadPath);
                     updateContent(); // Päivitä käännetty sisältö
                 })
                 .catch(err => {
@@ -157,13 +153,25 @@
                 });
 
                 // Funktio, joka päivittää käännetyn sisällön
+                //function updateContent() {
+                //    const translatedText = i18next.t('search_vehicles1'); // Hae käännetty teksti
+                //    if (translatedText) {
+                //        document.getElementById('etsi_kaannos').textContent = translatedText; // Päivitä elementin teksti
+                //    } else {
+                //        console.error('Translation for "search_vehicles1" not found'); // Ilmoitus, jos käännöstä ei löydy
+                //    }
+                //}
                 function updateContent() {
-                    const translatedText = i18next.t('search_vehicles1'); // Hae käännetty teksti
-                    if (translatedText) {
-                        document.getElementById('etsi_kaannos').textContent = translatedText; // Päivitä elementin teksti
-                    } else {
-                        console.error('Translation for "search_vehicles1" not found'); // Ilmoitus, jos käännöstä ei löydy
-                    }
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const translatedText = i18next.t(key);
+
+                        if (translatedText) {
+                            element.textContent = translatedText;
+                        } else {
+                            console.error(`Translation for "${key}" not found`);
+                        }
+                    });
                 }
             });
     </script>

@@ -66,12 +66,12 @@
     <!-- container for search form -->
     <div class="search_Form">
       <br>
-      <h1 id="etsi_kaannos">{{t 'search_vehicles1'}}</h1>
+      <h1 data-i18n="search_vehicles1"></h1>
       <br>
       <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
         <div class="form-group mx-sm-3 mb-2">
           <!-- options for searching vehicles with specific parameters -->
-          <label for="brandSelect">Valitse merkki:</label>
+          <label for="brandSelect" data-i18n="select_brand"></label>
           <select id="brandSelect" name="brandSelect" class="form-control" multiple="multiple">
             {{#each car_brand}}
             <option value="{{this.brand_id}}">{{this.brand_name}}</option>
