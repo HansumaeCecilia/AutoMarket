@@ -1,4 +1,22 @@
 {
-    "search_vehicles1": "Search Vehicles",
-    "select_brand": "Select Brand"
+    "search_vehicles": "Search Vehicles",
+    "select_brand": "Select Brand:",
+    "select_model": "Select Model:",
+    "min_price": "Min Price:",
+    "max_price": "Max Price:",
+    "start_year": "Oldest Year:",
+    "end_year": "Newest Year:",
+    "min_mileage": "Min Mileage:",
+    "max_mileage": "Max Mileage:",
+    "power_type": "Select Power Type:",
+    "diesel": "Diesel",
+    "petrol": "Petrol",
+    "electric": "Electric",
+    "hybrid": "Hybrid",
+    "gearbox_type": "Select Gearbox Type:",
+    "automatic": "Automatic",
+    "manual": "Manual",
+    "vehicle_id": "Search Vehicle by ID:",
+    "search_button": "Search",
+    "idSearchPlaceholder": "Type Vehicle ID"
 }

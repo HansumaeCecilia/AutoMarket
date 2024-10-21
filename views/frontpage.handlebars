@@ -66,7 +66,7 @@
     <!-- container for search form -->
     <div class="search_Form">
       <br>
-      <h1 data-i18n="search_vehicles1"></h1>
+      <h1 data-i18n="search_vehicles"></h1>
       <br>
       <form id="searchForm" action="/items/search" method="get" class="form-inline mb-4">
         <div class="form-group mx-sm-3 mb-2">
@@ -78,49 +78,49 @@
             {{/each}}
           </select>
 
-          <label for="modelSelect">Valitse Malli:</label>
+          <label for="modelSelect" data-i18n="select_model"></label>
           <select id="modelSelect" name="modelSelect" class="form-control" multiple="multiple">
             {{#each car_model}}
             <option value="{{this.model_id}}">{{this.model_name}}</option>
             {{/each}}
           </select>
 
-          <label for="minPrice">Min Hinta:</label>
+          <label for="minPrice" data-i18n="min_price"></label>
           <input type="number" id="minPrice" name="minPrice" class="form-control" min="0">
 
-          <label for="maxPrice">Max Hinta:</label>
+          <label for="maxPrice" data-i18n="max_price"></label>
           <input type="number" id="maxPrice" name="maxPrice" class="form-control" min="0">
 
-          <label for="minYear">Vuosimalli alkaen:</label>
+          <label for="minYear" data-i18n="start_year"></label>
           <input type="number" id="minYear" name="minYear" class="form-control" min="0">
 
-          <label for="maxYear">Vuosimalli päättyen:</label>
+          <label for="maxYear" data-i18n="end_year"></label>
           <input type="number" id="maxYear" name="maxYear" class="form-control" min="0">
 
-          <label for="minMileage">Kilometrit minimi:</label>
+          <label for="minMileage" data-i18n="min_mileage"></label>
           <input type="number" id="minMileage" name="minMileage" class="form-control" min="0">
 
-          <label for="maxMileage">Kilometrit maksimi:</label>
+          <label for="maxMileage" data-i18n="max_mileage"></label>
           <input type="number" id="maxMileage" name="maxMileage" class="form-control" min="0">
 
-          <label for="powerType">Käyttövoima:</label>
+          <label for="powerType" data-i18n="power_type"></label>
             <select id="powerType" name="powerType" class="form-control" multiple="multiple">
-                <option value="Diesel">Diesel</option>
-                <option value="Bensiini">Bensiini</option>
-                <option value="Sähkö">Sähkö</option>
-                <option value="Hybridi">Hybridi</option>
+                <option value="Diesel" data-i18n="diesel"></option>
+                <option value="Bensiini" data-i18n="petrol"></option>
+                <option value="Sähkö" data-i18n="electric"></option>
+                <option value="Hybridi" data-i18n="hybrid"></option>
             </select>
 
-          <label for="gearboxType">Vaihteisto:</label>
+          <label for="gearboxType" data-i18n="gearbox_type"></label>
             <select id="gearboxType" name="gearboxType" class="form-control" multiple="multiple">
-                <option value="Automaatti">Automaatti</option>
-                <option value="Manuaali">Manuaali</option>
+                <option value="Automaatti" data-i18n="automatic"></option>
+                <option value="Manuaali" data-i18n="manual"></option>
             </select>
 
-          <label for="idSearch">Auton ID:</label>
-            <input type="number" id="idSearch" name="idSearch" class="form-control" placeholder="Kirjoita haettavan auton id" min="0">  
+          <label for="idSearch" data-i18n="vehicle_id"></label>
+            <input type="number" id="idSearch" name="idSearch" class="form-control"  min="0" data-i18n="[placeholder]idSearchPlaceholder">  
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Hae</button>
+        <button type="submit" class="btn btn-primary mb-2" data-i18n="search_button"></button>
       </form>
     </div>
     <!-- container for image-slider -->

@@ -1,4 +1,22 @@
 {
-    "search_vehicles1": "Etsi autoja",
-    "select_brand": "Valitse merkki"
+    "search_vehicles": "Etsi autoja",
+    "select_brand": "Valitse merkki:",
+    "select_model": "Valitse malli:",
+    "min_price": "Hinta alkaen:",
+    "max_price": "Hinta päättyen:",
+    "start_year": "Vuosimalli alkaen:",
+    "end_year": "Vuosimalli päättyen:",
+    "min_mileage": "Kilometrit alkaen:",
+    "max_mileage": "Kilometrit päättyen:",
+    "power_type": "Valitse käyttövoima:",
+    "diesel": "Diesel",
+    "petrol": "Bensiini",
+    "electric": "Sähkö",
+    "hybrid": "Hybridi",
+    "gearbox_type": "Valitse vaihteiston tyyppi:",
+    "automatic": "Automaatti",
+    "manual": "Manuaali",
+    "vehicle_id": "Auton ID-haku:",
+    "search_button": "Hae",
+    "idSearchPlaceholder": "Kirjoita haettavan auton id"
 }
