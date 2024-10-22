@@ -43,13 +43,13 @@
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link active" href="http://localhost:3000"
-                                style="color: rgb(133,204,127);">Etusivu</a></li>
+                                style="color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/items/search?"
-                                style="color: rgba(133, 204, 127, 1);">Myynti-ilmoitukset</a></li>
+                                style="color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/new_listing"
-                                style="color: rgba(133, 204, 127, 1);">Uusi ilmoitus</a></li>
-                        <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact" style="color: rgba(133, 204, 127, 1);">Ota
-                                Yhteyttä</a></li>
+                                style="color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
+                        <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact"
+                                style="color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
                     </ul>
                 </div>
                 <button id="enButton">English</button>
@@ -80,27 +80,27 @@
             <div class="collapse navbar-collapse" id="navcol-2">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="http://localhost:3000"
-                            style="color: rgb(133,204,127);">Etusivu</a></li>
+                            style="color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
                     <li class="nav-item"><a class="nav-link" href="http://localhost:3000/items/search?"
-                            style="color: rgba(133, 204, 127, 1);">Myynti-ilmoitukset</a></li>
+                            style="color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
                     <li class="nav-item"><a class="nav-link" href="http://localhost:3000/new_listing"
-                                style="color: rgba(133, 204, 127, 1);">Uusi ilmoitus</a></li>
-                    <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact" style="color: rgba(133, 204, 127, 1);">Ota
-                                Yhteyttä</a></li>
+                            style="color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact"
+                            style="color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <script src="/js/bootstrap.min.js"></script>        
+    <script src="/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>    
-    <script src="/scripts/scripts.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/scripts/scripts.js"></script>
     <script src="https://unpkg.com/i18next@latest/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
-    <script>       
+    <script>
         // Kun DOM on ladattu, lisää tapahtumankäsittelijät
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             console.log('DOM fully loaded and parsed!'); // Varmistetaan, että DOM on valmis
             // i18nextin alustus
             i18next
@@ -109,7 +109,7 @@
                     lng: 'en', // Oletuskieli selaimessa Englanti
                     debug: false,
                     backend: {
-                        loadPath: function(lngs, namespaces) {
+                        loadPath: function (lngs, namespaces) {
                             return `/locales/${lngs[0]}/translation.json`; // Käännöstiedoston polku, missä lngs[0] on valittu kieli
                         }
                     },
@@ -123,98 +123,99 @@
                     console.error('i18next initialization error:', err);
                 });
 
-                 // Käsittelijä Englanti-napille
-                document.getElementById('enButton').addEventListener('click', function() {
-                    if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
-                        i18next.changeLanguage('en').then(() => { // Vaihda kieli englanniksi
-                            console.log('Language changed to English');
-                            updateContent(); // Päivitä sisältö
-                        }).catch(err => {
-                            console.error('Error changing language to English:', err); // Virhe käännöksessä
-                        });
-                    } else {
-                        console.error('i18next is not initialized yet'); // Virheilmoitus, jos i18next ei ole alustettu
-                    }
-                });
-
-                // Kun Suomi nappia klikataan, vaihda kieli ja päivitä sisältö
-                document.getElementById('fiButton').addEventListener('click', function() {
-                    if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
-                        i18next.changeLanguage('fi').then(() => {
-                            console.log('Language changed to Finnish');
-                            updateContent();
-                        }).catch(err => {
-                            console.error('Error changing language to Finnish', err);
-                        });
-                    } else {
-                        console.error('i18next is not initialized yet');
-                    }
-                });
-
-                function updateContent() {
-                    const elements = document.querySelectorAll('[data-i18n]'); // Hakee kaikki elementit, joilla on data-i18n attribuutti
-    
-                    elements.forEach((element) => {
-                        const translationKey = element.getAttribute('data-i18n'); // Hakee käännösavaimen
-        
-                        // Placeholderien käsittely
-                        if (translationKey && translationKey.startsWith('[placeholder]')) {
-                            const attr = translationKey.replace('[placeholder]', '');
-                            element.setAttribute('placeholder', i18next.t(attr));
-                        }
-                        
-                        // Option-elementtien päivitys pudotusvalikoille
-                        else if (element.tagName === 'OPTION') {
-                            console.log('Päivitetään option:', element.textContent, '->', translationKey); // Lisätty loggaus
-                            element.textContent = i18next.t(translationKey);
-                            
-                            $(element.closest('select')).select2();
-                            console.log('Päivitetty option:', element.textContent);
-                        }
-                        // Muiden elementtien sisällön päivitys
-                            else {
-                            element.innerText = i18next.t(translationKey);
-                        }
+            // Käsittelijä Englanti-napille
+            document.getElementById('enButton').addEventListener('click', function () {
+                if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                    i18next.changeLanguage('en').then(() => { // Vaihda kieli englanniksi
+                        console.log('Language changed to English');
+                        updateContent(); // Päivitä sisältö
+                    }).catch(err => {
+                        console.error('Error changing language to English:', err); // Virhe käännöksessä
                     });
+                } else {
+                    console.error('i18next is not initialized yet'); // Virheilmoitus, jos i18next ei ole alustettu
                 }
-
-                //function updateContent() {
-                //    document.querySelectorAll('[data-i18n]').forEach(function(element) {
-                //        const translationKey = element.getAttribute('data-i18n');
-                //        console.log('Päivitetään:', translationKey, ' -> ', i18next.t(translationKey));
-                //        console.log('Päivitetään option:', option.textContent, '->', option.getAttribute('data-i18n'));
-//
-                //        // Placeholder-päivitys inputeille
-                //        if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-                //            element.setAttribute('placeholder', i18next.t(translationKey.replace('[placeholder]', '').trim()));
-                //        }
-    //
-                //        // Option-elementtien päivitys pudotusvalikoille
-                //        else if (element.tagName === 'OPTION') {
-                //            element.innerText = i18next.t(translationKey);
-                //        }
-    //
-                //        // Muut elementit, jotka päivitetään textContentin kautta
-                //        else {
-                //            element.textContent = i18next.t(translationKey);
-                //        }
-                //    });
-                //}
-
-                // FUNKTIO ILMAN PLACEHOLDERIA SEKÄ DROPDOWN VALIKOITA
-                //function updateContent() {
-                //    document.querySelectorAll('[data-i18n]').forEach(element => {
-                //        const key = element.getAttribute('data-i18n');
-                //        const translatedText = i18next.t(key);
-//
-                //        if (translatedText) {
-                //            element.textContent = translatedText;
-                //        } else {
-                //            console.error(`Translation for "${key}" not found`);
-                //        }
-                //    });
-                //}
             });
+
+            // Kun Suomi nappia klikataan, vaihda kieli ja päivitä sisältö
+            document.getElementById('fiButton').addEventListener('click', function () {
+                if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                    i18next.changeLanguage('fi').then(() => {
+                        console.log('Language changed to Finnish');
+                        updateContent();
+                    }).catch(err => {
+                        console.error('Error changing language to Finnish', err);
+                    });
+                } else {
+                    console.error('i18next is not initialized yet');
+                }
+            });
+
+            function updateContent() {
+                const elements = document.querySelectorAll('[data-i18n]'); // Hakee kaikki elementit, joilla on data-i18n attribuutti
+
+                elements.forEach((element) => {
+                    const translationKey = element.getAttribute('data-i18n'); // Hakee käännösavaimen
+
+                    // Placeholderien käsittely
+                    if (translationKey && translationKey.startsWith('[placeholder]')) {
+                        const attr = translationKey.replace('[placeholder]', '');
+                        element.setAttribute('placeholder', i18next.t(attr));
+                    }
+
+                    // Option-elementtien päivitys pudotusvalikoille
+                    else if (element.tagName === 'OPTION') {
+                        console.log('Päivitetään option:', element.textContent, '->', translationKey); // Lisätty loggaus
+                        element.textContent = i18next.t(translationKey);
+
+                        $(element.closest('select')).select2();
+                        console.log('Päivitetty option:', element.textContent);
+                    }
+                    // Muiden elementtien sisällön päivitys
+                    else {
+                        element.innerText = i18next.t(translationKey);
+                    }
+                });
+            }
+
+            //function updateContent() {
+            //    document.querySelectorAll('[data-i18n]').forEach(function(element) {
+            //        const translationKey = element.getAttribute('data-i18n');
+            //        console.log('Päivitetään:', translationKey, ' -> ', i18next.t(translationKey));
+            //        console.log('Päivitetään option:', option.textContent, '->', option.getAttribute('data-i18n'));
+            //
+            //        // Placeholder-päivitys inputeille
+            //        if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+            //            element.setAttribute('placeholder', i18next.t(translationKey.replace('[placeholder]', '').trim()));
+            //        }
+            //
+            //        // Option-elementtien päivitys pudotusvalikoille
+            //        else if (element.tagName === 'OPTION') {
+            //            element.innerText = i18next.t(translationKey);
+            //        }
+            //
+            //        // Muut elementit, jotka päivitetään textContentin kautta
+            //        else {
+            //            element.textContent = i18next.t(translationKey);
+            //        }
+            //    });
+            //}
+
+            // FUNKTIO ILMAN PLACEHOLDERIA SEKÄ DROPDOWN VALIKOITA
+            //function updateContent() {
+            //    document.querySelectorAll('[data-i18n]').forEach(element => {
+            //        const key = element.getAttribute('data-i18n');
+            //        const translatedText = i18next.t(key);
+            //
+            //        if (translatedText) {
+            //            element.textContent = translatedText;
+            //        } else {
+            //            console.error(`Translation for "${key}" not found`);
+            //        }
+            //    });
+            //}
+        });
     </script>
 </body>
+
 </html>

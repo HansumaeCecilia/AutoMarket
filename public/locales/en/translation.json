@@ -18,5 +18,9 @@
     "manual": "Manual",
     "vehicle_id": "Search Vehicle by ID:",
     "search_button": "Search",
-    "idSearchPlaceholder": "Type Vehicle ID"
+    "idSearchPlaceholder": "Type Vehicle ID",
+    "frontpage": "Frontpage",
+    "all_listings": "Listings",
+    "new_listing": "New listing",
+    "contact_us": "Contact us"
 }

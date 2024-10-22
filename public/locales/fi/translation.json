@@ -18,5 +18,9 @@
     "manual": "Manuaali",
     "vehicle_id": "Auton ID-haku:",
     "search_button": "Hae",
-    "idSearchPlaceholder": "Kirjoita haettavan auton id"
+    "idSearchPlaceholder": "Kirjoita haettavan auton id",
+    "frontpage": "Etusivu",
+    "all_listings": "Myynti-ilmoitukset",
+    "new_listing": "Uusi ilmoitus",
+    "contact_us": "Ota yhteyttä"
 }
