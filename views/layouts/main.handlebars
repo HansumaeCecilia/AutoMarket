@@ -100,9 +100,8 @@
     <script src="https://unpkg.com/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
     <script>       
         // Kun DOM on ladattu, lisää tapahtumankäsittelijät
-        document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function() {
             console.log('DOM fully loaded and parsed!'); // Varmistetaan, että DOM on valmis
-
             // i18nextin alustus
             i18next
                 .use(i18nextHttpBackend) // Käytetään HTTP-backendiä hakemaan käännökset palvelimelta
@@ -152,27 +151,69 @@
                     }
                 });
 
-                // Funktio, joka päivittää käännetyn sisällön
-                //function updateContent() {
-                //    const translatedText = i18next.t('search_vehicles1'); // Hae käännetty teksti
-                //    if (translatedText) {
-                //        document.getElementById('etsi_kaannos').textContent = translatedText; // Päivitä elementin teksti
-                //    } else {
-                //        console.error('Translation for "search_vehicles1" not found'); // Ilmoitus, jos käännöstä ei löydy
-                //    }
-                //}
                 function updateContent() {
-                    document.querySelectorAll('[data-i18n]').forEach(element => {
-                        const key = element.getAttribute('data-i18n');
-                        const translatedText = i18next.t(key);
-
-                        if (translatedText) {
-                            element.textContent = translatedText;
-                        } else {
-                            console.error(`Translation for "${key}" not found`);
+                    const elements = document.querySelectorAll('[data-i18n]'); // Hakee kaikki elementit, joilla on data-i18n attribuutti
+    
+                    elements.forEach((element) => {
+                        const translationKey = element.getAttribute('data-i18n'); // Hakee käännösavaimen
+        
+                        // Placeholderien käsittely
+                        if (translationKey && translationKey.startsWith('[placeholder]')) {
+                            const attr = translationKey.replace('[placeholder]', '');
+                            element.setAttribute('placeholder', i18next.t(attr));
+                        }
+                        
+                        // Option-elementtien päivitys pudotusvalikoille
+                        else if (element.tagName === 'OPTION') {
+                            console.log('Päivitetään option:', element.textContent, '->', translationKey); // Lisätty loggaus
+                            element.textContent = i18next.t(translationKey);
+                            
+                            $(element.closest('select')).select2();
+                            console.log('Päivitetty option:', element.textContent);
+                        }
+                        // Muiden elementtien sisällön päivitys
+                            else {
+                            element.innerText = i18next.t(translationKey);
                         }
                     });
                 }
+
+                //function updateContent() {
+                //    document.querySelectorAll('[data-i18n]').forEach(function(element) {
+                //        const translationKey = element.getAttribute('data-i18n');
+                //        console.log('Päivitetään:', translationKey, ' -> ', i18next.t(translationKey));
+                //        console.log('Päivitetään option:', option.textContent, '->', option.getAttribute('data-i18n'));
+//
+                //        // Placeholder-päivitys inputeille
+                //        if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+                //            element.setAttribute('placeholder', i18next.t(translationKey.replace('[placeholder]', '').trim()));
+                //        }
+    //
+                //        // Option-elementtien päivitys pudotusvalikoille
+                //        else if (element.tagName === 'OPTION') {
+                //            element.innerText = i18next.t(translationKey);
+                //        }
+    //
+                //        // Muut elementit, jotka päivitetään textContentin kautta
+                //        else {
+                //            element.textContent = i18next.t(translationKey);
+                //        }
+                //    });
+                //}
+
+                // FUNKTIO ILMAN PLACEHOLDERIA SEKÄ DROPDOWN VALIKOITA
+                //function updateContent() {
+                //    document.querySelectorAll('[data-i18n]').forEach(element => {
+                //        const key = element.getAttribute('data-i18n');
+                //        const translatedText = i18next.t(key);
+//
+                //        if (translatedText) {
+                //            element.textContent = translatedText;
+                //        } else {
+                //            console.error(`Translation for "${key}" not found`);
+                //        }
+                //    });
+                //}
             });
     </script>
 </body>
