@@ -21,12 +21,12 @@
 </head>
 <body>
   <div class="container mt-5">
-    <h1>Uusi Myynti-ilmoitus</h1>
+    <h1 data-i18n="new_listing"></h1>
 
     <!-- Form for adding new listing -->
     <form id="addVehicleForm" class="addVehicleForm" action="/items" method="POST" enctype="multipart/form-data">   
       <div class="form-group mx-sm-3 mb-2">
-        <label for="brandSelect">Valitse Merkki:</label>
+        <label for="brandSelect" data-i18n="select_brand"></label>
           <select id="brandSelect" name="brand_id" class="form-control" required>
             <option value="" disabled selected></option>
             {{#each car_brand}}
@@ -34,7 +34,7 @@
             {{/each}}
           </select>
 
-        <label for="modelSelect">Valitse Malli:</label>
+        <label for="modelSelect" data-i18n="select_model"></label>
           <select id="modelSelect" name="model_id" class="form-control" required>
             <option value="" disabled selected></option>
             {{#each car_model}}
@@ -42,38 +42,38 @@
             {{/each}}
           </select>
 
-        <label for="price">Hinta (€):</label>
+        <label for="price" data-i18n="price"></label>
         <input type="number" id="price" name="price" class="form-control" required>
 
-        <label for="model_year">Vuosimalli:</label>
+        <label for="model_year" data-i18n="model_year"></label>
         <input type="number" id="model_year" name="model_year" class="form-control" required>
 
-        <label for="mileage">Kilometrit (km):</label>
+        <label for="mileage" data-i18n="mileage"></label>
         <input type="number" id="mileage" name="mileage" class="form-control" required>
 
-        <label for="power_type">Käyttövoima:</label>
+        <label for="power_type" data-i18n="power_type"></label>
         <select id="power_type" name="power_type" class="form-control" required>
             <option value="" disabled selected></option>
-            <option value="Diesel">Diesel</option>
-            <option value="Bensiini">Bensiini</option>
-            <option value="Sähkö">Sähkö</option>
-            <option value="Hybridi">Hybridi</option>
+            <option value="Diesel" data-i18n="diesel"></option>
+            <option value="Bensiini" data-i18n="petrol"></option>
+            <option value="Sähkö" data-i18n="electric"></option>
+            <option value="Hybridi" data-i18n="hybrid"></option>
         </select>
 
-        <label for="gearbox_type">Vaihteisto:</label>
+        <label for="gearbox_type" data-i18n="gearbox_type"></label>
         <select id="gearbox_type" name="gearbox_type" class="form-control" required>
             <option value="" disabled selected></option>
-            <option value="Automaatti">Automaatti</option>
-            <option value="Manuaali">Manuaali</option>
+            <option value="Automaatti" data-i18n="automatic"></option>
+            <option value="Manuaali" data-i18n="manual"></option>
         </select>
 
-        <label for="description">Auton kuvaus:</label>
-        <input type="text" id="description" name="description" class="form-control"placeholder="Kirjoita auton kuvaus" required>
+        <label for="description" data-i18n="vehicle_description"></label>
+        <input type="text" id="description" name="description" class="form-control" required data-i18n="[placeholder]Description_placeholder">
 
-        <label for="image">Kuva:</label>
+        <label for="image" data-i18n="vehicle_image"></label>
         <input type="file" id="image" name="image" class="form-control"/>
 
-        <button type="submit">Lisää auto</button>
+        <button type="submit" data-i18n="add_vehicle_button"></button>
       </div>
     </form>
 
