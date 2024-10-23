@@ -131,24 +131,24 @@ app.get('/items/:id', async (req, res) => {
       res.clearCookie('updateSuccess');
     }
     if (vehicle) {
-      let imageBase64 = null;
+        let imageBase64 = null;
         if (vehicle.image) {
         imageBase64 = vehicle.image.toString('base64');
         } // Muunnetaan kuva base64-muotoon
-      
+
+      console.log(vehicle);
       res.render('listing', {
         id: vehicle.car_id,
         title: `${vehicle.brand_name} ${vehicle.model_name}`, // Set information dynamically
         image: imageBase64,
         specs: `
-            Hinta: ${vehicle.price}<br>
-            Vuosimalli: ${vehicle.model_year}<br>
-            Kilometrit: ${vehicle.mileage}<br>
-            Käyttövoima: ${vehicle.power_type}<br>
-            Vaihteisto: ${vehicle.gearbox_type}<br>
-               ${vehicle.description}`,
+            <strong data-i18n="price"></strong> ${vehicle.price} <br>
+            <strong data-i18n="model_year"></strong> ${vehicle.model_year} <br>
+            <strong data-i18n="mileage"></strong> ${vehicle.mileage} <br>
+            <strong data-i18n="power_type"></strong> <span data-i18n="power_types.${vehicle.power_type}"></span> <br>
+            <strong data-i18n="gearbox_type"></strong> <span data-i18n="gearbox_types.${vehicle.gearbox_type}"></span> <br>
+            ${vehicle.description}`,
         showupdatePopUp: showupdatePopUp,
-        
       });
     } else {
       res.status(404).send('Vehicle not found');
@@ -157,6 +157,7 @@ app.get('/items/:id', async (req, res) => {
     res.status(500).send('Server error!')
   }
 });
+
 
 // Frontpage route and brand&model search options in dropdown menu (alphabetical order)
 app.get('/', async (req, res) => {

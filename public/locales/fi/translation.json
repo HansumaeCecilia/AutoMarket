@@ -8,12 +8,12 @@
     "end_year": "Vuosimalli päättyen:",
     "min_mileage": "Kilometrit alkaen:",
     "max_mileage": "Kilometrit päättyen:",
-    "power_type": "Valitse käyttövoima:",
+    "select_power_type": "Valitse käyttövoima:",
     "diesel": "Diesel",
     "petrol": "Bensiini",
     "electric": "Sähkö",
     "hybrid": "Hybridi",
-    "gearbox_type": "Valitse vaihteiston tyyppi:",
+    "select_gearbox_type": "Valitse vaihteiston tyyppi:",
     "automatic": "Automaatti",
     "manual": "Manuaali",
     "vehicle_id": "Auton ID-haku:",
@@ -42,5 +42,21 @@
     "update_vehicle": "Muokkaa auton tietoja",
     "verification_message": "Oletko varma, että haluat poistaa myynti-ilmoituksesi?",
     "cancel_button": "Peruuta",
-    "delete_button": "Poista"
+    "delete_button": "Poista",
+    "brand": "Merkki:",
+    "model": "Malli:",
+    "power_type": "Käyttövoima:",
+    "gearbox_type": "Vaihteisto:",
+
+    "power_types": {
+        "Diesel": "Diesel",
+        "Bensiini": "Bensiini",
+        "Sähkö": "Sähkö",
+        "Hybridi": "Hybridi"
+    },
+
+    "gearbox_types": {
+        "Automaatti": "Automaatti",
+        "Manuaali": "Manuaali"
+    }
 }
