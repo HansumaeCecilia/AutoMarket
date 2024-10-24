@@ -97,8 +97,8 @@
                                 style="color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
                     </ul>
                 </div>
-                <button id="enButton">English</button>
-                <button id="fiButton">Suomi</button>
+                <button id="enButtonFooter">English</button>
+                <button id="fiButtonFooter">Suomi</button>
             </div>
         </nav>
     </footer>
@@ -135,7 +135,7 @@
                     console.error('i18next initialization error:', err);
                 });
 
-            // Käsittelijä Englanti-napille
+            // Käsittelijä Englanti-napille Headerissa
             document.getElementById('enButton').addEventListener('click', function () {
                 if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
                     i18next.changeLanguage('en').then(() => { // Vaihda kieli englanniksi
@@ -149,8 +149,36 @@
                 }
             });
 
-            // Kun Suomi nappia klikataan, vaihda kieli ja päivitä sisältö
+            // Käsittelijä Suomi-napille Headerissa
             document.getElementById('fiButton').addEventListener('click', function () {
+                if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                    i18next.changeLanguage('fi').then(() => {
+                        console.log('Language changed to Finnish');
+                        updateContent();
+                    }).catch(err => {
+                        console.error('Error changing language to Finnish', err);
+                    });
+                } else {
+                    console.error('i18next is not initialized yet');
+                }
+            });
+
+            // Käsittelijä Englanti-napille Footerissa
+            document.getElementById('enButtonFooter').addEventListener('click', function () {
+                if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
+                    i18next.changeLanguage('en').then(() => { // Vaihda kieli englanniksi
+                        console.log('Language changed to English');
+                        updateContent(); // Päivitä sisältö
+                    }).catch(err => {
+                        console.error('Error changing language to English:', err); // Virhe käännöksessä
+                    });
+                } else {
+                    console.error('i18next is not initialized yet'); // Virheilmoitus, jos i18next ei ole alustettu
+                }
+            });
+
+            // Käsittelijä Suomi-napille Footerissa
+            document.getElementById('fiButtonFooter').addEventListener('click', function () {
                 if (i18next.isInitialized) { //Tarkista, onko i18next alustettu
                     i18next.changeLanguage('fi').then(() => {
                         console.log('Language changed to Finnish');
