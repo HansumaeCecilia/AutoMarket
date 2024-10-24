@@ -145,7 +145,7 @@
     </div>
 
     <!-- container for delete popup notification -->
-    <div id="deletePopUp"></div>
+    <div id="deletePopUp" data-i18n="listing_deleted"></div>
 
     <!-- imported scripts -->
     <script src="/js/Simple-Slider-swiper-bundle.min.js"></script>
@@ -158,7 +158,7 @@
       /* When DOM is loaded, check if deletePopUp should show and show if needed*/
       document.addEventListener('DOMContentLoaded', function() {
         {{#if showdeletePopUp}} 
-        showdeletePopUp('Myynti-ilmoitus poistettu onnistuneesti');
+        showdeletePopUp();
         {{/if}}
       });
 

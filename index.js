@@ -48,7 +48,6 @@ i18next
     })
     .then(() => {
         console.log('i18next initialized successfully');
-        console.log('Test translation:', i18next.t('search_vehicles1')); //Testikäännös
         i18nextInitialized = true; // Merkitään, että alustus on valmis
     })
     .catch(err => {
@@ -67,8 +66,6 @@ const hbs = exphbs.create({
   }
 });
 
-
-
 // Pool for database connection
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
@@ -77,9 +74,6 @@ const { updateUser } = require('./controllers/userController');
 
 // Load environment variables from .env file
 dotenv.config();
-
-
-
 
 // Engine settings
 app.engine('handlebars', hbs.engine);
@@ -107,10 +101,6 @@ app.use(express.static('public'));
 // Routes to functions
 app.use('/items', itemRoutes);
 app.use('/users', userRoutes);
-
-
-
-
 
 // Contact us page route
 app.get('/contact', (req, res) => {

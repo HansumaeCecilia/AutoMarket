@@ -175,7 +175,7 @@
             </select>
 
             <label for="description" data-i18n="vehicle_description"></label>
-            <input type="text" id="description" name="description" class="form-control" required data-i18n="[placeholder]Description_placeholder">
+            <input type="text" id="description" name="description" class="form-control" data-i18n="[placeholder]Description_placeholder">
 
             <label for="image" data-i18n="vehicle_image"></label>
             <input type="file" id="image" name="image" class="form-control"/>
@@ -201,7 +201,7 @@
             </form>
         </div>
     </div>
-    <div id="updatePopUp"></div>
+    <div id="updatePopUp" data-i18n="listing_updated"></div>
     <script>
         // Get the modal
         var modal = document.getElementById('deleteModal');
@@ -218,7 +218,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         {{#if showupdatePopUp}}
-        showupdatePopUp('Myynti-ilmoitus päivitetty onnistuneesti');
+        showupdatePopUp();
         {{/if}}
       });
 

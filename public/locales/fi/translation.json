@@ -58,6 +58,8 @@
     "year_old": "Vuosimalli: vanhimmasta uusimpaan",
     "filter": "Järjestä",
     "sort_results": "Järjestä hakutulokset",
+    "listing_updated": "Myynti-ilmoitus päivitetty onnistuneesti",
+    "listing_deleted": "Myynti-ilmoitus poistettu onnistuneesti",
 
     "power_types": {
         "Diesel": "Diesel",

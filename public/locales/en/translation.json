@@ -58,6 +58,8 @@
     "year_old": "Year: Oldest to Newest",
     "filter": "Filter",
     "sort_results": "Select filtering option",
+    "listing_updated": "Listing has been successfully updated",
+    "listing_deleted": "Listing has been successfully deleted",
 
 
     "power_types": {
