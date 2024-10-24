@@ -45,8 +45,20 @@
     "delete_button": "Delete",
     "brand": "Brand:",
     "model": "Model:",
-    "power_type": "Power type:",
-    "gearbox_type": "Gearbox type:",
+    "power_type": "Power type: ",
+    "gearbox_type": "Gearbox type: ",
+    "search_results": "Search results",
+    "newest_to_oldest": "Newest listing",
+    "oldest_to_newest": "Oldest listing",
+    "price_low": "Price: Low to High",
+    "price_high": "Price: High to Low",
+    "mileage_low": "Mileage: Low to High",
+    "mileage_high": "Mileage: High to Low",
+    "year_new": "Year: Newest to Oldest",
+    "year_old": "Year: Oldest to Newest",
+    "filter": "Filter",
+    "sort_results": "Select filtering option",
+
 
     "power_types": {
         "Diesel": "Diesel",

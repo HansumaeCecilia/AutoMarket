@@ -54,7 +54,7 @@
 </head>
 <body>
     <div class="listing-container">
-        <h5>Järjestä hakutulokset</h5>
+        <h5 data-i18n="sort_results"></h5>
         <!-- form for sorting searching results -->
         <form id="sortForm" action="/items/search" method="GET">
             <input type="hidden" name="brandSelect" id="sortBrand">
@@ -68,21 +68,21 @@
             <input type="hidden" name="powerType" id="sortpowerType">
             <input type="hidden" name="gearboxType" id="sortgearboxType">
             <select id="sortSelect" name="sortOrder">
-                <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}}>Ilmoitukset uusimmasta vanhimpaan</option>
-                <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}}>Ilmoituksen vanhimmasta uusimpaan</option>
-                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}}>Hinta: halvimmasta kalleimpaan</option>
-                <option value="price_desc" {{#if (eq sortOrder 'price_desc')}}selected{{/if}}>Hinta: kalliimmasta halvimpaan</option>
-                <option value="mileage_asc" {{#if (eq sortOrder 'mileage_asc')}}selected{{/if}}>Kilometrit: pienimmästä suurimpaan</option>
-                <option value="mileage_desc" {{#if (eq sortOrder 'mileage_desc')}}selected{{/if}}>Kilometrit: suurimmasta pienimpään</option>
-                <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}}>Vuosimalli: uusimmasta vanhimpaan</option>
-                <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}}>Vuosimalli: vanhimmasta uusimpaan</option>
+                <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}} data-i18n="newest_to_oldest"></option>
+                <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}} data-i18n="oldest_to_newest"></option>
+                <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}} data-i18n="price_low"></option>
+                <option value="price_desc" {{#if (eq sortOrder 'price_desc')}}selected{{/if}} data-i18n="price_high"></option>
+                <option value="mileage_asc" {{#if (eq sortOrder 'mileage_asc')}}selected{{/if}} data-i18n="mileage_low"></option>
+                <option value="mileage_desc" {{#if (eq sortOrder 'mileage_desc')}}selected{{/if}} data-i18n="mileage_high"></option>
+                <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}} data-i18n="year_new"></option>
+                <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}} data-i18n="year_old"></option>
             </select>
-            <button type="submit">Järjestä</button>
+            <button type="submit" data-i18n="filter"></button>
         </form>
         <br>
         <div id="carList"></div>
         <br>
-        <h1>Haetut autot</h1>
+        <h1 data-i18n="search_results"></h1>
         <!-- Show search results -->
         <ul class="car_list">
             {{#each items}}
@@ -90,14 +90,14 @@
                 <img src={{this.image}}>
                 <div class="car_specs">
                     <h3><a href="/items/{{this.car_id}}">{{this.brand_name}} {{this.model_name}}</a></h3>
-                    <strong>Auton ID:</strong> {{this.car_id}} <br>
-                    <strong>Merkki:</strong> {{this.brand_name}} <br>
-                    <strong>Malli:</strong> {{this.model_name}} <br>
-                    <strong>Hinta:</strong> {{this.price}} <br>
-                    <strong>Vuosimalli:</strong> {{this.model_year}} <br>
-                    <strong>Kilometrit:</strong> {{this.mileage}} <br>
-                    <strong>Käyttövoima:</strong> {{this.power_type}} <br>
-                    <strong>Vaihteisto:</strong> {{this.gearbox_type}} <br>
+                    <strong>ID:</strong> {{this.car_id}} <br>
+                    <strong data-i18n="brand"></strong> {{this.brand_name}} <br>
+                    <strong data-i18n="model"></strong> {{this.model_name}} <br>
+                    <strong data-i18n="price"></strong> {{this.price}} <br>
+                    <strong data-i18n="model_year"></strong> {{this.model_year}} <br>
+                    <strong data-i18n="mileage"></strong> {{this.mileage}} <br>
+                    <strong data-i18n="power_type"></strong><span data-i18n="power_types.{{this.power_type}}"></span><br>
+                    <strong data-i18n="gearbox_type"></strong><span data-i18n="gearbox_types.{{this.gearbox_type}}"></span> <br>
                     
                     <br>
                 </div>

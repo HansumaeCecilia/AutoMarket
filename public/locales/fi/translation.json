@@ -47,6 +47,17 @@
     "model": "Malli:",
     "power_type": "Käyttövoima:",
     "gearbox_type": "Vaihteisto:",
+    "search_results": "Hakutulokset",
+    "newest_to_oldest" : "Ilmoitukset uusimmasta vanhimpaan",
+    "oldest_to_newest" : "Ilmoituksen vanhimmasta uusimpaan",
+    "price_low": "Hinta: halvimmasta kalleimpaan",
+    "price_high": "Hinta: kalliimmasta halvimpaan",
+    "mileage_low": "Kilometrit: pienimmästä suurimpaan",
+    "mileage_high": "Kilometrit: suurimmasta pienimpään",
+    "year_new": "Vuosimalli: uusimmasta vanhimpaan",
+    "year_old": "Vuosimalli: vanhimmasta uusimpaan",
+    "filter": "Järjestä",
+    "sort_results": "Järjestä hakutulokset",
 
     "power_types": {
         "Diesel": "Diesel",
