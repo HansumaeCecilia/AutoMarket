@@ -110,16 +110,22 @@
     <script src="/scripts/scripts.js"></script>
     <script src="https://unpkg.com/i18next@latest/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
     <script>
         // Kun DOM on ladattu, lisää tapahtumankäsittelijät
         window.addEventListener('DOMContentLoaded', function () {
             console.log('DOM fully loaded and parsed!'); // Varmistetaan, että DOM on valmis
             // i18nextin alustus
             i18next
+                .use(window.i18nextBrowserLanguageDetector)
                 .use(i18nextHttpBackend) // Käytetään HTTP-backendiä hakemaan käännökset palvelimelta
                 .init({
-                    lng: 'en', // Oletuskieli selaimessa Englanti
-                    debug: false,
+                    detection: {
+                        order: ['localStorage', 'navigator'], // Käytä localStoragea ja sen jälkeen selainta
+                        caches: ['localStorage'] // Tallenna kielivalinta localStorageen
+                    },
+                    //lng: 'en', // Oletuskieli selaimessa Englanti
+                    debug: true,
                     backend: {
                         loadPath: function (lngs, namespaces) {
                             return `/locales/${lngs[0]}/translation.json`; // Käännöstiedoston polku, missä lngs[0] on valittu kieli
