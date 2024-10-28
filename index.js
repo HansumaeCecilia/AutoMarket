@@ -105,7 +105,7 @@ app.get('/', async (req, res) => {
       title: 'Search cars',
       car_brand: brandResult.rows,
       car_model: modelResult.rows,
-      showDeletePopup: showDeletePopup      
+      showDeletePopup: showDeletePopup
     });
   } catch (err) {
     console.error('Error executing query', err.stack);
@@ -131,17 +131,6 @@ app.get('/models', async (req, res) => {
     res.status(500).send('Internal server error!');
   }
 });
-
-// // Result page for all listings
-// app.get('/listings', async (req, res) => {
-//   const listingsQuery = 'SELECT * FROM public.cars';
-//   const listingsResult = await pool.query(listingsQuery);
-
-//   res.render('listings', {
-//     title: 'All Listings',
-//     all_listings: listingsResult.rows
-//   });
-// });
 
 // Contact page
 app.get('/contact', (req, res) => {
@@ -183,14 +172,14 @@ app.get('/items/:id', async (req, res) => {
               Gearbox: ${vehicle.gearbox_type}
         `,
         description: `${vehicle.description}`,
-        showUpdatePopup: showUpdatePopup,
-        sortOrder: sortOrder
+        showUpdatePopup: showUpdatePopup,        
       });
     } else {
       res.status(404).send('Vehicle not found');
     }
   } catch (error) {
     res.status(500).send('Server error!')
+    console.log('Cannot redirect', error);
   }
 });
 
