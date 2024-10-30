@@ -25,6 +25,16 @@ const cookieParser = require('cookie-parser');
 
 const path = require('path');
 
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'Yahoo',
+  auth: {
+    user: 'automarket54@yahoo.com',
+    pass: 'MosjooFrankku'
+  }
+});
+
 // Create server
 const app = express();
 const port = process.env.PORT || 3000;
@@ -105,6 +115,14 @@ app.use('/users', userRoutes);
 // Contact us page route
 app.get('/contact', (req, res) => {
   res.render('contact');
+});
+
+// POST route to handle the contact form submission
+app.post ('/contact', (req, res) => {
+  const { name, email, message } = req.body;
+  console.log('Form data received:', { name, email, message});
+
+  res.send('Form submitted successfully');
 });
 
 // Fetch and render unique listing data dynamically
