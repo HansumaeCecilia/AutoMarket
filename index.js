@@ -116,7 +116,19 @@ app.use('/users', userRoutes);
 
 // Contact us page route
 app.get('/contact', (req, res) => {
-  res.render('contact');
+
+  // check cookie: is item deleted successfully?
+  let showEmailPopUp = false;
+  if (req.cookies.EmailSuccess === 'true') {
+    // if is, show deletePopUp
+    showEmailPopUp = true;
+    // after showing, delete cookie, so it doesn't show again
+    res.clearCookie('EmailSuccess');
+  };
+  
+  res.render ('contact', {
+    showEmailPopUp: showEmailPopUp,
+  })
 });
 
 // POST route to handle the contact form submission
@@ -135,11 +147,15 @@ app.post ('/contact', (req, res) => {
     if (error) {
       console.log('Error sending email: ', error);
       return res.status(500).send('Error sending email.');
+    } else {
+      console.log('Email sent:', info.response);
+      res.cookie('EmailSuccess', 'true', { maxAge: 6000, httpOnly: true });
+      return res.redirect('/contact');
     }
-    console.log('Email sent:', info.response);
-    res.send('Form submitted successfully');
   });
 });
+
+
 
 // Fetch and render unique listing data dynamically
 app.get('/items/:id', async (req, res) => {

@@ -60,6 +60,7 @@
     "sort_results": "Select filtering option",
     "listing_updated": "Listing has been successfully updated",
     "listing_deleted": "Listing has been successfully deleted",
+    "email_sent": "Message has been sent successfully",
 
 
     "power_types": {
