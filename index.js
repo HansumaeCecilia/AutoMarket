@@ -28,11 +28,13 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'Yahoo',
+  host: 'sandbox.smtp.mailtrap.io',
+  port: 2525,
   auth: {
-    user: 'automarket54@yahoo.com',
-    pass: 'MosjooFrankku'
-  }
+    user: 'dcea963a7f3732',
+    pass: '190d8bbe2762c4'
+  },
+  debug: true
 });
 
 // Create server
@@ -121,8 +123,22 @@ app.get('/contact', (req, res) => {
 app.post ('/contact', (req, res) => {
   const { name, email, message } = req.body;
   console.log('Form data received:', { name, email, message});
+  
+  const mailOptions = {
+    from: 'test@automarket.fi',
+    to: 'maria.rantanen89@gmail.com',
+    subject: 'Contact form submission',
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  };
 
-  res.send('Form submitted successfully');
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email: ', error);
+      return res.status(500).send('Error sending email.');
+    }
+    console.log('Email sent:', info.response);
+    res.send('Form submitted successfully');
+  });
 });
 
 // Fetch and render unique listing data dynamically
