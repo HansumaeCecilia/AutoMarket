@@ -5,6 +5,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>{{title}}</title>
+    <style>
+    #emailPopUp {
+            visibility: hidden; /* Hidden at first */
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+    #emailPopUp.show {
+            visibility: visible; /* Show deletePopUp when "show" class is added */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,7 +42,7 @@
                 <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4">
                     <div class="card d-xl-flex align-items-center align-content-center justify-content-xl-center align-items-xl-center mb-5" style="background: var(--bs-gray-dark);box-shadow: 0px 10px 8px rgb(22,25,22);border-radius: 10px;margin-top: 0px;padding: 45px;padding-top: 50px;padding-bottom: 50px;">
                         <h2 class="text-center mb-4" style="color: #85cc7f;" data-i18n="send_message"></h2>
-                        <form method="post" style="background: var(--bs-gray-dark);width: 300px;position: static;">
+                        <form method="post" action="/contact" style="background: var(--bs-gray-dark);width: 300px;position: static;">
                             <div class="mb-3"><input class="form-control" type="text" id="name-2" name="name" placeholder="Name" style="background: rgb(191,204,190);" data-i18n="[placeholder]name_placeholder"></div>
                             <div class="mb-3"><input class="form-control" type="email" id="email-2" name="email" placeholder="Email" style="background: rgb(191,204,190);" data-i18n="[placeholder]email_placeholder"></div>
                             <div class="mb-3"><textarea class="form-control" id="message-2" name="message" rows="6" placeholder="Message" style="background: rgb(191,204,190);" data-i18n="[placeholder]message_placeholder"></textarea></div>
@@ -30,7 +53,25 @@
             </div>
         </div>
     </section>
-    {{!-- <script src="/js/bootstrap.min.js"></script> --}}
+    <div id="emailPopUp" data-i18n="email_sent"></div>
+    <script>
+         /* When DOM is loaded, check if deletePopUp should show and show if needed*/
+      document.addEventListener('DOMContentLoaded', function() {
+        {{#if showEmailPopUp}} 
+        showEmailPopUp();
+        {{/if}}
+      });
+
+      /* Function for showing the deletePopUp */
+      function showEmailPopUp(message) {
+            var emailPopUp = document.getElementById("emailPopUp");
+            emailPopUp.innerText = message;
+            emailPopUp.className = "show"; // Add "show"-class 
+            setTimeout(function(){ 
+              emailPopUp.className = emailPopUp.className.replace("show", ""); // Delete "show"-class after time is out (3000)
+            }, 3000);
+            }
+    </script>
 </body>
 
 </html>

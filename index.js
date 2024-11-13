@@ -25,6 +25,18 @@ const cookieParser = require('cookie-parser');
 
 const path = require('path');
 
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  host: 'sandbox.smtp.mailtrap.io',
+  port: 2525,
+  auth: {
+    user: 'dcea963a7f3732',
+    pass: '190d8bbe2762c4'
+  },
+  debug: true
+});
+
 // Create server
 const app = express();
 const port = process.env.PORT || 3000;
@@ -104,8 +116,46 @@ app.use('/users', userRoutes);
 
 // Contact us page route
 app.get('/contact', (req, res) => {
-  res.render('contact');
+
+  // check cookie: is item deleted successfully?
+  let showEmailPopUp = false;
+  if (req.cookies.EmailSuccess === 'true') {
+    // if is, show deletePopUp
+    showEmailPopUp = true;
+    // after showing, delete cookie, so it doesn't show again
+    res.clearCookie('EmailSuccess');
+  };
+  
+  res.render ('contact', {
+    showEmailPopUp: showEmailPopUp,
+  })
 });
+
+// POST route to handle the contact form submission
+app.post ('/contact', (req, res) => {
+  const { name, email, message } = req.body;
+  console.log('Form data received:', { name, email, message});
+  
+  const mailOptions = {
+    from: 'test@automarket.fi',
+    to: 'maria.rantanen89@gmail.com',
+    subject: 'Contact form submission',
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email: ', error);
+      return res.status(500).send('Error sending email.');
+    } else {
+      console.log('Email sent:', info.response);
+      res.cookie('EmailSuccess', 'true', { maxAge: 6000, httpOnly: true });
+      return res.redirect('/contact');
+    }
+  });
+});
+
+
 
 // Fetch and render unique listing data dynamically
 app.get('/items/:id', async (req, res) => {
