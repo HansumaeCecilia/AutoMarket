@@ -56,18 +56,8 @@
     <div class="listing-container">
         <h5 data-i18n="sort_results"></h5>
         <!-- form for sorting searching results -->
-        <form id="sortForm" action="/items/search" method="GET">
-            <input type="hidden" name="brandSelect" id="sortBrand">
-            <input type="hidden" name="modelSelect" id="sortModel">
-            <input type="hidden" name="minPrice" id="sortMinPrice">
-            <input type="hidden" name="maxPrice" id="sortMaxPrice">
-            <input type="hidden" name="minYear" id="sortMinYear">
-            <input type="hidden" name="maxYear" id="sortMaxYear">
-            <input type="hidden" name="minMileage" id="sortMinMileage">
-            <input type="hidden" name="maxMileage" id="sortMaxMileage">
-            <input type="hidden" name="powerType" id="sortpowerType">
-            <input type="hidden" name="gearboxType" id="sortgearboxType">
-            <select id="sortSelect" name="sortOrder">
+        <form id="sortOrderForm" action="/items/search" method="GET">
+            <select id="sortOrder" name="sortOrder">
                 <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}} data-i18n="newest_to_oldest"></option>
                 <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}} data-i18n="oldest_to_newest"></option>
                 <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}} data-i18n="price_low"></option>
@@ -166,24 +156,70 @@
 
     <!-- Script for sorting results -->
     <script>
-        document.getElementById('searchForm').onsubmit = function() {
-            document.getElementById('sortBrand').value = document.querySelector('brandSelect');
-            document.getElementById('sortModel').value = document.querySelector('modelSelect');
-            document.getElementById('sortMinPrice').value = document.querySelector('input[name="minPrice"]').value;
-            document.getElementById('sortMaxPrice').value = document.querySelector('input[name="maxPrice"]').value;
-            document.getElementById('sortMinYear').value = document.querySelector('input[name="minYear"]').value;
-            document.getElementById('sortMaxYear').value = document.querySelector('input[name="maxYear"]').value;
-            document.getElementById('sortMinMileage').value = document.querySelector('input[name="minMileage"]').value;
-            document.getElementById('sortMaxMileage').value = document.querySelector('input[name="maxMileage"]').value;
-            document.getElementById('sortPowerType').value = document.querySelector('powerType');
-            document.getElementById('sortGearboxType').value = document.querySelector('gearboxType');
-            };
+        document.getElementById('sortOrder').addEventListener('change', function () {
+            const sortOrderForm = document.getElementById('sortOrderForm');
+            const searchParams = new URLSearchParams(window.location.search);
 
-            function getMultiSelectValues(selectId) {
-                var selectElement = document.getElementById(selectId);
-                var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
-                return selectedValues.join(','); // Yhdistää arvot pilkulla erotettuna
-}
+            // Set the new sortOrder in the parameters
+            searchParams.set('sortOrder', this.value);
+
+            const brandSelect = document.getElementById('brandSelect');  // Esimerkki: brandin arvo
+            if (brandSelect) {
+                searchParams.set('brandSelect', brandSelect.value);
+            }
+
+            const modelSelect = document.getElementById('modelSelect');  // Esimerkki: mallin arvo
+            if (modelSelect) {
+                searchParams.set('modelSelect', modelSelect.value);
+            }
+
+            const minPrice = document.getElementById('minPrice');  // Esimerkki: minPrice arvo
+            if (minPrice) {
+                searchParams.set('minPrice', minPrice.value);
+            }
+
+            const maxPrice = document.getElementById('maxPrice');  // Esimerkki: minPrice arvo
+            if (maxPrice) {
+                searchParams.set('maxPrice', maxPrice.value);
+            }
+
+            const minYear = document.getElementById('minYear');  // Esimerkki: minPrice arvo
+            if (minYear) {
+                searchParams.set('minYear', minYear.value);
+            }
+
+            const maxYear = document.getElementById('maxYear');  // Esimerkki: minPrice arvo
+            if (maxYear) {
+                searchParams.set('maxYear', maxYear.value);
+            }
+
+            const minMileage = document.getElementById('minMileage');  // Esimerkki: minPrice arvo
+            if (minMileage) {
+                searchParams.set('minMileage', minMileage.value);
+            }
+
+            const maxMileage = document.getElementById('maxMileage');  // Esimerkki: minPrice arvo
+            if (maxMileage) {
+                searchParams.set('maxMileage', maxMileage.value);
+            }
+
+            const powerType= document.getElementById('powerType');  // Esimerkki: minPrice arvo
+            if (powerType) {
+                searchParams.set('powerType', powerType.value);
+            }
+
+            const gearboxType= document.getElementById('gearboxType');  // Esimerkki: minPrice arvo
+            if (gearboxType) {
+                searchParams.set('gearboxType', gearboxType.value);
+            }
+
+            // Update the form's action with all current query parameters
+            sortOrderForm.action = `/items/search?${searchParams.toString()}`;
+
+            // Submit the form
+            //sortOrderForm.submit();
+             window.location.search = searchParams.toString();
+        });
     </script>
 </body>
 

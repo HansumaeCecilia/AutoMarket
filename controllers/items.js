@@ -109,25 +109,38 @@ async function searchVehicles(req, res) {
         index += 1;
     }
 
-    if (sortOrder === 'car_id_asc') {
-        query += ` ORDER BY c.car_id ASC`;
-    } else if (sortOrder === 'car_id_desc') {
-        query += ` ORDER BY c.car_id DESC`;
-    } else if (sortOrder === 'price_asc') {
-        query +=  ` ORDER BY c.price ASC`;
-    } else if (sortOrder === 'price_desc') {
-        query += ` ORDER BY c.price DESC`;
-    } else if (sortOrder === 'mileage_asc') {
-        query += ` ORDER BY c.mileage ASC`;
-    } else if (sortOrder === 'mileage_desc') {
-        query += ` ORDER BY c.mileage DESC`;
-    } else if (sortOrder === 'model_year_asc') {
-        query += ` ORDER BY c.model_year ASC`;
-    } else if (sortOrder === 'model_year_desc') {
-        query += ` ORDER BY c.model_year DESC`;
-    } else {
-        query += ` ORDER BY c.car_id DESC`;
-    }
+    // if (sortOrder === 'car_id_asc') {
+    //     query += ` ORDER BY c.car_id ASC`;
+    // } else if (sortOrder === 'car_id_desc') {
+    //     query += ` ORDER BY c.car_id DESC`;
+    // } else if (sortOrder === 'price_asc') {
+    //     query +=  ` ORDER BY c.price ASC`;
+    // } else if (sortOrder === 'price_desc') {
+    //     query += ` ORDER BY c.price DESC`;
+    // } else if (sortOrder === 'mileage_asc') {
+    //     query += ` ORDER BY c.mileage ASC`;
+    // } else if (sortOrder === 'mileage_desc') {
+    //     query += ` ORDER BY c.mileage DESC`;
+    // } else if (sortOrder === 'model_year_asc') {
+    //     query += ` ORDER BY c.model_year ASC`;
+    // } else if (sortOrder === 'model_year_desc') {
+    //     query += ` ORDER BY c.model_year DESC`;
+    // } else {
+    //     query += ` ORDER BY c.car_id DESC`;
+    // }
+
+    const sortOptions = {
+        'car_id_desc': 'c.car_id DESC',
+        'car_id_asc': 'c.car_id ASC',
+        'price_asc': 'c.price ASC',
+        'price_desc': 'c.price DESC',
+        'model_year_asc': 'c.model_year ASC',
+        'model_year_desc': 'c.model_year DESC',
+        'mileage_asc': 'c.mileage ASC',
+        'mileage_desc': 'c.mileage DESC',
+    };
+
+    query += ` ORDER BY ${sortOptions[sortOrder] || 'c.car_id DESC'}`;
 
 
     // Fetch and render search results
