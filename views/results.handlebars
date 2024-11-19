@@ -57,7 +57,7 @@
         <h5 data-i18n="sort_results"></h5>
         <!-- form for sorting searching results -->
         <form id="sortOrderForm" action="/items/search" method="GET">
-            <select id="sortOrder" name="sortOrder">
+            <select id="sortOrder" name="sortOrder" onchange="document.getElementById('sortOrderForm').submit();">
                 <option value="car_id_desc" {{#if (eq sortOrder 'car_id_desc')}}selected{{/if}} data-i18n="newest_to_oldest"></option>
                 <option value="car_id_asc" {{#if (eq sortOrder 'car_id_asc')}}selected{{/if}} data-i18n="oldest_to_newest"></option>
                 <option value="price_asc" {{#if (eq sortOrder 'price_asc')}}selected{{/if}} data-i18n="price_low"></option>
@@ -67,7 +67,32 @@
                 <option value="model_year_desc" {{#if (eq sortOrder 'model_year_desc')}}selected{{/if}} data-i18n="year_new"></option>
                 <option value="model_year_asc" {{#if (eq sortOrder 'model_year_asc')}}selected{{/if}} data-i18n="year_old"></option>
             </select>
-            <button type="submit" data-i18n="filter"></button>
+            
+            {{#if brandSelect}}
+                <input type="hidden" name="brandSelect" value="{{brandSelect}}">
+            {{/if}}
+            {{#if minPrice}}
+                <input type="hidden" name="minPrice" value="{{minPrice}}">
+            {{/if}}
+            {{#if maxPrice}}
+                <input type="hidden" name="maxPrice" value="{{maxPrice}}">
+            {{/if}}
+            {{#if minYear}}
+                <input type="hidden" name="minYear" value="{{minYear}}">
+            {{/if}}
+            {{#if maxYear}}
+                <input type="hidden" name="maxYear" value="{{maxYear}}">
+            {{/if}}
+            {{#if minMileage}}
+                <input type="hidden" name="minMileage" value="{{minMileage}}">
+            {{/if}}
+            {{#if maxMileage}}
+                <input type="hidden" name="maxMileage" value="{{maxMileage}}">
+            {{/if}}
+            {{#if idSearch}}
+                <input type="hidden" name="idSearch" value="{{idSearch}}">
+            {{/if}}
+            <!-- <button type="submit">Submit</button>--> <!-- Hidden submit button -->
         </form>
         <br>
         <div id="carList"></div>
@@ -156,69 +181,27 @@
 
     <!-- Script for sorting results -->
     <script>
-        document.getElementById('sortOrder').addEventListener('change', function () {
-            const sortOrderForm = document.getElementById('sortOrderForm');
-            const searchParams = new URLSearchParams(window.location.search);
+        document.addEventListener('DOMContentLoaded', function () {
+            const sortOrderSelect = document.getElementById('sortOrderForm');
 
-            // Set the new sortOrder in the parameters
-            searchParams.set('sortOrder', this.value);
+            // Handle sorting dropdown change
+            if (sortOrderSelect) {
+                console.log("sortOrderSelect found");
+                sortOrderSelect.addEventListener('change', function () {
+                    console.log('Sort Order Changed');
 
-            const brandSelect = document.getElementById('brandSelect');  // Esimerkki: brandin arvo
-            if (brandSelect) {
-                searchParams.set('brandSelect', brandSelect.value);
+                    // Create a new URLSearchParams object to update the query string
+                    const currentParams = new URLSearchParams(window.location.search);
+
+                    // Update the sortOrder parameter in the query string
+                    currentParams.set('sortOrder', sortOrderSelect.value);
+
+                    // Redirect with updated query string to trigger new results
+                    window.location.href = `/items/search?${currentParams.toString()}`;
+                });
+            } else {
+                console.log("sortOrderSelect not found");
             }
-
-            const modelSelect = document.getElementById('modelSelect');  // Esimerkki: mallin arvo
-            if (modelSelect) {
-                searchParams.set('modelSelect', modelSelect.value);
-            }
-
-            const minPrice = document.getElementById('minPrice');  // Esimerkki: minPrice arvo
-            if (minPrice) {
-                searchParams.set('minPrice', minPrice.value);
-            }
-
-            const maxPrice = document.getElementById('maxPrice');  // Esimerkki: minPrice arvo
-            if (maxPrice) {
-                searchParams.set('maxPrice', maxPrice.value);
-            }
-
-            const minYear = document.getElementById('minYear');  // Esimerkki: minPrice arvo
-            if (minYear) {
-                searchParams.set('minYear', minYear.value);
-            }
-
-            const maxYear = document.getElementById('maxYear');  // Esimerkki: minPrice arvo
-            if (maxYear) {
-                searchParams.set('maxYear', maxYear.value);
-            }
-
-            const minMileage = document.getElementById('minMileage');  // Esimerkki: minPrice arvo
-            if (minMileage) {
-                searchParams.set('minMileage', minMileage.value);
-            }
-
-            const maxMileage = document.getElementById('maxMileage');  // Esimerkki: minPrice arvo
-            if (maxMileage) {
-                searchParams.set('maxMileage', maxMileage.value);
-            }
-
-            const powerType= document.getElementById('powerType');  // Esimerkki: minPrice arvo
-            if (powerType) {
-                searchParams.set('powerType', powerType.value);
-            }
-
-            const gearboxType= document.getElementById('gearboxType');  // Esimerkki: minPrice arvo
-            if (gearboxType) {
-                searchParams.set('gearboxType', gearboxType.value);
-            }
-
-            // Update the form's action with all current query parameters
-            sortOrderForm.action = `/items/search?${searchParams.toString()}`;
-
-            // Submit the form
-            //sortOrderForm.submit();
-             window.location.search = searchParams.toString();
         });
     </script>
 </body>

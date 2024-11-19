@@ -19,23 +19,13 @@ const {
 router.get('/search', async (req, res) => {
     try {
         console.log('GET request received for searching items with query:', req.query);
+        console.log('Sort By:', req.query.sortBy);
         await searchVehicles(req, res);
     } catch (error) {
         console.error('Error searching vehicles:', error);
         res.status(500).send('Internal server error');
     }
 });
-
-// Fetch vehicles from results-page
-router.get('/items/search', async (req, res) => {
-    try {
-        await searchVehicles(req, res);
-    } catch (error) {
-        console.error('Error searching vehicles:', error);
-        res.status(500).send('Internal server error');
-    }
-});
-
 
 router.get('/models', async (req, res) => {
     const brandId = req.query.brandId;

@@ -623,3 +623,24 @@
 //     all_listings: listingsResult.rows
 //   });
 // });
+
+// Some sorting shit.
+    // if (sortOrder === 'car_id_asc') {
+    //     query += ` ORDER BY c.car_id ASC`;
+    // } else if (sortOrder === 'car_id_desc') {
+    //     query += ` ORDER BY c.car_id DESC`;
+    // } else if (sortOrder === 'price_asc') {
+    //     query +=  ` ORDER BY c.price ASC`;
+    // } else if (sortOrder === 'price_desc') {
+    //     query += ` ORDER BY c.price DESC`;
+    // } else if (sortOrder === 'mileage_asc') {
+    //     query += ` ORDER BY c.mileage ASC`;
+    // } else if (sortOrder === 'mileage_desc') {
+    //     query += ` ORDER BY c.mileage DESC`;
+    // } else if (sortOrder === 'model_year_asc') {
+    //     query += ` ORDER BY c.model_year ASC`;
+    // } else if (sortOrder === 'model_year_desc') {
+    //     query += ` ORDER BY c.model_year DESC`;
+    // } else {
+    //     query += ` ORDER BY c.car_id DESC`;
+    // }
