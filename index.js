@@ -46,8 +46,6 @@ const i18next = require('i18next'); //Ladataan i18next kirjasto palvelinpuolelle
 const i18nextMiddleware = require('i18next-express-middleware'); // i18next middleware Express palvelimelle
 const Backend = require('i18next-fs-backend'); // Käytetään tiedostopohjaista backendia lataamaan käännökset tiedostosta
 
-let i18nextInitialized = false; // Lippu, joka seuraa i18nextin alustusta
-
 i18next
     .use(Backend)
     .init({
@@ -60,7 +58,6 @@ i18next
     })
     .then(() => {
         console.log('i18next initialized successfully');
-        i18nextInitialized = true; // Merkitään, että alustus on valmis
     })
     .catch(err => {
         console.error('i18next initialization error in the browser:', err);
@@ -82,7 +79,6 @@ const hbs = exphbs.create({
 const { pool } = require('./db');
 const { getVehicleById } = require('./controllers/items');
 const { updateUser } = require('./controllers/userController');
-//const { default: I18NextHttpBackend } = require('i18next-http-backend');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -117,10 +113,10 @@ app.use('/users', userRoutes);
 // Contact us page route
 app.get('/contact', (req, res) => {
 
-  // check cookie: is item deleted successfully?
+  // check cookie: was email sent successfully?
   let showEmailPopUp = false;
   if (req.cookies.EmailSuccess === 'true') {
-    // if is, show deletePopUp
+    // if is, show emailPopUp
     showEmailPopUp = true;
     // after showing, delete cookie, so it doesn't show again
     res.clearCookie('EmailSuccess');
