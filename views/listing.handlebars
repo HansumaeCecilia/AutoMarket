@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>{{title}}</title>
     <style>
 
@@ -23,7 +24,7 @@
             position: relative;
             margin-top: 2%;
             margin-bottom: 10%;
-            font-size: 300%;
+            font-size: 250%;
             font-weight: 600;
         }
 
@@ -48,7 +49,7 @@
             margin-left: 25%;
             margin-right: 25%;
             font-weight: 600;
-            font-size: 125%;
+            font-size: 135%;
         }
 
         .update {
@@ -68,7 +69,6 @@
             padding: 8px;
             border-radius: 10px;
             border: none;
-            
         }
 
         .deletebtn {
@@ -77,6 +77,7 @@
             padding: 8px;
             border-radius: 10px;
             border: none;
+            margin: 15px;
         }
 
         .divider {
@@ -105,6 +106,14 @@
             visibility: visible; /* Show deletePopUp when "show" class is added */
             -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        .updatebutton {
+            background-color: rgb(21, 134, 166);
+            color: aliceblue;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
         }
 
         @-webkit-keyframes fadein {
@@ -139,6 +148,7 @@
             <p class="vehicle-specs">
                 {{{specs}}}
             </p>
+            
             <p class="listing-description">{{description}}</p>
         </div>
     </div> 
@@ -180,8 +190,8 @@
             <label for="image" data-i18n="vehicle_image"></label>
             <input type="file" id="image" name="image" class="form-control"/>
 
-            <button type="submit" class="btn btn-primary mb-2" data-i18n="save_changes_button"></button>
-            <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'" data-i18n="delete_vehicle_button"></button>
+            <button type="submit" class="updatebutton" data-i18n="save_changes_button"></button>
+            <button type="button" class="deletebtn" onclick="document.getElementById('deleteModal').style.display='block'" data-i18n="delete_vehicle_button"></button>
         </form>
 
         <!-- delete modal for verifying delete function -->

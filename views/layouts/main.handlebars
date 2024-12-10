@@ -5,21 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"> 
     <link rel="stylesheet" href="/css/hamburger.css">
     <link rel="stylesheet" href="/css/logo.css">
-    <link rel="stylesheet" href="/css/Simple-Slider-swiper-bundle.css">
-    <link rel="stylesheet" href="/css/Simple-Slider.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
-<body style="background: rgb(109, 132, 109);">
+<style>
+    .search_button {
+        background-color: rgb(21, 134, 166);
+        color: aliceblue;
+        padding: 8px;
+        border-radius: 10px;
+        border: none;
+        margin: 15px;
+    }
+
+    body {
+        color: rgb(18, 48, 41);
+    }
+
+</style>
+
+<body style="background: rgb(127, 169, 127);">
     <header
         style="background: url(/img/porsche-1851246_1280.jpg) center / cover no-repeat;height: 555px;margin-bottom: 0px;">
         <nav class="navbar navbar-expand-md py-3" data-bs-theme="dark"
             style="background: rgba(0,0,0,0.76);padding: 15px 0px;">
             <div class="container" id="navbar">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="http://localhost:3000">
                     <span
                         class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"
                         style="background: rgb(61,253,13);">
@@ -34,7 +48,7 @@
                             </path>
                         </svg>
                     </span>
-                    <span style="font-size: 25px;color: #75f94c;margin-left: 10px;">AutoMarket</span>
+                    <span style="font-size: 30px;color: #75f94c;margin-left: 10px;">AutoMarket</span>
                 </a>
                 <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"
                     style="background: #75f94c;border-style: none;">
@@ -43,13 +57,13 @@
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link active" href="http://localhost:3000"
-                                style="color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
+                                style="font-size: 20px; color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/items/search?"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/new_listing"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
                     </ul>
                 </div>
                 <button id="enButton">English</button>
@@ -64,7 +78,7 @@
         <nav class="navbar navbar-expand-md py-3" data-bs-theme="dark" 
             style="background: rgba(0,0,0,0.76);">
             <div class="container" id="navbar">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="http://localhost:3000">
                     <span
                         class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"
                         style="background: rgb(61,253,13);">
@@ -79,7 +93,7 @@
                             </path>
                         </svg>
                     </span>
-                    <span style="font-size: 25px;color: #75f94c;margin-left: 10px;">AutoMarket</span>
+                    <span style="font-size: 30px;color: #75f94c;margin-left: 10px;" class="nav-link active" href="http://localhost:3000">AutoMarket</span>
                 </a>
                 <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"
                     style="background: #75f94c;border-style: none;">
@@ -88,13 +102,13 @@
                 <div class="collapse navbar-collapse" id="navcol-2">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link active" href="http://localhost:3000"
-                                style="color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
+                                style="font-size: 20px; color: rgb(133,204,127);" data-i18n="frontpage"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/items/search?"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="all_listings"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/new_listing"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="new_listing"></a></li>
                         <li class="nav-item"><a class="nav-link" href="http://localhost:3000/contact"
-                                style="color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
+                                style="font-size: 20px; color: rgba(133, 204, 127, 1);" data-i18n="contact_us"></a></li>
                     </ul>
                 </div>
                 <button id="enButtonFooter">English</button>

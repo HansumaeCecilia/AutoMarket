@@ -3,19 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lisää auto</title>
+    <title>{{title}}</title>
     <style>
       .addVehicleForm {
           width: 50%;
           margin-left: 25%;
           margin-right: 25%;
-          
-          font-size: 125%;
-          
+          font-weight: 600;
+          font-size: 130%;
       }
 
       body {
           text-align: center;
+      }
+
+      .addbutton {
+        background-color: rgb(21, 134, 166);
+        color: aliceblue;
+        padding: 8px;
+        border-radius: 10px;
+        border: none;
+        margin: 15px;
       }
     </style>
 </head>
@@ -73,7 +81,7 @@
         <label for="image" data-i18n="vehicle_image"></label>
         <input type="file" id="image" name="image" class="form-control"/>
 
-        <button type="submit" data-i18n="add_vehicle_button"></button>
+        <button type="submit" class="addbutton" data-i18n="add_vehicle_button"></button>
       </div>
     </form>
 
